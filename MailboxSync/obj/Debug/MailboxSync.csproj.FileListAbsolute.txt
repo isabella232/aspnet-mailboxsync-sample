@@ -76,7 +76,6 @@ C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\bin\System.Web.Ra
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\bin\System.Web.WebPages.xml
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\bin\System.Web.WebPages.Deployment.xml
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\bin\System.Web.WebPages.Razor.xml
-C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\MailboxSync.csprojAssemblyReference.cache
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\MailboxSync.csproj.CoreCompileInputs.cache
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\MailboxSync.csproj.CopyComplete
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\Microsoft Graph ASPNET Snippets.dll

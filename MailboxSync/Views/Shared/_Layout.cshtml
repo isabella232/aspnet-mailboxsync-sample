@@ -2,8 +2,7 @@
         See LICENSE in the source repository root for complete license information. -->
 
 @{
-    ViewBag.AppName = "Microsoft Graph Snippets Sample for ASP.NET 4.6";
-    var accountType = Session["AccountType"] as string;
+    ViewBag.AppName = "Mailbox Sync";
 }
 
 <!DOCTYPE html>
@@ -30,16 +29,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Users", "Index", "Users")</li>
                     <li>@Html.ActionLink("Mail", "Index", "Mail")</li>
-                    <li>@Html.ActionLink("Events", "Index", "Events")</li>
-                    <li>@Html.ActionLink("Files", "Index", "Files")</li>
-                    <li>@Html.ActionLink("Groups", "Index", "Groups")</li>
-                    @if (accountType != "msa")
-                    {
-                    <li>@Html.ActionLink("Admin scopes", "Index", "Admin")</li>
-                    }
-                    <li>@Html.ActionLink("Extensions", "Index", "Extensions")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

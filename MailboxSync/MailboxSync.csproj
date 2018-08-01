@@ -181,10 +181,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
-    <Compile Include="Controllers\ExtensionsController.cs" />
-    <Compile Include="Controllers\FilesController.cs" />
-    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\MailController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
@@ -198,10 +194,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\EventsService.cs" />
-    <Compile Include="Models\ExtensionsService.cs" />
-    <Compile Include="Models\FilesService.cs" />
-    <Compile Include="Models\GroupsService.cs" />
     <Compile Include="Models\MailService.cs" />
     <Compile Include="Models\ResultsViewModel.cs" />
     <Compile Include="Models\Subscription\Message.cs" />
@@ -246,10 +238,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Files\Files.cshtml" />
-    <Content Include="Views\Groups\Groups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_ResultsPartial.cshtml" />
@@ -269,16 +258,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Events\Events.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Mail\Mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\aspnet-snippets - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\aspnet-snippets - Web Deploy.pubxml" />
-    <Content Include="Views\Admin\Admin.cshtml" />
-    <Content Include="Views\Extensions\Extensions.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
