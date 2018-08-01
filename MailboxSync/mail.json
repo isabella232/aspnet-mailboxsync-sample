@@ -1,16 +1,54 @@
 {
-  "experiences": [
+  "folders": [
     {
-      "companyid": 2,
-      "companyname": "Pasha Mzazi"
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQCI_7GjOB7xToSHKRCHsJDyAAAAAAEGAAA=",
+      "Name": "Archive",
+      "ParentId": null
     },
     {
-      "companyid": 3,
-      "companyname": "Greenworld"
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAAA=",
+      "Name": "Conversation History",
+      "ParentId": null
     },
     {
-      "companyid": 1,
-      "companyname": "Pasha Group"
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEKAAA=",
+      "Name": "Deleted Items",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEPAAA=",
+      "Name": "Drafts",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAAA=",
+      "Name": "Inbox",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEiAAA=",
+      "Name": "Junk Email",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAELAAA=",
+      "Name": "Outbox",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAACSaAAA=",
+      "Name": "RSS Subscriptions",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAA=",
+      "Name": "Sent Items",
+      "ParentId": null
+    },
+    {
+      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFOAAA=",
+      "Name": "Sync Issues",
+      "ParentId": null
     }
   ]
 }

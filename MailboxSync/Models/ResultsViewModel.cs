@@ -9,6 +9,13 @@ using System.Linq;
 namespace MailboxSync.Models
 {
 
+    public class FolderItem
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string ParentId { get; set; }
+    }
+
     // An entity, such as a user, group, or message.
     public class ResultsItem
     {

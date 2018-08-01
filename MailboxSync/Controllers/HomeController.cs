@@ -28,8 +28,6 @@ namespace MailboxSync.Controllers
             return View();
         }
 
-
-
         public ActionResult GetFolderDetails()
         {
             string jsonFile = Server.MapPath("~/mail.json");
@@ -51,15 +49,15 @@ namespace MailboxSync.Controllers
                     try
                     {
                         var jObject = JObject.Parse(mailData);
-                        JArray experiencesArrary = (JArray)jObject["experiences"];
-                        if (experiencesArrary != null)
+                        JArray folders = (JArray)jObject["folders"];
+                        if (folders != null)
                         {
-                            foreach (var item in experiencesArrary)
+                            foreach (var item in folders)
                             {
                                 resultsItems.Add(new ResultsItem
                                 {
-                                    Display = item.ToString(),
-                                    Id = Guid.NewGuid().ToString()
+                                    Display = item["Name"].ToString(),
+                                    Id = item["Id"].ToString()
                                 });
                             }
                             results.Items = resultsItems;
@@ -73,6 +71,32 @@ namespace MailboxSync.Controllers
                 }
             }
             return View("Index", results);
+        }
+
+
+        public void AddFolders(FolderItem folder)
+        {
+            string jsonFile = Server.MapPath("~/mail.json");
+            try
+            {
+                var json = System.IO.File.ReadAllText(jsonFile);
+                var folderObject = JObject.Parse(json);
+                var folderArrary = folderObject.GetValue("folders") as JArray;
+
+                if (folderArrary == null)
+                    folderArrary = new JArray();
+
+                if (!folderArrary.Contains(folder.Id))
+                    folderArrary.Add(JObject.Parse(JsonConvert.SerializeObject(folder)));
+
+                folderObject["folders"] = folderArrary;
+                string newFolderContents = JsonConvert.SerializeObject(folderObject, Formatting.Indented);
+                System.IO.File.WriteAllText(jsonFile, newFolderContents);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Add Error : " + ex.Message.ToString());
+            }
         }
 
         // Get messages in all the current user's mail folders.
@@ -110,6 +134,15 @@ namespace MailboxSync.Controllers
 
                 // Get the folders.
                 results.Items = await mailService.GetMyMailFolders(graphClient);
+
+                foreach (var folder in results.Items)
+                {
+                    AddFolders(new FolderItem
+                    {
+                        Name = folder.Display,
+                        Id = folder.Id
+                    });
+                }
             }
             catch (ServiceException se)
             {
