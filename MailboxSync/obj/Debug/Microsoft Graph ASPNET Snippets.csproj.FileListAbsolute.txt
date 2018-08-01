@@ -1,0 +1,83 @@
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\csc.exe
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\csc.exe.config
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\csc.rsp
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\csi.exe
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\csi.rsp
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CodeAnalysis.CSharp.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CodeAnalysis.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CodeAnalysis.VisualBasic.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.CSharp.Core.targets
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\Microsoft.VisualBasic.Core.targets
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.AppContext.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.Collections.Immutable.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\System.Reflection.Metadata.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\vbc.exe
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\vbc.exe.config
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\vbc.rsp
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\VBCSCompiler.exe
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\roslyn\VBCSCompiler.exe.config
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft Graph ASPNET Snippets.dll.config
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft Graph ASPNET Snippets.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft Graph ASPNET Snippets.pdb
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Antlr3.Runtime.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.Core.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Identity.Client.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.IdentityModel.Protocol.Extensions.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Host.SystemWeb.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.Cookies.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.OpenIdConnect.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Newtonsoft.Json.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Owin.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Net.Http.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Security.Cryptography.Algorithms.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Security.Cryptography.Encoding.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Security.Cryptography.Primitives.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Security.Cryptography.X509Certificates.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Helpers.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Mvc.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Optimization.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Razor.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.Deployment.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.Razor.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\WebGrease.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Antlr3.Runtime.pdb
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.pdb
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.Core.pdb
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Graph.Core.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.IdentityModel.Protocol.Extensions.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.Cookies.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Microsoft.Owin.Security.OpenIdConnect.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\Newtonsoft.Json.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.IdentityModel.Tokens.Jwt.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Helpers.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Mvc.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Optimization.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.Razor.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.Deployment.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\bin\System.Web.WebPages.Razor.xml
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\obj\Debug\Microsoft Graph ASPNET Snippets.csprojAssemblyReference.cache
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\obj\Debug\Microsoft Graph ASPNET Snippets.csproj.CoreCompileInputs.cache
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\obj\Debug\Microsoft Graph ASPNET Snippets.csproj.CopyComplete
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\obj\Debug\Microsoft Graph ASPNET Snippets.dll
+C:\Users\v-chgita\Documents\SourceCode\aspnet-snippets-sample\Graph-ASPNET-46-Snippets\Microsoft Graph ASPNET Snippets\obj\Debug\Microsoft Graph ASPNET Snippets.pdb
