@@ -37,13 +37,35 @@ namespace MailboxSync.Models
             return items;
         }
 
+        // Get folders in the current mail.
+        public async Task<List<ResultsItem>> GetMyMailFolders(GraphServiceClient graphClient)
+        {
+            List<ResultsItem> items = new List<ResultsItem>();
+
+            // Get messages in the Inbox folder.
+            var folders = await graphClient.Me.MailFolders.Request().GetAsync();
+
+            if (folders?.Count > 0)
+            {
+                foreach (var folder in folders)
+                {
+                    items.Add(new ResultsItem
+                    {
+                        Display = folder.DisplayName,
+                        Id = folder.Id
+                    });
+                }
+            }
+            return items;
+        }
+
         // Get messages in the current user's inbox.
         // To get the messages from another mail folder, you can specify the Drafts, DeletedItems, or SentItems well-known folder,
         // or you can specify the folder ID, for example: `await graphClient.Me.MailFolders[folder-id].Messages.Request().GetAsync();`
         public async Task<List<ResultsItem>> GetMyInboxMessages(GraphServiceClient graphClient)
         {
             List<ResultsItem> items = new List<ResultsItem>();
-            
+
             // Get messages in the Inbox folder.
             IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders.Inbox.Messages.Request().GetAsync();
 
@@ -108,7 +130,7 @@ namespace MailboxSync.Models
         public async Task<List<ResultsItem>> SendMessage(GraphServiceClient graphClient)
         {
             List<ResultsItem> items = new List<ResultsItem>();
-            
+
             // Create the recipient list. This snippet uses the current user as the recipient.
             User me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
             string address = me.Mail ?? me.UserPrincipalName;
@@ -210,7 +232,7 @@ namespace MailboxSync.Models
         public async Task<List<ResultsItem>> GetMessage(GraphServiceClient graphClient, string id)
         {
             List<ResultsItem> items = new List<ResultsItem>();
-            
+
             // Get the message.
             Message message = await graphClient.Me.Messages[id].Request().GetAsync();
 
@@ -283,7 +305,7 @@ namespace MailboxSync.Models
         public async Task<List<ResultsItem>> DeleteMessage(GraphServiceClient graphClient, string id)
         {
             List<ResultsItem> items = new List<ResultsItem>();
-            
+
             // Delete the message.
             await graphClient.Me.Messages[id].Request().DeleteAsync();
 

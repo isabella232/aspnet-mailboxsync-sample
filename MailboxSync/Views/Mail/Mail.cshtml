@@ -17,6 +17,10 @@
         {
             <button class="btn btn-link" id="get-messages">@Resource.Mail_GetMyMessages</button>
         }
+        @using (Html.BeginForm("GetMyMailfolders", "Mail"))
+        {
+            <button class="btn btn-link" id="get-messages">Mailfolders</button>
+        }
         @using (Html.BeginForm("GetMyInboxMessages", "Mail"))
         {
             <button class="btn btn-link" id="get-inbox-messages">@Resource.Mail_GetMyInboxMessages</button>
@@ -33,7 +37,7 @@
         {
             <button class="btn btn-link" id="send-mail">@Resource.Mail_SendMessageWithAttachment</button>
         }
-</div>
+    </div>
     <p>@Resource.Needs_Id</p>
     <div class="form-group">
         @using (Html.BeginForm("GetMessage", "Mail"))
