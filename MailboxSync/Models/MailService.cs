@@ -83,6 +83,26 @@ namespace MailboxSync.Models
             return items;
         }
 
+        public async Task<List<ResultsItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
+        {
+            List<ResultsItem> items = new List<ResultsItem>();
+
+            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
+
+            if (messages?.Count > 0)
+            {
+                foreach (Message message in messages)
+                {
+                    items.Add(new ResultsItem
+                    {
+                        Display = message.Subject,
+                        Id = message.Id
+                    });
+                }
+            }
+            return items;
+        }
+
         // Get messages with attachments in the current user's inbox.
         public async Task<List<ResultsItem>> GetMyInboxMessagesThatHaveAttachments(GraphServiceClient graphClient)
         {

@@ -12,6 +12,7 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -28,21 +29,20 @@ namespace MailboxSync.Controllers
             return View();
         }
 
-        public ActionResult GetFolderDetails()
+        public List<FolderItem> GetFolders()
         {
             string jsonFile = Server.MapPath("~/mail.json");
-            ResultsViewModel results = new ResultsViewModel();
-            List<ResultsItem> resultsItems = new List<ResultsItem>();
+            List<FolderItem> folderItems = new List<FolderItem>();
             if (!System.IO.File.Exists(jsonFile))
             {
-                return new EmptyResult();
+                return folderItems;
             }
             else
             {
                 var mailData = System.IO.File.ReadAllText(jsonFile);
                 if (mailData == null)
                 {
-                    return new EmptyResult();
+                    return folderItems;
                 }
                 else
                 {
@@ -54,25 +54,23 @@ namespace MailboxSync.Controllers
                         {
                             foreach (var item in folders)
                             {
-                                resultsItems.Add(new ResultsItem
+                                folderItems.Add(new FolderItem
                                 {
-                                    Display = item["Name"].ToString(),
+                                    Name = item["Name"].ToString(),
                                     Id = item["Id"].ToString()
                                 });
                             }
-                            results.Items = resultsItems;
+                            return folderItems;
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
-                        throw;
+                        Console.WriteLine("Add Error : " + ex.Message.ToString());
                     }
                 }
             }
-            return View("Index", results);
+            return folderItems;
         }
-
 
         public void AddFolders(FolderItem folder)
         {
@@ -98,6 +96,106 @@ namespace MailboxSync.Controllers
                 Console.WriteLine("Add Error : " + ex.Message.ToString());
             }
         }
+
+        public void StoreMessage(List<Message> messages, string folder)
+        {
+            string jsonFile = Server.MapPath("~/mail.json");
+            try
+            {
+                var json = System.IO.File.ReadAllText(jsonFile);
+                var folderObject = JObject.Parse(json);
+                var folderArrary = folderObject.GetValue("folders") as JArray;
+                if (folderArrary != null)
+                {
+                    var mailData = JObject.Parse(json);
+                    JArray messageObject = JArray.Parse(JsonConvert.SerializeObject(messages));
+
+                    if (!string.IsNullOrEmpty(folder))
+                    {
+                        foreach (var mailFolder in folderArrary.Where(obj => obj["Id"].Value<string>() == folder))
+                        {
+                            mailFolder["Messages"] = messageObject;
+                        }
+
+                        mailData["folders"] = folderArrary;
+                        string output = JsonConvert.SerializeObject(mailData, Formatting.Indented);
+                        System.IO.File.WriteAllText(jsonFile, output);
+                    }
+                    else
+                    {
+                        Console.Write(" Try Again!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Add Error : " + ex.Message.ToString());
+            }
+        }
+
+        public async Task<ActionResult> AddMessages(string id)
+        {
+            ResultsViewModel results = new ResultsViewModel();
+            try
+            {
+                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+                results.Items = await mailService.GetMyFolderMessages(graphClient, id);
+                var messages = new List<Message>();
+                foreach (var item in results.Items)
+                {
+                    messages.Add(new Message { Id = item.Id, Subject = item.Display });
+                }
+                StoreMessage(messages, id);
+            }
+            catch (ServiceException se)
+            {
+                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
+
+                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
+                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
+            }
+            return View("Index", results);
+
+
+            //string jsonFile = Server.MapPath("~/mail.json");
+            //try
+            //{
+            //    var json = System.IO.File.ReadAllText(jsonFile);
+            //    var folderObject = JObject.Parse(json);
+            //    var folderArrary = folderObject.GetValue("folders") as JArray;
+
+
+
+
+
+            //    folderObject["folders"] = folderArrary;
+            //    string newFolderContents = JsonConvert.SerializeObject(folderObject, Formatting.Indented);
+            //    System.IO.File.WriteAllText(jsonFile, newFolderContents);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("Add Error : " + ex.Message.ToString());
+            //}
+        }
+
+        public ActionResult GetFolderDetails()
+        {
+            ResultsViewModel results = new ResultsViewModel();
+            var folders = GetFolders();
+            var resultItems = new List<ResultsItem>();
+            foreach (var item in folders)
+            {
+                resultItems.Add(new ResultsItem
+                {
+                    Display = item.Name,
+                    Id = item.Id
+                });
+            }
+            results.Items = resultItems;
+            return View("Index", results);
+        }
+
+
 
         // Get messages in all the current user's mail folders.
         public async Task<ActionResult> GetMyMessages()
@@ -143,6 +241,28 @@ namespace MailboxSync.Controllers
                         Id = folder.Id
                     });
                 }
+            }
+            catch (ServiceException se)
+            {
+                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
+
+                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
+                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
+            }
+            return View("Index", results);
+        }
+
+        public async Task<ActionResult> SyncFolders()
+        {
+            ResultsViewModel results = new ResultsViewModel();
+            try
+            {
+
+                // Initialize the GraphServiceClient.
+                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+
+                // Get the messages.
+                results.Items = await mailService.GetMyInboxMessages(graphClient);
             }
             catch (ServiceException se)
             {

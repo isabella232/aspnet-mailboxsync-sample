@@ -3,6 +3,7 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using MailboxSync.Models.Subscription.GraphWebhooks.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +15,7 @@ namespace MailboxSync.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }
+        public List<Message> Messages { get; set; }
     }
 
     // An entity, such as a user, group, or message.
