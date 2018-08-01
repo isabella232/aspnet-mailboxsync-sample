@@ -13,30 +13,12 @@
 <div class="col-md-12">
     <h3>@Resource.Choose_Snippet</h3>
     <div class="form-group">
-        @using (Html.BeginForm("GetMyMessages", "Mail"))
+
+        @using (Html.BeginForm("GetMyMailfolders", "Home"))
         {
-            <button class="btn btn-link" id="get-messages">@Resource.Mail_GetMyMessages</button>
+            <button class="btn btn-link" id="get-folders">Get Mail Folders</button>
         }
-        @using (Html.BeginForm("GetMyMailfolders", "Mail"))
-        {
-            <button class="btn btn-link" id="get-messages">Mailfolders</button>
-        }
-        @using (Html.BeginForm("GetMyInboxMessages", "Mail"))
-        {
-            <button class="btn btn-link" id="get-inbox-messages">@Resource.Mail_GetMyInboxMessages</button>
-        }
-        @using (Html.BeginForm("GetMyInboxMessagesThatHaveAttachments", "Mail"))
-        {
-            <button class="btn btn-link" id="get-inbox-messages">@Resource.Mail_GetMyInboxMessagesThatHaveAttachments</button>
-        }
-        @using (Html.BeginForm("SendMessage", "Mail"))
-        {
-            <button class="btn btn-link" id="send-mail">@Resource.Mail_SendMessage</button>
-        }
-        @using (Html.BeginForm("SendMessageWithAttachment", "Mail"))
-        {
-            <button class="btn btn-link" id="send-mail">@Resource.Mail_SendMessageWithAttachment</button>
-        }
+       
     </div>
     <p>@Resource.Needs_Id</p>
     <div class="form-group">

@@ -6,7 +6,12 @@
 using MailboxSync.Helpers;
 using MailboxSync.Models;
 using Microsoft.Graph;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Resources;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -21,6 +26,53 @@ namespace MailboxSync.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+
+
+        public ActionResult GetFolderDetails()
+        {
+            string jsonFile = Server.MapPath("~/mail.json");
+            ResultsViewModel results = new ResultsViewModel();
+            List<ResultsItem> resultsItems = new List<ResultsItem>();
+            if (!System.IO.File.Exists(jsonFile))
+            {
+                return new EmptyResult();
+            }
+            else
+            {
+                var mailData = System.IO.File.ReadAllText(jsonFile);
+                if (mailData == null)
+                {
+                    return new EmptyResult();
+                }
+                else
+                {
+                    try
+                    {
+                        var jObject = JObject.Parse(mailData);
+                        JArray experiencesArrary = (JArray)jObject["experiences"];
+                        if (experiencesArrary != null)
+                        {
+                            foreach (var item in experiencesArrary)
+                            {
+                                resultsItems.Add(new ResultsItem
+                                {
+                                    Display = item.ToString(),
+                                    Id = Guid.NewGuid().ToString()
+                                });
+                            }
+                            results.Items = resultsItems;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+            }
+            return View("Index", results);
         }
 
         // Get messages in all the current user's mail folders.

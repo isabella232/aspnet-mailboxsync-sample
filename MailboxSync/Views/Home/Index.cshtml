@@ -13,9 +13,9 @@
 <div class="col-md-12">
     <h3>@Resource.Choose_Snippet</h3>
     <div class="form-group">
-        @using (Html.BeginForm("GetMyMessages", "Home"))
+        @using (Html.BeginForm("GetFolderDetails", "Home"))
         {
-            <button class="btn btn-link" id="get-messages">@Resource.Mail_GetMyMessages</button>
+            <button class="btn btn-link" id="get-messages">local Json</button>
         }
         @using (Html.BeginForm("GetMyMailfolders", "Home"))
         {
