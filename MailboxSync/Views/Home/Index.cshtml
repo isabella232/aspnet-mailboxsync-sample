@@ -24,9 +24,9 @@
         {
             <button class="btn btn-link" id="get-messages">Sync Folders</button>
         }
-        @using (Html.BeginForm("GetMyInboxMessages", "Home"))
+        @using (Html.BeginForm("CreateSubscription", "Subscription"))
         {
-            <button class="btn btn-link" id="get-inbox-messages">@Resource.Mail_GetMyInboxMessages</button>
+            <button class="btn btn-link" id="get-inbox-messages">Create Subscription</button>
         }
         @using (Html.BeginForm("GetMyInboxMessagesThatHaveAttachments", "Home"))
         {
