@@ -88,7 +88,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Microsoft Graph Snippets sample for ASP.NET 4.6.
+        ///   Looks up a localized string similar to MailBox Sync.
         /// </summary>
         internal static string App_Name {
             get {

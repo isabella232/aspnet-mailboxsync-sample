@@ -126,7 +126,7 @@
     <comment>Description of app for About view</comment>
   </data>
   <data name="App_Name" xml:space="preserve">
-    <value>Microsoft Graph Snippets sample for ASP.NET 4.6</value>
+    <value>MailBox Sync</value>
     <comment>Full app name for title and copyright</comment>
   </data>
   <data name="App_Name_Short" xml:space="preserve">

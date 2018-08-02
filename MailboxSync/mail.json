@@ -1,153 +1,55 @@
 {
   "folders": [
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQCI_7GjOB7xToSHKRCHsJDyAAAAAAEGAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAFbAAA=",
       "Name": "Archive",
       "ParentId": null,
-      "Messages": []
+      "Messages": null
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAFSAAA=",
       "Name": "Conversation History",
       "ParentId": null,
-      "Messages": [
-        {
-          "subject": "Conference call with Arunkumaran Varadharajan, Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQqC43AAA="
-        },
-        {
-          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI10AAAA="
-        },
-        {
-          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI1z-AAA="
-        },
-        {
-          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7itAAA="
-        },
-        {
-          "subject": "Conference call with Arunkumaran Varadharajan",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7isAAA="
-        },
-        {
-          "subject": "Conversation with Arunkumaran Varadharajan",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7irAAA="
-        },
-        {
-          "subject": "Conversation with Arunkumaran Varadharajan",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7iqAAA="
-        },
-        {
-          "subject": "Outgoing call",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ipAAA="
-        },
-        {
-          "subject": "Outgoing call",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ioAAA="
-        },
-        {
-          "subject": "Conversation with Arunkumaran Varadharajan",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7inAAA="
-        }
-      ]
+      "Messages": null
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEKAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEKAAA=",
       "Name": "Deleted Items",
       "ParentId": null,
       "Messages": null
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEPAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEPAAA=",
       "Name": "Drafts",
       "ParentId": null,
-      "Messages": null
+      "Messages": []
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEMAAA=",
       "Name": "Inbox",
       "ParentId": null,
       "Messages": [
         {
-          "subject": "Updates from All Company",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAQp-8DAAA="
-        },
-        {
-          "subject": "Farewell and Thank You",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAQI1E6AAA="
-        },
-        {
-          "subject": "Updates from All Company",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T7AAA="
-        },
-        {
-          "subject": "Victoria Obonyo (Human Capital Synergies) mentioned Kenya Team in Microsoft Teams",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T6AAA="
-        },
-        {
-          "subject": "Updates from All Company",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T4AAA="
-        },
-        {
-          "subject": "MyAnalytics | See your insights from last week",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T3AAA="
-        },
-        {
-          "subject": "RE: New Geo Coverage Model for Global Support MEA",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T2AAA="
-        },
-        {
-          "subject": "Darrel Miller mentioned you in Microsoft Teams",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T1AAA="
-        },
-        {
-          "subject": "Jeremy Thake sent you a message in Microsoft Teams",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6T0AAA="
-        },
-        {
-          "subject": "Re: Charles Wahome Gitau (Insight Management Consultants) sent you a message in Skype for Business while you were offline",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAKk6TzAAA="
+          "subject": "You've joined the Marketing group",
+          "id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwBGAAAAAADuwLiZdN4-SLB89351miEhBwB6OLHt27epRLfRPu4s7-gzAAAAAAEMAAB6OLHt27epRLfRPu4s7-gzAAAAAAVwAAA="
         }
       ]
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEiAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEaAAA=",
       "Name": "Junk Email",
       "ParentId": null,
-      "Messages": [
-        {
-          "subject": "Test Send",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEiAACI_7GjOB7xToSHKRCHsJDyAAAG8i6VAAA="
-        },
-        {
-          "subject": "I shared \"charles's Notebook\" with you in OneDrive",
-          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEiAACI_7GjOB7xToSHKRCHsJDyAAAAbkwEAAA="
-        }
-      ]
+      "Messages": null
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAELAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAELAAA=",
       "Name": "Outbox",
       "ParentId": null,
       "Messages": null
     },
     {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAACSaAAA=",
-      "Name": "RSS Subscriptions",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAA=",
+      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEJAAA=",
       "Name": "Sent Items",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFOAAA=",
-      "Name": "Sync Issues",
       "ParentId": null,
       "Messages": null
     }

@@ -84,7 +84,7 @@ namespace MailboxSync.Controllers
                 if (folderArrary == null)
                     folderArrary = new JArray();
 
-                if (!folderArrary.Contains(folder.Id))
+                if(!folderArrary.Any(obj => obj["Id"].Value<string>() == folder.Id))
                     folderArrary.Add(JObject.Parse(JsonConvert.SerializeObject(folder)));
 
                 folderObject["folders"] = folderArrary;
@@ -156,26 +156,6 @@ namespace MailboxSync.Controllers
             }
             return View("Index", results);
 
-
-            //string jsonFile = Server.MapPath("~/mail.json");
-            //try
-            //{
-            //    var json = System.IO.File.ReadAllText(jsonFile);
-            //    var folderObject = JObject.Parse(json);
-            //    var folderArrary = folderObject.GetValue("folders") as JArray;
-
-
-
-
-
-            //    folderObject["folders"] = folderArrary;
-            //    string newFolderContents = JsonConvert.SerializeObject(folderObject, Formatting.Indented);
-            //    System.IO.File.WriteAllText(jsonFile, newFolderContents);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Add Error : " + ex.Message.ToString());
-            //}
         }
 
         public ActionResult GetFolderDetails()
