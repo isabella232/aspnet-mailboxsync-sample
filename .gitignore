@@ -10,3 +10,9 @@ bin/
 .vs/
 MailboxSync/bin/
 MailboxSync/obj/
+.vs/MailboxSync/v15/.suo
+MailboxSync/bin/Microsoft Graph ASPNET Snippets.dll
+MailboxSync/bin/Microsoft Graph ASPNET Snippets.pdb
+MailboxSync/obj/Debug/MailboxSync.csproj.FileListAbsolute.txt
+MailboxSync/obj/Debug/Microsoft Graph ASPNET Snippets.dll
+MailboxSync/obj/Debug/Microsoft Graph ASPNET Snippets.pdb

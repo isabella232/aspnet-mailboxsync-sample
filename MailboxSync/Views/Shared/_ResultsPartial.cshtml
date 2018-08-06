@@ -9,7 +9,7 @@
     <h3>Results:</h3>
     <div class="col-md-12">
         <div class="container">
-            <ul class="nav nav-pills nav-stacked col-md-2">
+            <ul class="nav nav-pills nav-stacked col-md-3">
                 @if (Model != null)
                 {
                     if (Model.Items.Any())
@@ -17,9 +17,10 @@
                         int count = 0;
                         foreach (var item in Model.Items)
                         {
-
                             <li class="@(count==0 ? "active":"")">
-                                <a href="#@count" data-toggle="pill">&nbsp;@item.Name</a>
+                                <a href="#@count" data-toggle="pill">&nbsp;@item.Name
+                                    <span class="pull-right badge"> @(item.Messages == null ? 0 : item.Messages.Count) </span>
+                                </a>
                             </li>
                             @*<label>
                                     <input type="radio" name="items" value=@item.Id onclick="onSelectedItemChanged()" />
@@ -34,7 +35,7 @@
                     }
                 }
             </ul>
-            <div class="tab-content col-md-10">
+            <div class="tab-content col-md-9">
                 @if (Model != null)
                 {
                     if (Model.Items.Any())
