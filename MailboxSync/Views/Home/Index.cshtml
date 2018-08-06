@@ -12,62 +12,13 @@
 <h2>@ViewBag.Title</h2>
 <div class="col-md-12">
     <div class="form-group">
-        @using (Html.BeginForm("GetFolderDetails", "Home"))
-        {
-            <button class="btn btn-link" id="get-messages">Client Folder List</button>
-        }
         @using (Html.BeginForm("GetMyMailfolders", "Home"))
         {
-            <button class="btn btn-link" id="get-messages">Mailfolders</button>
-        }
-        @using (Html.BeginForm("SyncFolders", "Home"))
-        {
-            <button class="btn btn-link" id="get-messages">Sync Folders</button>
+            <button class="btn btn-link" id="get-messages">Sync Mail From Server</button>
         }
         @using (Html.BeginForm("CreateSubscription", "Subscription"))
         {
             <button class="btn btn-link" id="get-inbox-messages">Create Subscription</button>
-        }
-        @using (Html.BeginForm("GetMyInboxMessagesThatHaveAttachments", "Home"))
-        {
-            <button class="btn btn-link" id="get-inbox-messages">@Resource.Mail_GetMyInboxMessagesThatHaveAttachments</button>
-        }
-        @using (Html.BeginForm("SendMessage", "Home"))
-        {
-            <button class="btn btn-link" id="send-mail">@Resource.Mail_SendMessage</button>
-        }
-        @using (Html.BeginForm("SendMessageWithAttachment", "Home"))
-        {
-            <button class="btn btn-link" id="send-mail">@Resource.Mail_SendMessageWithAttachment</button>
-        }
-    </div>
-    <p>@Resource.Needs_Id</p>
-    <div class="form-group">
-        @using (Html.BeginForm("AddMessages", "Home"))
-        {
-            <button class="btn btn-link needs-id" id="get-message" disabled="disabled">Add Messages</button>
-            <input class="selected-id" name="id" type="hidden" />
-        }
-        @using (Html.BeginForm("GetMessage", "Home"))
-        {
-            <button class="btn btn-link needs-id" id="get-message" disabled="disabled">@Resource.Mail_GetMessage</button>
-            <input class="selected-id" name="id" type="hidden" />
-        }
-        @using (Html.BeginForm("ReplyToMessage", "Home"))
-        {
-            <button class="btn btn-link needs-id" id="reply-to-message" disabled="disabled">@Resource.Mail_ReplyToMessage</button>
-            <input class="selected-id" name="id" type="hidden" />
-        }
-        @using (Html.BeginForm("MoveMessage", "Home"))
-        {
-            <button class="btn btn-link needs-id" id="move-message" disabled="disabled">@Resource.Mail_MoveMessage</button>
-            <input class="selected-id" name="id" type="hidden" />
-        }
-        @using (Html.BeginForm("DeleteMessage", "Home"))
-        {
-            <button class="btn btn-link needs-id" id="delete-message" disabled="disabled">@Resource.Mail_DeleteMessage</button>
-            <span class="alert-warning">@Html.Raw(Resource.Delete_Warning)</span>
-            <input class="selected-id" name="id" type="hidden" />
         }
     </div>
 </div>

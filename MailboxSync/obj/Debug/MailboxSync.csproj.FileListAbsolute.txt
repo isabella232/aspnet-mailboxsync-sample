@@ -80,3 +80,4 @@ C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\Mailbox
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\MailboxSync.csproj.CopyComplete
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\Microsoft Graph ASPNET Snippets.dll
 C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\Microsoft Graph ASPNET Snippets.pdb
+C:\Users\v-chgita\Documents\SourceCode\MailboxSync\MailboxSync\obj\Debug\MailboxSync.csprojAssemblyReference.cache

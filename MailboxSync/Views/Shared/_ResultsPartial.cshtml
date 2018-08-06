@@ -22,10 +22,6 @@
                                     <span class="pull-right badge"> @(item.Messages == null ? 0 : item.Messages.Count) </span>
                                 </a>
                             </li>
-                            @*<label>
-                                    <input type="radio" name="items" value=@item.Id onclick="onSelectedItemChanged()" />
-                                    &nbsp;@item.Name
-                                </label><br />*@
                             count++;
                         }
                     }
@@ -59,6 +55,12 @@
                                     </table>
                                     <br />
                                 }
+                                <hr>
+                                    @using (Html.BeginForm("AddMessages", "Home"))
+                                    {
+                                        <button class="btn btn-link needs-id" id="get-message" disabled="disabled">Get Messages</button>
+                                        <input class="selected-id" name="id" type="hidden" />
+                                    }
                             </div>
                             count++;
                         }

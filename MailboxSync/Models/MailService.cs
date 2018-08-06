@@ -39,9 +39,9 @@ namespace MailboxSync.Models
         }
 
         // Get folders in the current mail.
-        public async Task<List<ResultsItem>> GetMyMailFolders(GraphServiceClient graphClient)
+        public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            List<FolderItem> items = new List<FolderItem>();
 
             // Get messages in the Inbox folder.
             var folders = await graphClient.Me.MailFolders.Request().GetAsync();
@@ -50,46 +50,21 @@ namespace MailboxSync.Models
             {
                 foreach (var folder in folders)
                 {
-                    items.Add(new ResultsItem
+                    items.Add(new FolderItem
                     {
-                        Display = folder.DisplayName,
-                        Id = folder.Id
+                        Name = folder.DisplayName,
+                        Id = folder.Id,
+                        Messages = await GetMyFolderMessages(graphClient, folder.Id),
+                        ParentId = folder.ParentFolderId
                     });
                 }
             }
             return items;
         }
 
-        // Get messages in the current user's inbox.
-        // To get the messages from another mail folder, you can specify the Drafts, DeletedItems, or SentItems well-known folder,
-        // or you can specify the folder ID, for example: `await graphClient.Me.MailFolders[folder-id].Messages.Request().GetAsync();`
-        public async Task<List<ResultsItem>> GetMyInboxMessages(GraphServiceClient graphClient)
-        {
-            List<ResultsItem> items = new List<ResultsItem>();
-
-            // Get messages in the Inbox folder.
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders.Inbox.Messages.Request().GetAsync();
-
-            if (messages?.Count > 0)
-            {
-                foreach (Message message in messages)
-                {
-                    items.Add(new ResultsItem
-                    {
-                        Display = message.Subject,
-                        Id = message.Id
-                    });
-                }
-            }
-            return items;
-        }
-
-        public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
+        private List<MessageItem> CreateMessages(IMailFolderMessagesCollectionPage messages)
         {
             var items = new List<MessageItem>();
-
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
-
             if (messages?.Count > 0)
             {
                 foreach (Message message in messages)
@@ -108,47 +83,14 @@ namespace MailboxSync.Models
             return items;
         }
 
-        // Get messages with attachments in the current user's inbox.
-        public async Task<List<ResultsItem>> GetMyInboxMessagesThatHaveAttachments(GraphServiceClient graphClient)
+        public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
-
-            // Get messages in the Inbox folder that have attachments.
-            // Note: Messages that have inline messages don't set the `hasAttachments` property to `true`. To find them, you need to parse the body content.
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders.Inbox.Messages.Request().Filter("hasAttachments eq true").Expand("attachments").GetAsync();
-
-            if (messages?.Count > 0)
-            {
-                foreach (Message message in messages)
-                {
-
-                    // This snippet displays information about the first attachment and displays the content if it's an image.
-                    // Reference attachments include a file attachment as a file-type icon.
-                    Attachment firstAttachment = message.Attachments[0];
-                    byte[] contentBytes = null;
-                    if ((firstAttachment is FileAttachment) && (firstAttachment.ContentType.Contains("image")))
-                    {
-                        FileAttachment fileAttachment = firstAttachment as FileAttachment;
-                        contentBytes = fileAttachment.ContentBytes;
-                    }
-
-                    items.Add(new ResultsItem
-                    {
-                        Display = message.Subject,
-                        Id = message.Id,
-                        Properties = new Dictionary<string, object>
-                        {
-                            { Resource.Prop_AttachmentsCount, message.Attachments.Count },
-                            { Resource.Prop_AttachmentName, firstAttachment.Name },
-                            { Resource.Prop_AttachmentType, firstAttachment.ODataType },
-                            { Resource.Prop_AttachmentSize, firstAttachment.Size },
-                            { "Stream", contentBytes }
-                        }
-                    });
-                }
-            }
+            var items = new List<MessageItem>();
+            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
+            items = CreateMessages(messages);
             return items;
         }
+
 
         // Send an email message.
         // This snippet sends a message to the current user on behalf of the current user.
@@ -180,63 +122,6 @@ namespace MailboxSync.Models
                 },
                 Subject = Resource.Prop_Subject + guid.Substring(0, 8),
                 ToRecipients = recipients
-            };
-
-            // Send the message.
-            await graphClient.Me.SendMail(email, true).Request().PostAsync();
-
-            items.Add(new ResultsItem
-            {
-                // This operation doesn't return anything.
-                Properties = new Dictionary<string, object>
-                {
-                    {  Resource.No_Return_Data, "" }
-                }
-            });
-            return items;
-        }
-
-        // Send an email message with a file attachment.
-        // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<List<ResultsItem>> SendMessageWithAttachment(GraphServiceClient graphClient)
-        {
-            List<ResultsItem> items = new List<ResultsItem>();
-
-            // Create the recipient list. This snippet uses the current user as the recipient.
-            User me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
-            string address = me.Mail ?? me.UserPrincipalName;
-            string guid = Guid.NewGuid().ToString();
-
-            List<Recipient> recipients = new List<Recipient>();
-            recipients.Add(new Recipient
-            {
-                EmailAddress = new EmailAddress
-                {
-                    Address = address
-                }
-            });
-
-            // Create an attachment and add it to the attachments collection.
-            MessageAttachmentsCollectionPage attachments = new MessageAttachmentsCollectionPage();
-            attachments.Add(new FileAttachment
-            {
-                ODataType = "#microsoft.graph.fileAttachment",
-                ContentBytes = System.IO.File.ReadAllBytes(HostingEnvironment.MapPath("/Content/test.png")),
-                ContentType = "image/png",
-                Name = "test.png"
-            });
-
-            // Create the message.
-            Message email = new Message
-            {
-                Body = new ItemBody
-                {
-                    Content = Resource.Prop_Body + guid,
-                    ContentType = BodyType.Text,
-                },
-                Subject = Resource.Prop_Subject + guid.Substring(0, 8),
-                ToRecipients = recipients,
-                Attachments = attachments
             };
 
             // Send the message.

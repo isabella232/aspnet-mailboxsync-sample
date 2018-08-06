@@ -97,7 +97,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Microsoft Graph Snippets sample.
+        ///   Looks up a localized string similar to Microsoft Graph Mailbox Sync.
         /// </summary>
         internal static string App_Name_Short {
             get {

@@ -26,11 +26,6 @@ namespace MailboxSync.Controllers
     {
         MailService mailService = new MailService();
 
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         public List<FolderItem> GetFolders()
         {
             string jsonFile = Server.MapPath("~/mail.json");
@@ -157,7 +152,7 @@ namespace MailboxSync.Controllers
 
         }
 
-        public ActionResult GetFolderDetails()
+        public ActionResult Index()
         {
             var results = new FoldersViewModel();
             var folders = GetFolders();
@@ -195,7 +190,7 @@ namespace MailboxSync.Controllers
         // Get folders in the current user's mail
         public async Task<ActionResult> GetMyMailfolders()
         {
-            ResultsViewModel results = new ResultsViewModel();
+            var results = new FoldersViewModel();
             try
             {
 
@@ -207,11 +202,7 @@ namespace MailboxSync.Controllers
 
                 foreach (var folder in results.Items)
                 {
-                    AddFolders(new FolderItem
-                    {
-                        Name = folder.Display,
-                        Id = folder.Id
-                    });
+                    AddFolders(folder);
                 }
             }
             catch (ServiceException se)
@@ -224,116 +215,6 @@ namespace MailboxSync.Controllers
             return View("Index", results);
         }
 
-        public async Task<ActionResult> SyncFolders()
-        {
-            ResultsViewModel results = new ResultsViewModel();
-            try
-            {
-
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Get the messages.
-                results.Items = await mailService.GetMyInboxMessages(graphClient);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
-        // Get messages in the current user's inbox.
-        public async Task<ActionResult> GetMyInboxMessages()
-        {
-            ResultsViewModel results = new ResultsViewModel();
-            try
-            {
-
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Get the messages.
-                results.Items = await mailService.GetMyInboxMessages(graphClient);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
-
-        // Send an email message.
-        // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<ActionResult> SendMessage()
-        {
-            ResultsViewModel results = new ResultsViewModel(false);
-            try
-            {
-
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Send the message.
-                results.Items = await mailService.SendMessage(graphClient);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
-        // Get a specified message.
-        public async Task<ActionResult> GetMessage(string id)
-        {
-            ResultsViewModel results = new ResultsViewModel();
-            try
-            {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Get the message.
-                results.Items = await mailService.GetMessage(graphClient, id);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
-        // Reply to a specified message.
-        public async Task<ActionResult> ReplyToMessage(string id)
-        {
-            ResultsViewModel results = new ResultsViewModel(false);
-            try
-            {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                results.Items = await mailService.ReplyToMessage(graphClient, id);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
 
         // Move a specified message. This creates a new copy of the message in the destination folder.
         // This snippet moves the message to the Drafts folder.
