@@ -8,46 +8,67 @@
 <div class="col-md-12">
     <h3>Results:</h3>
     <div class="col-md-12">
-        @if (Model != null)
-        {
-            if (Model.Items.Any())
-            {
-                foreach (var item in Model.Items)
+        <div class="container">
+            <ul class="nav nav-pills nav-stacked col-md-2">
+                @if (Model != null)
                 {
-                    if (Model.Selectable)
+                    if (Model.Items.Any())
                     {
-                        <label>
-                            <input type="radio" name="items" value=@item.Id onclick="onSelectedItemChanged()" />
-                            &nbsp;@item.Name
-                        </label><br />
+                        int count = 0;
+                        foreach (var item in Model.Items)
+                        {
+
+                            <li class="@(count==0 ? "active":"")">
+                                <a href="#@count" data-toggle="pill">&nbsp;@item.Name</a>
+                            </li>
+                            @*<label>
+                                    <input type="radio" name="items" value=@item.Id onclick="onSelectedItemChanged()" />
+                                    &nbsp;@item.Name
+                                </label><br />*@
+                            count++;
+                        }
                     }
                     else
                     {
-                        <label>
-                            @item.Name
-                        </label><br />
-                    }
-                    if (item.Messages != null && item.Messages.Count > 0)
-                    {
-                        <table id="entity">
-                            @foreach (var message in item.Messages)
-                            {
-                            <tr>
-                                <td class="pad">@message.Subject</td>
-                                <td>@message.CreatedDateTime</td>
-                                <td>@message.IsRead</td>
-                            </tr>
-                            }
-                        </table>
-                        <br />
+                        <p>@Resource.No_Results</p>
                     }
                 }
-            }
-            else
-            {
-                <p>@Resource.No_Results</p>
-            }
-        }
+            </ul>
+            <div class="tab-content col-md-10">
+                @if (Model != null)
+                {
+                    if (Model.Items.Any())
+                    {
+                        int count = 0;
+                        foreach (var item in Model.Items)
+                        {
+                            <div class="@(count==0 ? "tab-pane active":"tab-pane")" id="@count">
+                                <h4>&nbsp;@item.Name</h4>
+                                @if (item.Messages != null && item.Messages.Count > 0)
+                                {
+                                    <table id="table-@item.Id">
+                                        @foreach (var message in item.Messages)
+                                        {
+                                            <tr>
+                                                <td class="pad">@message.Subject</td>
+                                                <td>@message.CreatedDateTime</td>
+                                                <td>@message.IsRead</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                    <br />
+                                }
+                            </div>
+                            count++;
+                        }
+                    }
+                    else
+                    {
+                        <p>@Resource.No_Results</p>
+                    }
+                }
+            </div>
+        </div>
         <br />
     </div>
 </div>
