@@ -3,7 +3,7 @@
 
 @using Resources;
 
-@model MailboxSync.Models.ResultsViewModel
+@model MailboxSync.Models.FoldersViewModel
 
 <div class="col-md-12">
     <h3>Results:</h3>
@@ -18,42 +18,36 @@
                     {
                         <label>
                             <input type="radio" name="items" value=@item.Id onclick="onSelectedItemChanged()" />
-                            &nbsp;@item.Display
+                            &nbsp;@item.Name
                         </label><br />
                     }
                     else
                     {
                         <label>
-                            @item.Display
+                            @item.Name
                         </label><br />
                     }
-                    if (item.Properties.Count > 0)
+                    if (item.Messages != null && item.Messages.Count > 0)
                     {
                         <table id="entity">
-                            @foreach (var property in item.Properties)
+                            @foreach (var message in item.Messages)
                             {
-                                <tr>
-                                    @if (property.Key != "Stream")
-                                    {
-                                        <td class="pad">@property.Key</td>
-                                        <td>@property.Value</td>
-                                    }
-                                    else if (property.Value != null)
-                                    {
-                                        <td><img src="@String.Format("data:image;base64,{0}", Convert.ToBase64String(property.Value as byte[]))" /></td>
-                                    }
-                                </tr>
+                            <tr>
+                                <td class="pad">@message.Subject</td>
+                                <td>@message.CreatedDateTime</td>
+                                <td>@message.IsRead</td>
+                            </tr>
                             }
                         </table>
                         <br />
-                        }
                     }
                 }
-                else
-                {
-                <p>@Resource.No_Results</p>
-                }
             }
-            <br />
-</div>
+            else
+            {
+                <p>@Resource.No_Results</p>
+            }
+        }
+        <br />
+    </div>
 </div>

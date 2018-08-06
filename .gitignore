@@ -5,3 +5,8 @@
 *.dll
 *.cache
 *.cache
+*.pdb
+bin/
+.vs/
+MailboxSync/bin/
+MailboxSync/obj/

@@ -11,7 +11,6 @@ using System.Web.Mvc;
 using MailboxSync.Models.Subscription;
 using MailboxSync.Helpers;
 using Microsoft.Graph;
-using WebApp_OpenIDConnect_DotNet.Models;
 
 namespace MailboxSync.Controllers
 {

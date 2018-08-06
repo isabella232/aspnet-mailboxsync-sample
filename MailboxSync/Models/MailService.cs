@@ -3,6 +3,7 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
 using Resources;
 using System;
@@ -83,9 +84,9 @@ namespace MailboxSync.Models
             return items;
         }
 
-        public async Task<List<ResultsItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
+        public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            var items = new List<MessageItem>();
 
             IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
 
@@ -93,10 +94,14 @@ namespace MailboxSync.Models
             {
                 foreach (Message message in messages)
                 {
-                    items.Add(new ResultsItem
+                    items.Add(new MessageItem
                     {
-                        Display = message.Subject,
-                        Id = message.Id
+                        ConversationId = message.ConversationId,
+                        Id = message.Id,
+                        Subject = message.Subject,
+                        BodyPreview = message.BodyPreview,
+                        IsRead = (bool)message.IsRead,
+                        CreatedDateTime = (DateTimeOffset)message.CreatedDateTime
                     });
                 }
             }

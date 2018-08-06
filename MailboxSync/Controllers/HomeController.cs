@@ -5,6 +5,7 @@
 
 using MailboxSync.Helpers;
 using MailboxSync.Models;
+using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -15,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+
 
 namespace MailboxSync.Controllers
 {
@@ -57,7 +59,8 @@ namespace MailboxSync.Controllers
                                 folderItems.Add(new FolderItem
                                 {
                                     Name = item["Name"].ToString(),
-                                    Id = item["Id"].ToString()
+                                    Id = item["Id"].ToString(),
+                                    Messages = JsonConvert.DeserializeObject<List<MessageItem>>(item["Messages"].ToString())
                                 });
                             }
                             return folderItems;
@@ -84,7 +87,7 @@ namespace MailboxSync.Controllers
                 if (folderArrary == null)
                     folderArrary = new JArray();
 
-                if(!folderArrary.Any(obj => obj["Id"].Value<string>() == folder.Id))
+                if (!folderArrary.Any(obj => obj["Id"].Value<string>() == folder.Id))
                     folderArrary.Add(JObject.Parse(JsonConvert.SerializeObject(folder)));
 
                 folderObject["folders"] = folderArrary;
@@ -97,7 +100,7 @@ namespace MailboxSync.Controllers
             }
         }
 
-        public void StoreMessage(List<Message> messages, string folder)
+        public void StoreMessage(List<MessageItem> messages, string folder)
         {
             string jsonFile = Server.MapPath("~/mail.json");
             try
@@ -135,23 +138,19 @@ namespace MailboxSync.Controllers
 
         public async Task<ActionResult> AddMessages(string id)
         {
-            ResultsViewModel results = new ResultsViewModel();
+            var results = new FoldersViewModel();
             try
             {
                 GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-                results.Items = await mailService.GetMyFolderMessages(graphClient, id);
-                var messages = new List<Message>();
-                foreach (var item in results.Items)
+                var messages = await mailService.GetMyFolderMessages(graphClient, id);
+                if (messages.Count > 0)
                 {
-                    messages.Add(new Message { Id = item.Id, Subject = item.Display });
+                    StoreMessage(messages, id);
                 }
-                StoreMessage(messages, id);
             }
             catch (ServiceException se)
             {
                 if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
                 return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
             return View("Index", results);
@@ -160,17 +159,10 @@ namespace MailboxSync.Controllers
 
         public ActionResult GetFolderDetails()
         {
-            ResultsViewModel results = new ResultsViewModel();
+            var results = new FoldersViewModel();
             var folders = GetFolders();
-            var resultItems = new List<ResultsItem>();
-            foreach (var item in folders)
-            {
-                resultItems.Add(new ResultsItem
-                {
-                    Display = item.Name,
-                    Id = item.Id
-                });
-            }
+            var resultItems = new List<FolderItem>();
+            resultItems.AddRange(folders);
             results.Items = resultItems;
             return View("Index", results);
         }
@@ -278,29 +270,6 @@ namespace MailboxSync.Controllers
         }
 
 
-        // Get messages with attachments in the current user's inbox.
-        public async Task<ActionResult> GetMyInboxMessagesThatHaveAttachments()
-        {
-            ResultsViewModel results = new ResultsViewModel();
-            try
-            {
-
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Get messages in the Inbox folder that have file attachments.
-                results.Items = await mailService.GetMyInboxMessagesThatHaveAttachments(graphClient);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
         // Send an email message.
         // This snippet sends a message to the current user on behalf of the current user.
         public async Task<ActionResult> SendMessage()
@@ -314,30 +283,6 @@ namespace MailboxSync.Controllers
 
                 // Send the message.
                 results.Items = await mailService.SendMessage(graphClient);
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-        }
-
-        // Send an email message with a file attachment.
-        // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<ActionResult> SendMessageWithAttachment()
-        {
-            ResultsViewModel results = new ResultsViewModel(false);
-            try
-            {
-
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
-                // Send the message.
-                results.Items = await mailService.SendMessageWithAttachment(graphClient);
             }
             catch (ServiceException se)
             {

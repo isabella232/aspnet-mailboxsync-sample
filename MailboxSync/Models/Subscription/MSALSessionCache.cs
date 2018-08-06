@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Web;
 
-namespace WebApp_OpenIDConnect_DotNet.Models
+namespace MailboxSync.Models.Subscription
 {
     public class MSALSessionCache
     {

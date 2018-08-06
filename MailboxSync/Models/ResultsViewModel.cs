@@ -3,7 +3,8 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using MailboxSync.Models.Subscription.GraphWebhooks.Models;
+using MailboxSync.Models.Subscription;
+using MailBoxSync.Models.Subscription;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +16,7 @@ namespace MailboxSync.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string ParentId { get; set; }
-        public List<Message> Messages { get; set; }
+        public List<MessageItem> Messages { get; set; }
     }
 
     // An entity, such as a user, group, or message.
@@ -54,4 +55,24 @@ namespace MailboxSync.Models
             Items = Enumerable.Empty<ResultsItem>();
         }
     }
+
+    public class FoldersViewModel
+    {
+
+        // Set to false if you don't want to display radio buttons with the results.
+        public bool Selectable { get; set; }
+
+        // The list of entities to display.
+        public IEnumerable<FolderItem> Items { get; set; }
+        public FoldersViewModel(bool selectable = true)
+        {
+
+            // Indicates whether the results should display radio buttons.
+            // This is how an entity ID is passed to methods that require it.
+            Selectable = selectable;
+
+            Items = Enumerable.Empty<FolderItem>();
+        }
+    }
+
 }

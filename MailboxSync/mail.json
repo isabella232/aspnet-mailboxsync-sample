@@ -1,59 +1,6 @@
 {
   "folders": [
     {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAFbAAA=",
-      "Name": "Archive",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAFSAAA=",
-      "Name": "Conversation History",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEKAAA=",
-      "Name": "Deleted Items",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEPAAA=",
-      "Name": "Drafts",
-      "ParentId": null,
-      "Messages": []
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEMAAA=",
-      "Name": "Inbox",
-      "ParentId": null,
-      "Messages": [
-        {
-          "subject": "You've joined the Marketing group",
-          "id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwBGAAAAAADuwLiZdN4-SLB89351miEhBwB6OLHt27epRLfRPu4s7-gzAAAAAAEMAAB6OLHt27epRLfRPu4s7-gzAAAAAAVwAAA="
-        }
-      ]
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEaAAA=",
-      "Name": "Junk Email",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAELAAA=",
-      "Name": "Outbox",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
-      "Id": "AAMkAGQ5MjBlMDk0LWQ5NTUtNGQ5Yi1iYTQwLTBlZGUyN2YwNzc3MwAuAAAAAADuwLiZdN4-SLB89351miEhAQB6OLHt27epRLfRPu4s7-gzAAAAAAEJAAA=",
-      "Name": "Sent Items",
-      "ParentId": null,
-      "Messages": null
-    },
-    {
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQCI_7GjOB7xToSHKRCHsJDyAAAAAAEGAAA=",
       "Name": "Archive",
       "ParentId": null,
@@ -63,7 +10,98 @@
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAAA=",
       "Name": "Conversation History",
       "ParentId": null,
-      "Messages": null
+      "Messages": [
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAT-nW2AAA=",
+          "subject": "Meeting on Monday",
+          "bodyPreview": "Meeting on Monday\r\nDuration: 09 Minutes 50 Seconds\r\n\r\n\r\nArunkumaran Varadharajan\r\nSENIOR PROGRAM MANAGER , MIRPL-BGL\r\nMobile:         +918792828481\r\n\r\nWork:   +918061793447\r\n\r\nEmail:  arunkumaran.varadharajan@microsoft.com\r\n\r\nIM:     arvaradh@microsoft.co",
+          "createdDateTime": "2018-08-06T09:16:01+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAT-nW2AAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQqC43AAA=",
+          "subject": "Conference call with Arunkumaran Varadharajan, Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
+          "bodyPreview": "Conference call with Arunkumaran Varadharajan, Edgar Marvin Ochieng Onduru (Insight Management Consultants)\r\nDuration: 03 Minutes 34 Seconds\r\n\r\n\r\nArunkumaran Varadharajan\r\nSENIOR PROGRAM MANAGER , MIRPL-BGL\r\nMobile:         +918792828481\r\n\r\nWork:   +91806",
+          "createdDateTime": "2018-08-01T11:37:25+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQqC43AAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI10AAAA=",
+          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
+          "bodyPreview": "Edgar Marvin Ochieng Onduru (Insight Management Consultants) 12:56:\r\nftps://waws-prod-db3-027.ftp.azurewebsites.windows.net/site/wwwroot\r\nEdgar Marvin Ochieng Onduru (Insight Management Consultants) 12:56:\r\niia-app\\$iia-app\r\nEdgar Marvin Ochieng Onduru (I",
+          "createdDateTime": "2018-07-31T13:23:15+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI10AAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI1z-AAA=",
+          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
+          "bodyPreview": "Edgar Marvin Ochieng Onduru (Insight Management Consultants) 12:56:\r\nftps://waws-prod-db3-027.ftp.azurewebsites.windows.net/site/wwwroot\r\nEdgar Marvin Ochieng Onduru (Insight Management Consultants) 12:56:\r\niia-app\\$iia-app\r\nEdgar Marvin Ochieng Onduru (I",
+          "createdDateTime": "2018-07-31T13:06:40+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAQI1z-AAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7itAAA=",
+          "subject": "Conversation with Edgar Marvin Ochieng Onduru (Insight Management Consultants)",
+          "bodyPreview": "Edgar Marvin Ochieng Onduru (Insight Management Consultants) 15:07:\r\nSystem.Net.ServicePointManager.SecurityProtocol =\r\nSecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;",
+          "createdDateTime": "2018-07-30T15:17:30+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7itAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7isAAA=",
+          "subject": "Conference call with Arunkumaran Varadharajan",
+          "bodyPreview": "Conference call with Arunkumaran Varadharajan\r\nDuration: 04 Minutes 59 Seconds\r\n\r\n\r\nArunkumaran Varadharajan\r\nSENIOR PROGRAM MANAGER , MIRPL-BGL\r\nMobile:         +918792828481\r\n\r\nWork:   +918061793447\r\n\r\nEmail:  arunkumaran.varadharajan@microsoft.com\r\n\r\nI",
+          "createdDateTime": "2018-07-30T14:25:22+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7isAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7irAAA=",
+          "subject": "Conversation with Arunkumaran Varadharajan",
+          "bodyPreview": "Charles Wahome Gitau (Insight Management Consultants) 13:55:\r\nHi Arun. Ping when you are available\r\nArunkumaran Varadharajan 14:15:\r\nHey\r\nArunkumaran Varadharajan 14:15:\r\nSorry I had to go for an interview\r\nCharles Wahome Gitau (Insight Management Consult",
+          "createdDateTime": "2018-07-30T14:21:57+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7irAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7iqAAA=",
+          "subject": "Conversation with Arunkumaran Varadharajan",
+          "bodyPreview": "Charles Wahome Gitau (Insight Management Consultants) 13:55:\r\nHi Arun. Ping when you are available",
+          "createdDateTime": "2018-07-30T14:07:50+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7iqAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ipAAA=",
+          "subject": "Outgoing call",
+          "bodyPreview": "Outgoing call\r\n\r\n\r\n\r\n\r\n\r\nSkype for Business",
+          "createdDateTime": "2018-07-30T13:56:05+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ipAAA=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ioAAA=",
+          "subject": "Outgoing call",
+          "bodyPreview": "Outgoing call\r\n\r\n\r\n\r\n\r\n\r\nSkype for Business",
+          "createdDateTime": "2018-07-27T11:31:37+03:00",
+          "isRead": true,
+          "conversationId": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAFKAACI_7GjOB7xToSHKRCHsJDyAAAKk7ioAAA=",
+          "changeKey": null
+        }
+      ]
     },
     {
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEKAAA=",
@@ -81,7 +119,98 @@
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAAA=",
       "Name": "Inbox",
       "ParentId": null,
-      "Messages": null
+      "Messages": [
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAT-jrRAAA=",
+          "subject": "Re: Review Graph Tutorial Code",
+          "bodyPreview": "Looks like Jason and others aren't free on Tuesday, so I have setup the meeting for Wednesday\r\n________________________________\r\nFrom: Charles Wahome Gitau (Insight Management Consultants)\r\nSent: Monday, August 6, 2018 12:45 PM\r\nTo: Arunkumaran Varadharaj",
+          "createdDateTime": "2018-08-06T11:15:09+03:00",
+          "isRead": false,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAEjgGoB_X2BPnOWEGWX6rrU=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAT-jrPAAA=",
+          "subject": "Re: Meeting on Monday",
+          "bodyPreview": "Pls add Skype link\r\n\r\n________________________________\r\nFrom: Charles Wahome Gitau (Insight Management Consultants)\r\nSent: Friday, August 3, 2018 7:04 PM\r\nTo: Charles Wahome Gitau (Insight Management Consultants); Arunkumaran Varadharajan; Edgar Marvin Oc",
+          "createdDateTime": "2018-08-06T09:03:05+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAOyFjPhI641AiwaYSsiyJI8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAT-jrOAAA=",
+          "subject": "Accepted: Meeting on Monday",
+          "bodyPreview": "",
+          "createdDateTime": "2018-08-06T07:57:21+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAOyFjPhI641AiwaYSsiyJI8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAAT-jrNAAA=",
+          "subject": "Updates from All Company",
+          "bodyPreview": "Updates from your Yammer groups\r\n\r\n1 of your groups has new activity\r\nAll Company\r\n\r\n\r\n\r\nScott Suarez – Aug 04 at 03:03AM\r\nCan we petition to get a unsweeted iced tea as a drink option in the coolers. There is a supreme lack of unsugar-y caffeinated b",
+          "createdDateTime": "2018-08-06T06:16:24+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAFNSedm2831OvsTaiFRZ9Ls=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAASRp-JAAA=",
+          "subject": "Michael Mainer mentioned Graph Client Tooling in Microsoft Teams",
+          "bodyPreview": "Hi Charles Wahome Gitau (Insight Management Consultants),\r\nYou're missing all the action in Microsoft Teams\r\n\r\n\r\n        Michael Mainer\r\nMentioned Graph Client Tooling in Graph Client Tooling > Discussions\r\n        Darrel Miller Deepak Agrawal, Graph ",
+          "createdDateTime": "2018-08-04T01:32:49+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAPZmXVqqXsBGoaipqxqWFkg=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAASOptDAAA=",
+          "subject": "Meeting on Monday",
+          "bodyPreview": "Can you schedule a call for us to chat Monday morning? My calendar should be updated.\r\n\r\nThanks,\r\nArun",
+          "createdDateTime": "2018-08-03T14:57:42+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAE4KnjHQkoFLqeuA9Blr3t8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAARTTsrAAA=",
+          "subject": "Victoria Obonyo (Human Capital Synergies) mentioned Kenya Team in Microsoft Teams",
+          "bodyPreview": "Hi Charles Wahome Gitau (Insight Management Consultants),\r\nYou're missing all the action in Microsoft Teams\r\n\r\n\r\n        Victoria Obonyo (Human Capital Synergies)\r\nMentioned Kenya Team in Kenya Team > General\r\n        Kenya Team   Dear Wairimu   Life ",
+          "createdDateTime": "2018-08-03T10:17:50+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQADzw-3dM0OhGiTYTdQiVw4E=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAARTTsqAAA=",
+          "subject": "Updates from All Company",
+          "bodyPreview": "Updates from your Yammer groups\r\n\r\n1 of your groups has new activity\r\nAll Company\r\n\r\n\r\n\r\nDarren Hsiao – Aug 03 at 05:15AM\r\nOne of my parnter will build monitor. Does anyone know how to apply for the EISA ID? Go to conversation ›\r\n\r\n\r\nTyler Boone For �",
+          "createdDateTime": "2018-08-03T05:57:02+03:00",
+          "isRead": false,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQANFyHR1oxX9Jrs1-7Zam2tY=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAARTTsoAAA=",
+          "subject": "Victoria Obonyo (Human Capital Synergies) mentioned Kenya Team in Microsoft Teams",
+          "bodyPreview": "Hi Charles Wahome Gitau (Insight Management Consultants),\r\nYou're missing all the action in Microsoft Teams\r\n\r\n\r\n        Victoria Obonyo (Human Capital Synergies)\r\nMentioned Kenya Team in Kenya Team > General\r\n        Kenya Team   Dear Roy   If you ha",
+          "createdDateTime": "2018-08-02T09:57:03+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAKb8g91gIS1Bg_npAFx_JT0=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEMAACI_7GjOB7xToSHKRCHsJDyAAARTTsnAAA=",
+          "subject": "Updates from All Company",
+          "bodyPreview": "Updates from your Yammer groups\r\n\r\n1 of your groups has new activity\r\nAll Company\r\n\r\n\r\n\r\nNienhua Gu (FA TALENT) – Aug 02 at 04:47AM\r\nHello world! Warm regard from Beijing! Go to conversation ›\r\n\r\n\r\n\r\nAbraham Paniagua – Aug 02 at 05:30AM\r\nHello!",
+          "createdDateTime": "2018-08-02T05:54:05+03:00",
+          "isRead": false,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAH1xavokgfBOuTM6kYw9s5M=",
+          "changeKey": null
+        }
+      ]
     },
     {
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEiAAA=",
@@ -105,7 +234,98 @@
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAA=",
       "Name": "Sent Items",
       "ParentId": null,
-      "Messages": null
+      "Messages": [
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKuAAA=",
+          "subject": "New Time Proposed: Review Graph Tutorial Code",
+          "bodyPreview": "",
+          "createdDateTime": "2018-08-06T10:15:20+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAEjgGoB_X2BPnOWEGWX6rrU=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKtAAA=",
+          "subject": "Accepted: Review Graph Tutorial Code",
+          "bodyPreview": "",
+          "createdDateTime": "2018-08-06T10:14:29+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAEjgGoB_X2BPnOWEGWX6rrU=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKsAAA=",
+          "subject": "RE: Meeting on Monday",
+          "bodyPreview": "Join Skype Meeting (https://meet.lync.com/microsoft/v-chgita/2TSWWC85)\r\n\r\n\r\nFrom: Arunkumaran Varadharajan\r\nSent: 06 August 2018 09:03\r\nTo: Charles Wahome Gitau (Insight Management Consultants) <v-chgita@microsoft.com>; Edgar Marvin Ochieng Onduru (Insigh",
+          "createdDateTime": "2018-08-06T09:05:16+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAOyFjPhI641AiwaYSsiyJI8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKrAAA=",
+          "subject": "Meeting on Monday",
+          "bodyPreview": ".........................................................................................................................................\r\n Join Skype Meeting (https://meet.lync.com/microsoft/v-chgita/2TSWWC85)       \r\nTrouble Joining? Try Skype Web App",
+          "createdDateTime": "2018-08-06T09:03:34+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAOyFjPhI641AiwaYSsiyJI8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAACI_7GjOB7xToSHKRCHsJDyAAASRnSOAAA=",
+          "subject": "Meeting on Monday",
+          "bodyPreview": "Can you schedule a call for us to chat Monday morning?",
+          "createdDateTime": "2018-08-03T16:34:51+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAOyFjPhI641AiwaYSsiyJI8=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKqAAA=",
+          "subject": "Accepted: Nairobi/Bangalore/Redmond Sync",
+          "bodyPreview": "",
+          "createdDateTime": "2018-08-03T15:03:30+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAAqiu1z2E0z4sKEwzAwvluw=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKpAAA=",
+          "subject": "Accepted: Chat",
+          "bodyPreview": "",
+          "createdDateTime": "2018-07-31T15:32:18+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAEUGP3EbxHdJuqlTqDWluTc=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKoAAA=",
+          "subject": "Accepted: Chat",
+          "bodyPreview": "",
+          "createdDateTime": "2018-07-30T09:37:30+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAEUGP3EbxHdJuqlTqDWluTc=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKnAAA=",
+          "subject": "Accepted: Sync Up",
+          "bodyPreview": "",
+          "createdDateTime": "2018-07-26T10:06:47+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAKkv2oSsvKZMklf_KsCbm0E=",
+          "changeKey": null
+        },
+        {
+          "id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgBGAAAAAAA1SyTR4EQuQIAbWVtP3x1LBwD4_MYH9tqjSKIGHYfzCrmwAAAAAAEJAAD4_MYH9tqjSKIGHYfzCrmwAAAAADKmAAA=",
+          "subject": "Accepted: Sync Up",
+          "bodyPreview": "",
+          "createdDateTime": "2018-07-25T14:17:53+03:00",
+          "isRead": true,
+          "conversationId": "AAQkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAQAKkv2oSsvKZMklf_KsCbm0E=",
+          "changeKey": null
+        }
+      ]
     },
     {
       "Id": "AAMkAGFkNWI1Njg3LWZmNTUtNDZjOS04ZTM2LTc5ZTc5ZjFlNTM4ZgAuAAAAAAA1SyTR4EQuQIAbWVtP3x1LAQD4_MYH9tqjSKIGHYfzCrmwAAAAAAFOAAA=",
