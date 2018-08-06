@@ -6,7 +6,7 @@
 @model MailboxSync.Models.FoldersViewModel
 
 <div class="col-md-12">
-    <h3>Results:</h3>
+    <h3>Mailbox:</h3>
     <div class="col-md-12">
         <div class="container">
             <ul class="nav nav-pills nav-stacked col-md-3">
@@ -58,8 +58,8 @@
                                 <hr>
                                     @using (Html.BeginForm("AddMessages", "Home"))
                                     {
-                                        <button class="btn btn-link needs-id" id="get-message" disabled="disabled">Get Messages</button>
-                                        <input class="selected-id" name="id" type="hidden" />
+                                        <button class="btn btn-link needs-id" id="get-message" >Get Messages</button>
+                                        <input class="selected-id" value=@item.Id name="id" type="hidden" />
                                     }
                             </div>
                             count++;
