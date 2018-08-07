@@ -20,7 +20,7 @@ namespace MailboxSync.Models
     }
 
     // An entity, such as a user, group, or message.
-    public class ResultsItem
+    public class ResultItem
     {
 
         // The ID and display name for the entity's radio button.
@@ -30,7 +30,7 @@ namespace MailboxSync.Models
         // The properties of an entity that display in the UI.
         public Dictionary<string, object> Properties;
 
-        public ResultsItem()
+        public ResultItem()
         {
             Properties = new Dictionary<string, object>();
         }
@@ -44,7 +44,7 @@ namespace MailboxSync.Models
         public bool Selectable { get; set; }
 
         // The list of entities to display.
-        public IEnumerable<ResultsItem> Items { get; set; }
+        public IEnumerable<FolderItem> Items { get; set; }
         public ResultsViewModel(bool selectable = true)
         {
 
@@ -52,7 +52,7 @@ namespace MailboxSync.Models
             // This is how an entity ID is passed to methods that require it.
             Selectable = selectable;
 
-            Items = Enumerable.Empty<ResultsItem>();
+            Items = Enumerable.Empty<FolderItem>();
         }
     }
 

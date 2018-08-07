@@ -183,7 +183,6 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Helpers\SDKHelper.cs" />
     <Compile Include="Helpers\IAuthProvider.cs" />
     <Compile Include="Helpers\SampleAuthProvider.cs" />
@@ -203,7 +202,6 @@
     <Compile Include="Models\Subscription\Subscription.cs" />
     <Compile Include="Models\Subscription\SubscriptionStore.cs" />
     <Compile Include="Models\Subscription\SubscriptionViewModel.cs" />
-    <Compile Include="Models\UsersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TokenStorage\SessionTokenCache.cs" />

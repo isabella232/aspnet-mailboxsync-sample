@@ -16,28 +16,6 @@ namespace MailboxSync.Models
     public class MailService
     {
 
-        // Get messages in all the current user's mail folders.
-        public async Task<List<ResultsItem>> GetMyMessages(GraphServiceClient graphClient)
-        {
-            List<ResultsItem> items = new List<ResultsItem>();
-
-            // Get messages from all mail folders.
-            IUserMessagesCollectionPage messages = await graphClient.Me.Messages.Request().GetAsync();
-
-            if (messages?.Count > 0)
-            {
-                foreach (Message message in messages)
-                {
-                    items.Add(new ResultsItem
-                    {
-                        Display = message.Subject,
-                        Id = message.Id
-                    });
-                }
-            }
-            return items;
-        }
-
         // Get folders in the current mail.
         public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
         {
@@ -55,11 +33,37 @@ namespace MailboxSync.Models
                         Name = folder.DisplayName,
                         Id = folder.Id,
                         Messages = await GetMyFolderMessages(graphClient, folder.Id),
-                        ParentId = folder.ParentFolderId
+                        ParentId = null
                     });
+                    var clientFolders = await GetClientFoldersAsync(graphClient, folder.Id);
+                    items.AddRange(clientFolders);
                 }
             }
             return items;
+        }
+
+        private async Task<List<FolderItem>> GetClientFoldersAsync(GraphServiceClient graphClient, string id)
+        {
+            List<FolderItem> children = new List<FolderItem>();
+
+            // Get messages in the Child folder.
+            var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().GetAsync();
+
+            if (childFolders?.Count > 0)
+            {
+                foreach (var child in childFolders)
+                {
+
+                    children.Add(new FolderItem
+                    {
+                        Name = "-- " + child.DisplayName,
+                        Id = child.Id,
+                        Messages = await GetMyFolderMessages(graphClient, child.Id),
+                        ParentId = child.ParentFolderId
+                    });
+                }
+            }
+            return children;
         }
 
         private List<MessageItem> CreateMessages(IMailFolderMessagesCollectionPage messages)
@@ -91,12 +95,11 @@ namespace MailboxSync.Models
             return items;
         }
 
-
         // Send an email message.
         // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<List<ResultsItem>> SendMessage(GraphServiceClient graphClient)
+        public async Task<List<ResultItem>> SendMessage(GraphServiceClient graphClient)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            List<ResultItem> items = new List<ResultItem>();
 
             // Create the recipient list. This snippet uses the current user as the recipient.
             User me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
@@ -127,7 +130,7 @@ namespace MailboxSync.Models
             // Send the message.
             await graphClient.Me.SendMail(email, true).Request().PostAsync();
 
-            items.Add(new ResultsItem
+            items.Add(new ResultItem
             {
                 // This operation doesn't return anything.
                 Properties = new Dictionary<string, object>
@@ -139,16 +142,16 @@ namespace MailboxSync.Models
         }
 
         // Get a specified message.
-        public async Task<List<ResultsItem>> GetMessage(GraphServiceClient graphClient, string id)
+        public async Task<List<ResultItem>> GetMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            List<ResultItem> items = new List<ResultItem>();
 
             // Get the message.
             Message message = await graphClient.Me.Messages[id].Request().GetAsync();
 
             if (message != null)
             {
-                items.Add(new ResultsItem
+                items.Add(new ResultItem
                 {
 
                     // Get message properties.
@@ -166,14 +169,14 @@ namespace MailboxSync.Models
         }
 
         // Reply to a specified message.
-        public async Task<List<ResultsItem>> ReplyToMessage(GraphServiceClient graphClient, string id)
+        public async Task<List<ResultItem>> ReplyToMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            List<ResultItem> items = new List<ResultItem>();
 
             // Reply to the message.
             await graphClient.Me.Messages[id].Reply(Resource.GenericText).Request().PostAsync();
 
-            items.Add(new ResultsItem
+            items.Add(new ResultItem
             {
 
                 // This operation doesn't return anything.
@@ -185,41 +188,16 @@ namespace MailboxSync.Models
             return items;
         }
 
-        // Move a specified message. This creates a new copy of the message in the destination folder.
-        // This snippet moves the message to the Drafts folder using the well-known folder name.
-        public async Task<List<ResultsItem>> MoveMessage(GraphServiceClient graphClient, string id)
-        {
-            List<ResultsItem> items = new List<ResultsItem>();
-
-            // Move the message.
-            Message message = await graphClient.Me.Messages[id].Move("Drafts").Request().PostAsync();
-
-            items.Add(new ResultsItem
-            {
-
-                // Get message properties.
-                Display = message.Subject,
-                Id = message.Id,
-                Properties = new Dictionary<string, object>
-                {
-                    { Resource.Prop_BodyPreview, message.BodyPreview },
-                    { Resource.Prop_From, message.From?.EmailAddress.Name },
-                    { Resource.Prop_Received, message.ReceivedDateTime.Value.LocalDateTime },
-                    { Resource.Prop_Id, message.Id }
-                }
-            });
-            return items;
-        }
 
         // Delete a specified message.
-        public async Task<List<ResultsItem>> DeleteMessage(GraphServiceClient graphClient, string id)
+        public async Task<List<ResultItem>> DeleteMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultsItem> items = new List<ResultsItem>();
+            List<ResultItem> items = new List<ResultItem>();
 
             // Delete the message.
             await graphClient.Me.Messages[id].Request().DeleteAsync();
 
-            items.Add(new ResultsItem
+            items.Add(new ResultItem
             {
 
                 // This operation doesn't return anything.

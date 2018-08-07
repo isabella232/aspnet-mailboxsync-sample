@@ -9,69 +9,66 @@
     <h3>Mailbox:</h3>
     <div class="col-md-12">
         <div class="container">
-            <ul class="nav nav-pills nav-stacked col-md-3">
+            
                 @if (Model != null)
                 {
                     if (Model.Items.Any())
                     {
                         int count = 0;
-                        foreach (var item in Model.Items)
-                        {
-                            <li class="@(count==0 ? "active":"")">
-                                <a href="#@count" data-toggle="pill">&nbsp;@item.Name
-                                    <span class="pull-right badge"> @(item.Messages == null ? 0 : item.Messages.Count) </span>
-                                </a>
-                            </li>
-                            count++;
-                        }
-                    }
-                    else
-                    {
-                        <p>@Resource.No_Results</p>
-                    }
-                }
-            </ul>
-            <div class="tab-content col-md-9">
-                @if (Model != null)
-                {
-                    if (Model.Items.Any())
-                    {
-                        int count = 0;
-                        foreach (var item in Model.Items)
-                        {
-                            <div class="@(count==0 ? "tab-pane active":"tab-pane")" id="@count">
-                                <h4>&nbsp;@item.Name</h4>
-                                @if (item.Messages != null && item.Messages.Count > 0)
+                        
+                        <ul class="nav nav-pills nav-stacked col-md-3">
+                            @foreach (var item in Model.Items)
+                            {
+                                <li class="@(count==0 ? "active":"")">
+                                    <a href="#@count" data-toggle="pill">&nbsp;@item.Name
+                                        <span class="pull-right badge"> @(item.Messages == null ? 0 : item.Messages.Count) </span>
+                                    </a>
+                                </li>
+                                count++;
+                            }
+                        </ul>
+                        <div class="tab-content col-md-9">
+                            @{
+                                int messageCount = 0;
+                                foreach (var item in Model.Items)
                                 {
-                                    <table id="table-@item.Id">
-                                        @foreach (var message in item.Messages)
+                                    <div class="@(messageCount==0 ? "tab-pane active":"tab-pane")" id="@messageCount">
+                                        <h4>&nbsp;@item.Name</h4>
+                                        @if (item.Messages != null && item.Messages.Count > 0)
                                         {
-                                            <tr>
-                                                <td class="pad">@message.Subject</td>
-                                                <td>@message.CreatedDateTime</td>
-                                                <td>@message.IsRead</td>
-                                            </tr>
+                                            <table id="table-@item.Id">
+                                                @foreach (var message in item.Messages)
+                                                {
+                                                    <tr>
+                                                        <td class="pad">@message.Subject</td>
+                                                        <td>@message.CreatedDateTime</td>
+                                                        <td>@message.IsRead</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                            <br />
                                         }
-                                    </table>
-                                    <br />
+                                        <hr>
+                                            @using (Html.BeginForm("AddMessages", "Home"))
+                                            {
+                                                <button class="btn btn-link needs-id" id="get-message" >Get Messages</button>
+                                                <input class="selected-id" value=@item.Id name="id" type="hidden" />
+                                            }
+                                    </div>
+                                    messageCount++;
                                 }
-                                <hr>
-                                    @using (Html.BeginForm("AddMessages", "Home"))
-                                    {
-                                        <button class="btn btn-link needs-id" id="get-message" >Get Messages</button>
-                                        <input class="selected-id" value=@item.Id name="id" type="hidden" />
-                                    }
-                            </div>
-                            count++;
-                        }
+                            }
+                        </div>
+
+                        
                     }
                     else
                     {
                         <p>@Resource.No_Results</p>
                     }
                 }
+
             </div>
         </div>
         <br />
     </div>
-</div>
