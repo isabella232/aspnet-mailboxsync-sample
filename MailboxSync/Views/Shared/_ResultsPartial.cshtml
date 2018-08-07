@@ -36,16 +36,16 @@
                                         <h4>&nbsp;@item.Name</h4>
                                         @if (item.Messages != null && item.Messages.Count > 0)
                                         {
-                                            <table id="table-@item.Id">
+                                            <div class="row" id="table-@item.Id">
                                                 @foreach (var message in item.Messages)
                                                 {
-                                                    <tr>
-                                                        <td class="pad">@message.Subject</td>
-                                                        <td>@message.CreatedDateTime</td>
-                                                        <td>@message.IsRead</td>
-                                                    </tr>
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-6">@message.Subject</div>
+                                                        <div class="col-md-3">@message.CreatedDateTime</div>
+                                                        <div class="col-md-3">@message.IsRead</div>
+                                                    </div>
                                                 }
-                                            </table>
+                                            </div>
                                             <br />
                                         }
                                         <hr>
