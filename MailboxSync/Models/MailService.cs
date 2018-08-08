@@ -9,13 +9,11 @@ using Resources;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Hosting;
 
 namespace MailboxSync.Models
 {
     public class MailService
     {
-
         // Get folders in the current mail.
         public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
         {
@@ -35,14 +33,14 @@ namespace MailboxSync.Models
                         Messages = await GetMyFolderMessages(graphClient, folder.Id),
                         ParentId = null
                     });
-                    var clientFolders = await GetClientFoldersAsync(graphClient, folder.Id);
+                    var clientFolders = await GetChildFolders(graphClient, folder.Id);
                     items.AddRange(clientFolders);
                 }
             }
             return items;
         }
 
-        private async Task<List<FolderItem>> GetClientFoldersAsync(GraphServiceClient graphClient, string id)
+        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
         {
             List<FolderItem> children = new List<FolderItem>();
 

@@ -105,22 +105,22 @@ namespace MailboxSync.Controllers
         }
 
 
-        [HttpPost]
-        public ActionResult Notify()
-        {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+        //[HttpPost]
+        //public ActionResult Notify()
+        //{
+        //    GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
 
-            RedirectToAction("Index", "Home");
-            // return null;
-        }
+        //    RedirectToAction("Index", "Home");
+        //    // return null;
+        //}
 
-        private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
-        {
-            var messages = await graphClient.Me.Messages.Delta().Request().GetAsync();
+        //private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
+        //{
+        //    var messages = await graphClient.Me.Messages.Delta().Request().GetAsync();
 
-            var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
+        //    var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
             
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
     }
 }

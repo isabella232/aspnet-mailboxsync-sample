@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft_Graph_ASPNET_Snippets</RootNamespace>
-    <AssemblyName>Microsoft Graph ASPNET Snippets</AssemblyName>
+    <RootNamespace>MailboxSync</RootNamespace>
+    <AssemblyName>Mailbox Sync</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -192,6 +192,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataService.cs" />
     <Compile Include="Models\MailService.cs" />
     <Compile Include="Models\ResultsViewModel.cs" />
     <Compile Include="Models\Subscription\Message.cs" />
