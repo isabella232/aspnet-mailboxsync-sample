@@ -7,6 +7,9 @@ using System.Security.Claims;
 using System.Threading;
 using System.Web.Mvc;
 using MailboxSync.Models.Subscription;
+using Microsoft.Graph;
+using MailboxSync.Helpers;
+using System.Threading.Tasks;
 
 namespace MailboxSync.Controllers
 {
@@ -101,5 +104,23 @@ namespace MailboxSync.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult Notify()
+        {
+            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+
+            RedirectToAction("Index", "Home");
+            // return null;
+        }
+
+        private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
+        {
+            var messages = await graphClient.Me.Messages.Delta().Request().GetAsync();
+
+            var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
+            
+            throw new NotImplementedException();
+        }
     }
 }
