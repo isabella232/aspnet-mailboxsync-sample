@@ -5,7 +5,6 @@
 
 using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
-using Resources;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -118,10 +117,10 @@ namespace MailboxSync.Models
             {
                 Body = new ItemBody
                 {
-                    Content = Resource.Prop_Body + guid,
+                    Content = "Body" + guid,
                     ContentType = BodyType.Text,
                 },
-                Subject = Resource.Prop_Subject + guid.Substring(0, 8),
+                Subject = "Subject" + guid.Substring(0, 8),
                 ToRecipients = recipients
             };
 
@@ -133,7 +132,7 @@ namespace MailboxSync.Models
                 // This operation doesn't return anything.
                 Properties = new Dictionary<string, object>
                 {
-                    {  Resource.No_Return_Data, "" }
+                    {  "Operation completed. This call doesn't return anything.", "" }
                 }
             });
             return items;
@@ -157,9 +156,9 @@ namespace MailboxSync.Models
                     Id = message.Id,
                     Properties = new Dictionary<string, object>
                     {
-                        { Resource.Prop_BodyPreview, message.BodyPreview },
-                        { Resource.Prop_IsDraft, message.IsDraft.ToString() },
-                        { Resource.Prop_Id, message.Id }
+                        { "BodyPreview", message.BodyPreview },
+                        { "IsDraft", message.IsDraft.ToString() },
+                        { "Id", message.Id }
                     }
                 });
             }
@@ -172,7 +171,7 @@ namespace MailboxSync.Models
             List<ResultItem> items = new List<ResultItem>();
 
             // Reply to the message.
-            await graphClient.Me.Messages[id].Reply(Resource.GenericText).Request().PostAsync();
+            await graphClient.Me.Messages[id].Reply("Some text content.").Request().PostAsync();
 
             items.Add(new ResultItem
             {
@@ -180,7 +179,7 @@ namespace MailboxSync.Models
                 // This operation doesn't return anything.
                 Properties = new Dictionary<string, object>
                 {
-                    { Resource.No_Return_Data, "" }
+                    { "Operation completed. This call doesn't return anything.", "" }
                 }
             });
             return items;
@@ -201,7 +200,7 @@ namespace MailboxSync.Models
                 // This operation doesn't return anything.
                 Properties = new Dictionary<string, object>
                 {
-                    { Resource.No_Return_Data, "" }
+                    { "Operation completed. This call doesn't return anything.", "" }
                 }
             });
             return items;

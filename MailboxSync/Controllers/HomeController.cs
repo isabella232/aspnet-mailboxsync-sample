@@ -5,15 +5,8 @@
 
 using MailboxSync.Helpers;
 using MailboxSync.Models;
-using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Resources;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -41,8 +34,12 @@ namespace MailboxSync.Controllers
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
+                if (se.Error.Message == "Caller needs to authenticate.")
+                {
+                    return new EmptyResult();
+                }
+
+                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
             return View("Index", results);
 
@@ -80,10 +77,13 @@ namespace MailboxSync.Controllers
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == Resource.Error_AuthChallengeNeeded) return new EmptyResult();
+                if (se.Error.Message == "Caller needs to authenticate.")
+                {
+                    return new EmptyResult();
+                }
 
                 // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format(Resource.Error_Message, Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
             return View("Index", results);
         }

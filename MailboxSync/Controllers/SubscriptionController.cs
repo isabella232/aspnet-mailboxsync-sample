@@ -120,7 +120,7 @@ namespace MailboxSync.Controllers
                         string authReqUrl = await MailboxSync.Utils.OAuth2RequestManager.GenerateAuthorizationRequestUrl(scopes, cca, this.HttpContext, Url);
                         ViewBag.AuthorizationRequest = authReqUrl;
                     }
-                    catch (Exception ee)
+                    catch (Exception)
                     {
 
                     }

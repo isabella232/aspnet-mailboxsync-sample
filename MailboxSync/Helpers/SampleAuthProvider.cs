@@ -8,7 +8,6 @@ using Microsoft.Identity.Client;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OpenIdConnect;
 using MailboxSync.TokenStorage;
-using Resources;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
@@ -85,7 +84,7 @@ namespace MailboxSync.Helpers
                     new Error
                     {
                         Code = GraphErrorCode.AuthenticationFailure.ToString(),
-                        Message = Resource.Error_AuthChallengeNeeded,
+                        Message = "Caller needs to authenticate.",
                     });
             }
         }
