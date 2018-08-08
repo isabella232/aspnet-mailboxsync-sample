@@ -34,7 +34,7 @@ namespace MailboxSync.Controllers
             if (notificationArray == null)
             {
                 notificationArray = new ConcurrentBag<Notification>();
-            }            
+            }
             HttpContext.Application["notifications"] = notificationArray;
             return View(notificationArray);
         }
@@ -56,7 +56,7 @@ namespace MailboxSync.Controllers
             else
             {
                 try
-                {                    
+                {
                     using (var inputStream = new System.IO.StreamReader(Request.InputStream))
                     {
                         JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
@@ -80,13 +80,13 @@ namespace MailboxSync.Controllers
                                     {
                                         //Store the notifications in application state. A production
                                         //application would likely queue for additional processing.                                                                             
-                                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];                                        
-                                        if(notificationArray == null)
+                                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+                                        if (notificationArray == null)
                                         {
-                                            notificationArray = new ConcurrentBag<Notification>();                                            
+                                            notificationArray = new ConcurrentBag<Notification>();
                                         }
-                                        notificationArray.Add(current);                                        
-                                        HttpContext.Application["notifications"] = notificationArray;                                        
+                                        notificationArray.Add(current);
+                                        HttpContext.Application["notifications"] = notificationArray;
                                     }
                                 }
                             }
@@ -105,22 +105,49 @@ namespace MailboxSync.Controllers
         }
 
 
-        //[HttpPost]
-        //public ActionResult Notify()
-        //{
-        //    GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+        [HttpGet]
+        public async Task<ActionResult> Notify()
+        {
+            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+            try
+            {
+                var messages = await graphClient.Me.MailFolders["inbox"].Messages.Delta().Request().GetAsync();
+                var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
+            }
+            catch (Exception ex)
+            {
 
-        //    RedirectToAction("Index", "Home");
-        //    // return null;
-        //}
+                throw;
+            }
 
-        //private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
-        //{
-        //    var messages = await graphClient.Me.Messages.Delta().Request().GetAsync();
 
-        //    var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
-            
-        //    throw new NotImplementedException();
-        //}
+            return null;
+        }
+
+        private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
+        {
+
+            foreach (var message in messages)
+            {
+                Console.WriteLine(JsonConvert.SerializeObject(message));
+            }
+            while (messages.NextPageRequest != null)
+            {
+                //Console.WriteLine("=== NEXT LINK: " + userPage.NextPageRequest.RequestUrl);
+                //Console.WriteLine("=== SKIP TOKEN: " + userPage.NextPageRequest.QueryOptions[0].Value);
+
+                //messages = await messages.NextPageRequest.GetAsync();
+                //foreach (var messafe in messages)
+                //{
+                //    Console.WriteLine(JsonConvert.SerializeObject(messafe));
+                //}
+            }
+
+            //Finally, get the delta link
+            string deltaLink = (string)messages.AdditionalData["@odata.deltaLink"];
+            //Console.WriteLine("=== DELTA LINK: " + deltaLink);
+
+            return null;
+        }
     }
 }
