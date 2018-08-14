@@ -80,6 +80,33 @@ namespace MailboxSync.Models
             return messageItem;
         }
 
+        public bool FolderExists(string folderId)
+        {
+            bool exists = false;
+            string jsonFile = System.Web.Hosting.HostingEnvironment.MapPath("~/mail.json");
+            try
+            {
+                var mailBox = JObject.Parse(System.IO.File.ReadAllText(jsonFile));
+                var folders = mailBox.GetValue("folders") as JArray;
+                if (folders != null)
+                {
+                    if (!string.IsNullOrEmpty(folderId))
+                    {
+                        var folder = folders.Where(obj => obj["Id"].Value<string>() == folderId);
+                        if (folder.ToList().Count > 0)
+                        {
+                            exists = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return exists;
+        }
+
         public void StoreFolder(FolderItem folder)
         {
             string jsonFile = System.Web.Hosting.HostingEnvironment.MapPath("~/mail.json");
@@ -122,7 +149,6 @@ namespace MailboxSync.Models
                         List<FolderItem> folderItems = new List<FolderItem>();
                         foreach (var item in folder)
                         {
-                            var name = item["Name"].ToString();
                             var newFolderItem = new FolderItem
                             {
                                 Name = item["Name"].ToString(),

@@ -72,7 +72,15 @@ namespace MailboxSync.Controllers
 
                 foreach (var folder in results.Items)
                 {
-                    dataService.StoreMessage(folder.Messages, folder.Id);
+                    if (dataService.FolderExists(folder.Id))
+                    {
+                        dataService.StoreMessage(folder.Messages, folder.Id);
+                    }
+                    else
+                    {
+                        dataService.StoreFolder(folder);
+                    }
+
                 }
             }
             catch (ServiceException se)
