@@ -72,7 +72,7 @@ namespace MailboxSync.Controllers
 
                 foreach (var folder in results.Items)
                 {
-                    dataService.StoreFolder(folder);
+                    dataService.StoreMessage(folder.Messages, folder.Id);
                 }
             }
             catch (ServiceException se)
@@ -83,6 +83,31 @@ namespace MailboxSync.Controllers
                 }
 
                 // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
+                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+            }
+            return View("Index", results);
+        }
+
+        // Send an email message.
+        // This sends a message to the current user on behalf of the current user.
+        public async Task<ActionResult> SendMessage()
+        {
+            var results = new FoldersViewModel(false);
+            try
+            {
+                // Initialize the GraphServiceClient.
+                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+
+                // Send the message.
+                results.Items = await mailService.SendMessage(graphClient);
+            }
+            catch (ServiceException se)
+            {
+                if (se.Error.Message == "Caller needs to authenticate.")
+                {
+                    return new EmptyResult();
+                }
+
                 return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
             return View("Index", results);

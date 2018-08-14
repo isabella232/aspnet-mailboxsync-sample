@@ -94,9 +94,9 @@ namespace MailboxSync.Models
 
         // Send an email message.
         // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<List<ResultItem>> SendMessage(GraphServiceClient graphClient)
+        public async Task<List<FolderItem>> SendMessage(GraphServiceClient graphClient)
         {
-            List<ResultItem> items = new List<ResultItem>();
+            List<FolderItem> items = new List<FolderItem>();
 
             // Create the recipient list. This snippet uses the current user as the recipient.
             User me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
@@ -127,14 +127,6 @@ namespace MailboxSync.Models
             // Send the message.
             await graphClient.Me.SendMail(email, true).Request().PostAsync();
 
-            items.Add(new ResultItem
-            {
-                // This operation doesn't return anything.
-                Properties = new Dictionary<string, object>
-                {
-                    {  "Operation completed. This call doesn't return anything.", "" }
-                }
-            });
             return items;
         }
 

@@ -18,6 +18,10 @@
         {
             <button class="btn btn-link" id="get-inbox-messages">Create Subscription</button>
         }
+        @using (Html.BeginForm("SendMessage", "Home"))
+        {
+            <button class="btn btn-link" id="send-mail">Send Message</button>
+        }
     </div>
 </div>
 @Html.Partial("_ResultsPartial")

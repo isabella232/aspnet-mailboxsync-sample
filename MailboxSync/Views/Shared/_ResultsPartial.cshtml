@@ -33,6 +33,7 @@
                                 {
                                     <div class="@(messageCount==0 ? "tab-pane active":"tab-pane")" id="@messageCount">
                                         <h4>&nbsp;@item.Name</h4>
+                                        <hr>
                                         @if (item.Messages != null && item.Messages.Count > 0)
                                         {
                                             <div class="row" id="table-@item.Id">
