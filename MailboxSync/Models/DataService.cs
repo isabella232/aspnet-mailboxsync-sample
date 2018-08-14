@@ -112,9 +112,9 @@ namespace MailboxSync.Models
             string jsonFile = System.Web.Hosting.HostingEnvironment.MapPath("~/mail.json");
             try
             {
-                var json = System.IO.File.ReadAllText(jsonFile);
-                var folderObject = JObject.Parse(json);
-                var folderArrary = folderObject.GetValue("folders") as JArray;
+                var mailBox = System.IO.File.ReadAllText(jsonFile);
+                var mailBoxObject = JObject.Parse(mailBox);
+                var folderArrary = mailBoxObject.GetValue("folders") as JArray;
 
                 if (folderArrary == null)
                     folderArrary = new JArray();
@@ -124,8 +124,8 @@ namespace MailboxSync.Models
                     folderArrary.Add(JObject.Parse(JsonConvert.SerializeObject(folder)));
                 }
 
-                folderObject["folders"] = folderArrary;
-                string newFolderContents = JsonConvert.SerializeObject(folderObject, Formatting.Indented);
+                mailBoxObject["folders"] = folderArrary;
+                string newFolderContents = JsonConvert.SerializeObject(mailBoxObject, Formatting.Indented);
                 System.IO.File.WriteAllText(jsonFile, newFolderContents);
             }
             catch (Exception ex)
@@ -146,7 +146,6 @@ namespace MailboxSync.Models
                     if (!string.IsNullOrEmpty(folderId))
                     {
                         var folder = folders.Where(obj => obj["Id"].Value<string>() == folderId);
-                        List<FolderItem> folderItems = new List<FolderItem>();
                         foreach (var item in folder)
                         {
                             var newFolderItem = new FolderItem
@@ -156,9 +155,47 @@ namespace MailboxSync.Models
                                 Messages = GenerateMessages(item["Messages"].ToString())
                             };
                             newFolderItem.Messages.AddRange(messages);
-                            newFolderItem.Messages = newFolderItem.Messages.Distinct().ToList();
-                            StoreFolder(newFolderItem);
+                            newFolderItem.Messages = newFolderItem.Messages.GroupBy(p => new { p.Id }).Select(g => g.First()).ToList();
+                            UpdateFolder(newFolderItem);
                         }
+
+
+                    }
+                    else
+                    {
+                        Console.Write(" Try Again!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Add Error : " + ex.Message.ToString());
+            }
+        }
+
+        private void UpdateFolder(FolderItem folder)
+        {
+            string jsonFile = System.Web.Hosting.HostingEnvironment.MapPath("~/mail.json");
+            try
+            {
+                var json = System.IO.File.ReadAllText(jsonFile);
+                var folderObject = JObject.Parse(json);
+                var folderArrary = folderObject.GetValue("folders") as JArray;
+                if (folderArrary != null)
+                {
+                    var mailData = JObject.Parse(json);
+                    JArray messageObject = JArray.Parse(JsonConvert.SerializeObject(folder.Messages));
+
+                    if (!string.IsNullOrEmpty(folder.Id))
+                    {
+                        foreach (var mailFolder in folderArrary.Where(obj => obj["Id"].Value<string>() == folder.Id))
+                        {
+                            mailFolder["Messages"] = messageObject;
+                        }
+
+                        mailData["folders"] = folderArrary;
+                        string output = JsonConvert.SerializeObject(mailData, Formatting.Indented);
+                        System.IO.File.WriteAllText(jsonFile, output);
                     }
                     else
                     {

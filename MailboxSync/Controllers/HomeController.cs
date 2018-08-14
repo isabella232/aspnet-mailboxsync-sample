@@ -93,7 +93,7 @@ namespace MailboxSync.Controllers
                 // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
                 return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
-            return View("Index", results);
+            return RedirectToAction("Index");
         }
 
         // Send an email message.
@@ -118,7 +118,7 @@ namespace MailboxSync.Controllers
 
                 return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
-            return View("Index", results);
+            return RedirectToAction("Index");
         }
 
     }
