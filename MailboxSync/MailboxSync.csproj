@@ -187,8 +187,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataService.cs" />
-    <Compile Include="Models\MailService.cs" />
+    <Compile Include="Services\DataService.cs" />
+    <Compile Include="Services\MailService.cs" />
     <Compile Include="Models\ResultsViewModel.cs" />
     <Compile Include="Models\Subscription\Message.cs" />
     <Compile Include="Models\Subscription\MessageViewModel.cs" />

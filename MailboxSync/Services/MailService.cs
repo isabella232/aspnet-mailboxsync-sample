@@ -3,13 +3,14 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using MailBoxSync.Models.Subscription;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MailboxSync.Models;
+using MailBoxSync.Models.Subscription;
+using Microsoft.Graph;
 
-namespace MailboxSync.Models
+namespace MailboxSync.Services
 {
     public class MailService
     {
@@ -131,28 +132,16 @@ namespace MailboxSync.Models
         }
 
         // Get a specified message.
-        public async Task<List<ResultItem>> GetMessage(GraphServiceClient graphClient, string id)
+        public async Task<List<Message>> GetMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultItem> items = new List<ResultItem>();
-
+            List<Message> items = new List<Message>();
+            
             // Get the message.
             Message message = await graphClient.Me.Messages[id].Request().GetAsync();
 
             if (message != null)
             {
-                items.Add(new ResultItem
-                {
-
-                    // Get message properties.
-                    Display = message.Subject,
-                    Id = message.Id,
-                    Properties = new Dictionary<string, object>
-                    {
-                        { "BodyPreview", message.BodyPreview },
-                        { "IsDraft", message.IsDraft.ToString() },
-                        { "Id", message.Id }
-                    }
-                });
+                items.Add(message);
             }
             return items;
         }
@@ -160,7 +149,7 @@ namespace MailboxSync.Models
         // Reply to a specified message.
         public async Task<List<ResultItem>> ReplyToMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultItem> items = new List<ResultItem>();
+            var items = new List<ResultItem>();
 
             // Reply to the message.
             await graphClient.Me.Messages[id].Reply("Some text content.").Request().PostAsync();
@@ -181,7 +170,7 @@ namespace MailboxSync.Models
         // Delete a specified message.
         public async Task<List<ResultItem>> DeleteMessage(GraphServiceClient graphClient, string id)
         {
-            List<ResultItem> items = new List<ResultItem>();
+            var items = new List<ResultItem>();
 
             // Delete the message.
             await graphClient.Me.Messages[id].Request().DeleteAsync();

@@ -1,11 +1,12 @@
-﻿using MailBoxSync.Models.Subscription;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MailboxSync.Models;
+using MailBoxSync.Models.Subscription;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
-namespace MailboxSync.Models
+namespace MailboxSync.Services
 {
     public class DataService
     {

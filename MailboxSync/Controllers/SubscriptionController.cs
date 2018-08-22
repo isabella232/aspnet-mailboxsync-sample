@@ -29,38 +29,24 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> CreateSubscription()
         {
-            string subscriptionsEndpoint = "https://graph.microsoft.com/v1.0/subscriptions/";
+            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
 
-            // This sample subscribes to get notifications when the user receives an email.
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, subscriptionsEndpoint);
-
-            Microsoft.Graph.Subscription subscription = new Microsoft.Graph.Subscription
+            var subscription = new Microsoft.Graph.Subscription
             {
                 Resource = "me/messages",
-                ChangeType = "created",
+                ChangeType = "created,updated",
                 NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
                 ClientState = Guid.NewGuid().ToString(),
                 ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 15, 0) // shorter duration useful for testing
             };
 
-            string contentString = JsonConvert.SerializeObject(subscription,
-                new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-            request.Content = new StringContent(contentString, System.Text.Encoding.UTF8, "application/json");
+            var response = await graphClient.Subscriptions.Request().AddAsync(subscription);
 
-            string accessToken = await SampleAuthProvider.Instance.GetUserAccessTokenAsync();
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            if (response != null)
             {
-                ViewBag.AuthorizationRequest = null;
-                string stringResult = await response.Content.ReadAsStringAsync();
                 SubscriptionViewModel viewModel = new SubscriptionViewModel
                 {
-                    Subscription = JsonConvert.DeserializeObject<Microsoft.Graph.Subscription>(stringResult)
+                    Subscription = response
                 };
 
                 // This sample temporarily stores the current subscription ID, client state, user object ID, and tenant ID. 

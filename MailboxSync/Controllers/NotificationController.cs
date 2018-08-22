@@ -2,7 +2,9 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Web.Mvc;
@@ -10,6 +12,9 @@ using MailboxSync.Models.Subscription;
 using Microsoft.Graph;
 using MailboxSync.Helpers;
 using System.Threading.Tasks;
+using MailboxSync.Services;
+using MailBoxSync.Models.Subscription;
+using DateTimeOffset = System.DateTimeOffset;
 
 namespace MailboxSync.Controllers
 {
@@ -41,7 +46,7 @@ namespace MailboxSync.Controllers
 
         // The `notificationUrl` endpoint that's registered with the webhook subscription.
         [HttpPost]
-        public ActionResult Listen()
+        public async Task<ActionResult> Listen()
         {
 
             // Validate the new subscription by sending the token back to Microsoft Graph.
@@ -60,6 +65,8 @@ namespace MailboxSync.Controllers
                     using (var inputStream = new System.IO.StreamReader(Request.InputStream))
                     {
                         JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
+                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+
                         if (jsonObject != null)
                         {
 
@@ -80,7 +87,6 @@ namespace MailboxSync.Controllers
                                     {
                                         //Store the notifications in application state. A production
                                         //application would likely queue for additional processing.                                                                             
-                                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
                                         if (notificationArray == null)
                                         {
                                             notificationArray = new ConcurrentBag<Notification>();
@@ -91,6 +97,15 @@ namespace MailboxSync.Controllers
                                 }
                             }
 
+                            if (notificationArray.Count > 0)
+                            {
+                                Task.Run(() => GetChangedMessagesAsync(notificationArray)).ContinueWith((prevTask) =>
+                                {
+                                    return new HttpStatusCodeResult(202);
+                                });
+                                // Query for the changed messages.
+                                //await GetChangedMessagesAsync(notificationArray);
+                            }
                         }
                     }
                 }
@@ -105,49 +120,41 @@ namespace MailboxSync.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult> Notify()
+        public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
+            List<MessageViewModel> messages = new List<MessageViewModel>();
             GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-            try
+            MailService mailService = new MailService();
+            DataService dataService = new DataService();
+
+            foreach (var notification in notifications)
             {
-                var messages = await graphClient.Me.MailFolders["inbox"].Messages.Delta().Request().GetAsync();
-                var deltaLink = await DisplayChangedMessagesAndGetDeltaLink(messages);
+                var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
+                var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
+                var mI = message.FirstOrDefault();
+                if (mI != null)
+                {
+                    var messageItem = new MessageItem
+                    {
+                        BodyPreview = mI.BodyPreview,
+                        ChangeKey = mI.ChangeKey,
+                        ConversationId = mI.ConversationId,
+                        CreatedDateTime = (DateTimeOffset)mI.CreatedDateTime,
+                        Id = mI.Id,
+                        IsRead = (bool)mI.IsRead,
+                        Subject = mI.Subject
+                    };
+                    var messageItems = new System.Collections.Generic.List<MessageItem>();
+                    messageItems.Add(messageItem);
+                    dataService.StoreMessage(messageItems, mI.ParentFolderId);
+
+                }
             }
-            catch (Exception ex)
+            if (messages.Count > 0)
             {
-
-                throw;
+                //NotificationService notificationService = new NotificationService();
+                //notificationService.SendNotificationToClient(messages);
             }
-
-
-            return null;
-        }
-
-        private Task<string> DisplayChangedMessagesAndGetDeltaLink(IMessageDeltaCollectionPage messages)
-        {
-
-            foreach (var message in messages)
-            {
-                Console.WriteLine(JsonConvert.SerializeObject(message));
-            }
-            while (messages.NextPageRequest != null)
-            {
-                //Console.WriteLine("=== NEXT LINK: " + userPage.NextPageRequest.RequestUrl);
-                //Console.WriteLine("=== SKIP TOKEN: " + userPage.NextPageRequest.QueryOptions[0].Value);
-
-                //messages = await messages.NextPageRequest.GetAsync();
-                //foreach (var messafe in messages)
-                //{
-                //    Console.WriteLine(JsonConvert.SerializeObject(messafe));
-                //}
-            }
-
-            //Finally, get the delta link
-            string deltaLink = (string)messages.AdditionalData["@odata.deltaLink"];
-            //Console.WriteLine("=== DELTA LINK: " + deltaLink);
-
-            return null;
         }
     }
 }
