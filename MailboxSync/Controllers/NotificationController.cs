@@ -129,7 +129,6 @@ namespace MailboxSync.Controllers
 
             foreach (var notification in notifications)
             {
-                var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
                 var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
                 var mI = message.FirstOrDefault();
                 if (mI != null)
@@ -144,7 +143,7 @@ namespace MailboxSync.Controllers
                         IsRead = (bool)mI.IsRead,
                         Subject = mI.Subject
                     };
-                    var messageItems = new System.Collections.Generic.List<MessageItem>();
+                    var messageItems = new List<MessageItem>();
                     messageItems.Add(messageItem);
                     dataService.StoreMessage(messageItems, mI.ParentFolderId);
 

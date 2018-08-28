@@ -19,11 +19,11 @@ namespace MailboxSync.Controllers
     public class HomeController : Controller
     {
         MailService mailService = new MailService();
+        DataService dataService = new DataService();
 
         public async Task<ActionResult> AddMessages(string id)
         {
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             try
             {
                 GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
@@ -49,7 +49,6 @@ namespace MailboxSync.Controllers
         public ActionResult Index()
         {
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             var folders = dataService.GetFolders();
             var resultItems = new List<FolderItem>();
             resultItems.AddRange(folders);
@@ -62,7 +61,6 @@ namespace MailboxSync.Controllers
         public async Task<ActionResult> GetMyMailfolders()
         {
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             try
             {
                 // Initialize the GraphServiceClient.

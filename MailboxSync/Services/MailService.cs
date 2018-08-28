@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading.Tasks;
 using MailboxSync.Models;
 using MailBoxSync.Models.Subscription;
@@ -20,7 +21,7 @@ namespace MailboxSync.Services
             List<FolderItem> items = new List<FolderItem>();
 
             // Get messages in the Inbox folder.
-            var folders = await graphClient.Me.MailFolders.Request().GetAsync();
+            var folders = await graphClient.Me.MailFolders.Request().Top(Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"])).GetAsync();
 
             if (folders?.Count > 0)
             {
@@ -45,7 +46,7 @@ namespace MailboxSync.Services
             List<FolderItem> children = new List<FolderItem>();
 
             // Get messages in the Child folder.
-            var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().GetAsync();
+            var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().Top(Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"])).GetAsync();
 
             if (childFolders?.Count > 0)
             {
@@ -88,7 +89,7 @@ namespace MailboxSync.Services
         public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
         {
             var items = new List<MessageItem>();
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
+            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().Top(15).GetAsync();
             items = CreateMessages(messages);
             return items;
         }
