@@ -40,7 +40,8 @@ namespace MailboxSync.Services
                                 {
                                     Name = item["Name"].ToString(),
                                     Id = item["Id"].ToString(),
-                                    Messages = GenerateMessages(item["Messages"].ToString())
+                                    Messages = GenerateMessages(item["Messages"].ToString()),
+                                    SkipToken = (int?) item["SkipToken"]
                                 });
                             }
                             return folderItems;
@@ -78,7 +79,7 @@ namespace MailboxSync.Services
             {
                 Console.WriteLine("Add Error : " + ex.Message.ToString());
             }
-            return messageItem;
+            return messageItem.OrderByDescending(k=>k.CreatedDateTime).ToList();
         }
 
         public bool FolderExists(string folderId)
@@ -135,7 +136,7 @@ namespace MailboxSync.Services
             }
         }
 
-        public void StoreMessage(List<MessageItem> messages, string folderId)
+        public void StoreMessage(List<MessageItem> messages, string folderId, int? messagesSkipToken)
         {
             string jsonFile = System.Web.Hosting.HostingEnvironment.MapPath("~/mail.json");
             try
@@ -153,9 +154,10 @@ namespace MailboxSync.Services
                             {
                                 Name = item["Name"].ToString(),
                                 Id = item["Id"].ToString(),
-                                Messages = GenerateMessages(item["Messages"].ToString())
+                                Messages = GenerateMessages(item["Messages"].ToString()),
                             };
                             newFolderItem.Messages.AddRange(messages);
+                            newFolderItem.SkipToken = messagesSkipToken;
                             newFolderItem.Messages = newFolderItem.Messages.GroupBy(p => new { p.Id }).Select(g => g.First()).ToList();
                             UpdateFolder(newFolderItem);
                         }
@@ -192,6 +194,7 @@ namespace MailboxSync.Services
                         foreach (var mailFolder in folderArrary.Where(obj => obj["Id"].Value<string>() == folder.Id))
                         {
                             mailFolder["Messages"] = messageObject;
+                            mailFolder["SkipToken"] = folder.SkipToken;
                         }
 
                         mailData["folders"] = folderArrary;

@@ -145,7 +145,7 @@ namespace MailboxSync.Controllers
                     };
                     var messageItems = new List<MessageItem>();
                     messageItems.Add(messageItem);
-                    dataService.StoreMessage(messageItems, mI.ParentFolderId);
+                    dataService.StoreMessage(messageItems, mI.ParentFolderId, null);
 
                 }
             }

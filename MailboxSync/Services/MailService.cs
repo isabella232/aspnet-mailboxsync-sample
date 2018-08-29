@@ -10,29 +10,29 @@ using System.Threading.Tasks;
 using MailboxSync.Models;
 using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
+using WebGrease.Css.Extensions;
 
 namespace MailboxSync.Services
 {
     public class MailService
     {
-        // Get folders in the current mail.
         public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
         {
             List<FolderItem> items = new List<FolderItem>();
 
-            // Get messages in the Inbox folder.
-            var folders = await graphClient.Me.MailFolders.Request().Top(Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"])).GetAsync();
-
+            var folders = await graphClient.Me.MailFolders.Request().GetAsync();
             if (folders?.Count > 0)
             {
                 foreach (var folder in folders)
                 {
+                    var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
                     items.Add(new FolderItem
                     {
                         Name = folder.DisplayName,
                         Id = folder.Id,
-                        Messages = await GetMyFolderMessages(graphClient, folder.Id),
-                        ParentId = null
+                        Messages = folderMessages.Messages,
+                        ParentId = null,
+                        SkipToken = folderMessages.SkipToken
                     });
                     var clientFolders = await GetChildFolders(graphClient, folder.Id);
                     items.AddRange(clientFolders);
@@ -45,34 +45,43 @@ namespace MailboxSync.Services
         {
             List<FolderItem> children = new List<FolderItem>();
 
-            // Get messages in the Child folder.
-            var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().Top(Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"])).GetAsync();
+            var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().GetAsync();
 
             if (childFolders?.Count > 0)
             {
                 foreach (var child in childFolders)
                 {
-
+                    var folderMessages = await GetMyFolderMessages(graphClient, child.Id, null);
                     children.Add(new FolderItem
                     {
                         Name = "-- " + child.DisplayName,
                         Id = child.Id,
-                        Messages = await GetMyFolderMessages(graphClient, child.Id),
-                        ParentId = child.ParentFolderId
+                        Messages = folderMessages.Messages,
+                        ParentId = child.ParentFolderId,
+                        SkipToken = folderMessages.SkipToken
                     });
                 }
             }
             return children;
         }
 
-        private List<MessageItem> CreateMessages(IMailFolderMessagesCollectionPage messages)
+        private FolderMessage GenerateFolderMessages(IMailFolderMessagesCollectionPage messages)
         {
-            var items = new List<MessageItem>();
-            if (messages?.Count > 0)
+            var holder = new FolderMessage { SkipToken = null };
+            if (messages.NextPageRequest != null)
+            {
+                foreach (var x in messages.NextPageRequest.QueryOptions)
+                {
+                    if (x.Name == "$skip")
+                        holder.SkipToken = Convert.ToInt32(x.Value);
+                }
+            }
+
+            if (messages.Count > 0)
             {
                 foreach (Message message in messages)
                 {
-                    items.Add(new MessageItem
+                    holder.Messages.Add(new MessageItem
                     {
                         ConversationId = message.ConversationId,
                         Id = message.Id,
@@ -83,15 +92,19 @@ namespace MailboxSync.Services
                     });
                 }
             }
-            return items;
+            return holder;
         }
 
-        public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
+        public async Task<FolderMessage> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
         {
-            var items = new List<MessageItem>();
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().Top(15).GetAsync();
-            items = CreateMessages(messages);
-            return items;
+            var top = Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"]);
+            var request = graphClient.Me.MailFolders[folderId].Messages.Request();
+            if (skip.HasValue)
+            {
+                request = request.Skip(skip.Value);
+            }
+            IMailFolderMessagesCollectionPage messages = await request.Top(top).GetAsync();
+            return GenerateFolderMessages(messages);
         }
 
         // Send an email message.
@@ -136,7 +149,7 @@ namespace MailboxSync.Services
         public async Task<List<Message>> GetMessage(GraphServiceClient graphClient, string id)
         {
             List<Message> items = new List<Message>();
-            
+
             // Get the message.
             Message message = await graphClient.Me.Messages[id].Request().GetAsync();
 

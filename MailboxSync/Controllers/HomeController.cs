@@ -3,6 +3,7 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using System;
 using MailboxSync.Helpers;
 using MailboxSync.Models;
 using Microsoft.Graph;
@@ -21,16 +22,17 @@ namespace MailboxSync.Controllers
         MailService mailService = new MailService();
         DataService dataService = new DataService();
 
-        public async Task<ActionResult> AddMessages(string id)
+        public async Task<ActionResult> AddMessages(string id, int? skip)
         {
+
             var results = new FoldersViewModel();
             try
             {
                 GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-                var messages = await mailService.GetMyFolderMessages(graphClient, id);
-                if (messages.Count > 0)
+                var messages = await mailService.GetMyFolderMessages(graphClient, id, skip);
+                if (messages.Messages.Count > 0)
                 {
-                    dataService.StoreMessage(messages, id);
+                    dataService.StoreMessage(messages.Messages, id, messages.SkipToken);
                 }
             }
             catch (ServiceException se)
@@ -42,8 +44,7 @@ namespace MailboxSync.Controllers
 
                 return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
-            return View("Index", results);
-
+            return RedirectToAction("Index");
         }
 
         public ActionResult Index()
@@ -73,7 +74,7 @@ namespace MailboxSync.Controllers
                 {
                     if (dataService.FolderExists(folder.Id))
                     {
-                        dataService.StoreMessage(folder.Messages, folder.Id);
+                        dataService.StoreMessage(folder.Messages, folder.Id, folder.SkipToken);
                     }
                     else
                     {
