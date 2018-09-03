@@ -122,7 +122,6 @@ namespace MailboxSync.Controllers
 
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
-            List<MessageViewModel> messages = new List<MessageViewModel>();
             GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
             MailService mailService = new MailService();
             DataService dataService = new DataService();
@@ -148,11 +147,6 @@ namespace MailboxSync.Controllers
                     dataService.StoreMessage(messageItems, mI.ParentFolderId, null);
 
                 }
-            }
-            if (messages.Count > 0)
-            {
-                //NotificationService notificationService = new NotificationService();
-                //notificationService.SendNotificationToClient(messages);
             }
         }
     }

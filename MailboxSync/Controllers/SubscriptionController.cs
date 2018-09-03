@@ -69,9 +69,12 @@ namespace MailboxSync.Controllers
 
             string subscriptionId = (string)Session["SubscriptionId"];
 
-            //var response = await graphClient.Subscriptions[subscriptionId].Request().DeleteAsync();
             try
             {
+                // TODO 
+                // Delete subscription request
+                //var response = await graphClient.Subscriptions[subscriptionId].Request().DeleteAsync();
+
             }
             catch (Exception e)
             {
