@@ -1,10 +1,5 @@
-﻿using Microsoft.Identity.Client;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Configuration;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -70,50 +65,23 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteSubscription()
         {
-            string subscriptionsEndpoint = "https://graph.microsoft.com/v1.0/subscriptions/";
+            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+
             string subscriptionId = (string)Session["SubscriptionId"];
 
-            // Build the request.
-            HttpClient client = new HttpClient();
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, subscriptionsEndpoint + subscriptionId);
-
-            // try to get token silently
-            string signedInUserID = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
-            ConfidentialClientApplication cca = new ConfidentialClientApplication(clientId, redirectUri, new ClientCredential(appKey), userTokenCache, null);
-            if (cca.Users.Count() > 0)
+            try
             {
-                string[] scopes = { "Mail.Read" };
-                try
-                {
-                    AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
-                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+                // TODO 
+                // Delete subscription request
+                //var response = await graphClient.Subscriptions[subscriptionId].Request().DeleteAsync();
 
-                    // Send the `DELETE subscriptions/id` request.
-                    HttpResponseMessage response = await client.SendAsync(request);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Index", "Error", new { message = response.StatusCode, debug = response.Content.ReadAsStringAsync() });
-                    }
-                }
-                catch (MsalUiRequiredException)
-                {
-                    try
-                    {// when failing, manufacture the URL and assign it
-                        string authReqUrl = await MailboxSync.Utils.OAuth2RequestManager.GenerateAuthorizationRequestUrl(scopes, cca, this.HttpContext, Url);
-                        ViewBag.AuthorizationRequest = authReqUrl;
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
             }
-            else { }
-            return RedirectToAction("SignOut", "Account");
+            catch (Exception e)
+            {
+                // ignored
+            }
+
+            return View("Subscription", null);
         }
 
 

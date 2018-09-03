@@ -9,6 +9,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Graph;
 
 namespace MailboxSync.Models
 {
@@ -19,6 +20,8 @@ namespace MailboxSync.Models
         public string Name { get; set; }
         public string ParentId { get; set; }
         public List<MessageItem> Messages { get; set; }
+        public int? SkipToken { get; set; }
+
     }
 
     // An entity, such as a user, group, or message.
@@ -77,4 +80,17 @@ namespace MailboxSync.Models
         }
     }
 
+    public class FolderMessage
+    {
+        public FolderMessage()
+        {
+            Messages = new List<MessageItem>();
+        }
+        public List<MessageItem> Messages { get; set; }
+
+
+        // This token to be used for pagination
+        // It keeps record of how many items to skip in order to get the next set of items
+        public int? SkipToken { get; set; }
+    }
 }

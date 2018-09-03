@@ -3,6 +3,7 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using System;
 using MailboxSync.Helpers;
 using MailboxSync.Models;
 using Microsoft.Graph;
@@ -19,18 +20,19 @@ namespace MailboxSync.Controllers
     public class HomeController : Controller
     {
         MailService mailService = new MailService();
+        DataService dataService = new DataService();
 
-        public async Task<ActionResult> AddMessages(string id)
+        public async Task<ActionResult> AddMessages(string id, int? skip)
         {
+
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             try
             {
                 GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-                var messages = await mailService.GetMyFolderMessages(graphClient, id);
-                if (messages.Count > 0)
+                var messages = await mailService.GetMyFolderMessages(graphClient, id, skip);
+                if (messages.Messages.Count > 0)
                 {
-                    dataService.StoreMessage(messages, id);
+                    dataService.StoreMessage(messages.Messages, id, messages.SkipToken);
                 }
             }
             catch (ServiceException se)
@@ -42,14 +44,12 @@ namespace MailboxSync.Controllers
 
                 return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
             }
-            return View("Index", results);
-
+            return RedirectToAction("Index");
         }
 
         public ActionResult Index()
         {
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             var folders = dataService.GetFolders();
             var resultItems = new List<FolderItem>();
             resultItems.AddRange(folders);
@@ -62,7 +62,6 @@ namespace MailboxSync.Controllers
         public async Task<ActionResult> GetMyMailfolders()
         {
             var results = new FoldersViewModel();
-            var dataService = new DataService();
             try
             {
                 // Initialize the GraphServiceClient.
@@ -75,7 +74,7 @@ namespace MailboxSync.Controllers
                 {
                     if (dataService.FolderExists(folder.Id))
                     {
-                        dataService.StoreMessage(folder.Messages, folder.Id);
+                        dataService.StoreMessage(folder.Messages, folder.Id, folder.SkipToken);
                     }
                     else
                     {

@@ -122,14 +122,12 @@ namespace MailboxSync.Controllers
 
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
-            List<MessageViewModel> messages = new List<MessageViewModel>();
             GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
             MailService mailService = new MailService();
             DataService dataService = new DataService();
 
             foreach (var notification in notifications)
             {
-                var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
                 var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
                 var mI = message.FirstOrDefault();
                 if (mI != null)
@@ -144,16 +142,11 @@ namespace MailboxSync.Controllers
                         IsRead = (bool)mI.IsRead,
                         Subject = mI.Subject
                     };
-                    var messageItems = new System.Collections.Generic.List<MessageItem>();
+                    var messageItems = new List<MessageItem>();
                     messageItems.Add(messageItem);
-                    dataService.StoreMessage(messageItems, mI.ParentFolderId);
+                    dataService.StoreMessage(messageItems, mI.ParentFolderId, null);
 
                 }
-            }
-            if (messages.Count > 0)
-            {
-                //NotificationService notificationService = new NotificationService();
-                //notificationService.SendNotificationToClient(messages);
             }
         }
     }
