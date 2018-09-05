@@ -24,7 +24,7 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> CreateSubscription()
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+            GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
             var subscription = new Microsoft.Graph.Subscription
             {
@@ -49,7 +49,7 @@ namespace MailboxSync.Controllers
                 // Production apps typically use some method of persistent storage.
                 SubscriptionStore.SaveSubscriptionInfo(viewModel.Subscription.Id,
                     viewModel.Subscription.ClientState,
-                    ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value,
+                    ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value,
                     ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid")?.Value);
 
                 // This sample just saves the current subscription ID to the session so we can delete it later.
@@ -65,7 +65,7 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteSubscription()
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+            GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
             string subscriptionId = (string)Session["SubscriptionId"];
 

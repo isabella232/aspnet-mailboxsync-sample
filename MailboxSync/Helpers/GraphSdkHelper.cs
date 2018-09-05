@@ -9,17 +9,17 @@ using System;
 
 namespace MailboxSync.Helpers
 {
-    public class SDKHelper
+    public class GraphSdkHelper
     {
 
         // Get an authenticated Microsoft Graph Service client.
-        public static GraphServiceClient GetAuthenticatedClient()
+        public static GraphServiceClient GetAuthenticatedClient(string userId = "")
         {
             GraphServiceClient graphClient = new GraphServiceClient(
                 new DelegateAuthenticationProvider(
-                    async (requestMessage) =>
+                    async requestMessage =>
                     {
-                        string accessToken = await SampleAuthProvider.Instance.GetUserAccessTokenAsync();
+                        string accessToken = await SampleAuthProvider.Instance.GetUserAccessTokenAsync(userId);
 
                         // Append the access token to the request.
                         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
@@ -27,8 +27,6 @@ namespace MailboxSync.Helpers
                         // Get event times in the current time zone.
                         requestMessage.Headers.Add("Prefer", "outlook.timezone=\"" + TimeZoneInfo.Local.Id + "\"");
 
-                        // This header has been added to identify our sample in the Microsoft Graph service. If extracting this code for your project please remove.
-                        requestMessage.Headers.Add("SampleID", "aspnet-snippets-sample");
                     }));
             return graphClient;
         }

@@ -4,32 +4,24 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using System.Web.Mvc;
 using MailboxSync.Models.Subscription;
-using Microsoft.Graph;
-using MailboxSync.Helpers;
 using System.Threading.Tasks;
+using MailboxSync.Helpers;
 using MailboxSync.Services;
 using MailBoxSync.Models.Subscription;
-using DateTimeOffset = System.DateTimeOffset;
 
 namespace MailboxSync.Controllers
 {
     public class NotificationController : Controller
     {
-        public static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
-        private static string appKey = ConfigurationManager.AppSettings["ida:ClientSecret"];
-        private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
-
-        private static ReaderWriterLockSlim SessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        public static string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
 
         [Authorize]
         public ActionResult Index()
         {
-            ViewBag.CurrentUserId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            ViewBag.CurrentUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             //Store the notifications in session state. A production
             //application would likely queue for additional processing.
@@ -99,12 +91,7 @@ namespace MailboxSync.Controllers
 
                             if (notificationArray.Count > 0)
                             {
-                                Task.Run(() => GetChangedMessagesAsync(notificationArray)).ContinueWith((prevTask) =>
-                                {
-                                    return new HttpStatusCodeResult(202);
-                                });
-                                // Query for the changed messages.
-                                //await GetChangedMessagesAsync(notificationArray);
+                                await GetChangedMessagesAsync(notificationArray);
                             }
                         }
                     }
@@ -122,32 +109,46 @@ namespace MailboxSync.Controllers
 
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-            MailService mailService = new MailService();
             DataService dataService = new DataService();
-
             foreach (var notification in notifications)
             {
-                var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
-                var mI = message.FirstOrDefault();
-                if (mI != null)
-                {
-                    var messageItem = new MessageItem
-                    {
-                        BodyPreview = mI.BodyPreview,
-                        ChangeKey = mI.ChangeKey,
-                        ConversationId = mI.ConversationId,
-                        CreatedDateTime = (DateTimeOffset)mI.CreatedDateTime,
-                        Id = mI.Id,
-                        IsRead = (bool)mI.IsRead,
-                        Subject = mI.Subject
-                    };
-                    var messageItems = new List<MessageItem>();
-                    messageItems.Add(messageItem);
-                    dataService.StoreMessage(messageItems, mI.ParentFolderId, null);
+                var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
 
+                var graphClient = GraphSdkHelper.GetAuthenticatedClient(subscription.UserId);
+
+                try
+                {
+                    // Get the message
+                    var message = await graphClient.Me.Messages[notification.ResourceData.Id].Request()
+                        .Select("id,subject,bodyPreview,createdDateTime,isRead,parentFolderId,conversationId,changeKey")
+                        .GetAsync();
+
+                    if (message != null)
+                    {
+                        var messageItem = new MessageItem
+                        {
+                            BodyPreview = message.BodyPreview,
+                            ChangeKey = message.ChangeKey,
+                            ConversationId = message.ConversationId,
+                            CreatedDateTime = (DateTimeOffset)message.CreatedDateTime,
+                            Id = message.Id,
+                            IsRead = (bool)message.IsRead,
+                            Subject = message.Subject
+                        };
+                        var messageItems = new List<MessageItem>();
+                        messageItems.Add(messageItem);
+                        dataService.StoreMessage(messageItems, message.ParentFolderId, null);
+                    }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+
             }
+
         }
     }
 }

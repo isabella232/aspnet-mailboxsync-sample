@@ -85,7 +85,7 @@ namespace MailboxSync
 
                             ConfidentialClientApplication cca = new ConfidentialClientApplication(appId, redirectUri,
                                new ClientCredential(appSecret),
-                               new SessionTokenCache(signedInUserID, context.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance(), null);
+                               new SessionTokenCache(signedInUserID).GetMsalCacheInstance(), null);
                             AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
 
                             // Check whether the login is from the MSA tenant. 

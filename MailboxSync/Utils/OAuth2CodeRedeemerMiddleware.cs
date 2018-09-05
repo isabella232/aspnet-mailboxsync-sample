@@ -47,7 +47,7 @@ namespace MailboxSync.Utils
 
                 string signedInUserID = context.Authentication.User.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
                 HttpContextBase hcb = context.Environment["System.Web.HttpContextBase"] as HttpContextBase;
-                TokenCache theCache = new SessionTokenCache(signedInUserID, hcb).GetMsalCacheInstance();
+                TokenCache theCache = new SessionTokenCache(signedInUserID).GetMsalCacheInstance();
                 ConfidentialClientApplication cca = new ConfidentialClientApplication(options.ClientId, options.RedirectUri,
    new ClientCredential(options.ClientSecret), theCache, null);
 

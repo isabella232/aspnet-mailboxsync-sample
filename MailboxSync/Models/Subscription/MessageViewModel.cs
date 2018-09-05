@@ -1,5 +1,4 @@
-﻿using MailBoxSync.Models.Subscription;
-using Microsoft.Graph;
+﻿using Microsoft.Graph;
 
 namespace MailboxSync.Models.Subscription
 {

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using MailboxSync.Models;
 using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
-using WebGrease.Css.Extensions;
 
 namespace MailboxSync.Services
 {
@@ -132,10 +131,10 @@ namespace MailboxSync.Services
             {
                 Body = new ItemBody
                 {
-                    Content = "Body" + guid,
+                    Content = "Body Lorem Ipsum dolor " + guid,
                     ContentType = BodyType.Text,
                 },
-                Subject = "Subject" + guid.Substring(0, 8),
+                Subject = guid.Substring(0, 8).ToUpper()+" Lorem Ipsum",
                 ToRecipients = recipients
             };
 

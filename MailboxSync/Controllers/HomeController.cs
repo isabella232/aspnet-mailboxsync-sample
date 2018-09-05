@@ -3,7 +3,6 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using System;
 using MailboxSync.Helpers;
 using MailboxSync.Models;
 using Microsoft.Graph;
@@ -28,7 +27,7 @@ namespace MailboxSync.Controllers
             var results = new FoldersViewModel();
             try
             {
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
                 var messages = await mailService.GetMyFolderMessages(graphClient, id, skip);
                 if (messages.Messages.Count > 0)
                 {
@@ -65,7 +64,7 @@ namespace MailboxSync.Controllers
             try
             {
                 // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
                 // Get the folders.
                 results.Items = await mailService.GetMyMailFolders(graphClient);
@@ -104,7 +103,7 @@ namespace MailboxSync.Controllers
             try
             {
                 // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
                 // Send the message.
                 results.Items = await mailService.SendMessage(graphClient);

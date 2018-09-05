@@ -9,6 +9,6 @@ namespace MailboxSync.Helpers
 {
     public interface IAuthProvider
     {
-        Task<string> GetUserAccessTokenAsync();
+        Task<string> GetUserAccessTokenAsync(string userId);
     }
 }

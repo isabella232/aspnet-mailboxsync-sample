@@ -41,15 +41,23 @@ namespace MailboxSync.Helpers
         }
 
         // Gets an access token and its expiration date. First tries to get the token from the token cache.
-        public async Task<string> GetUserAccessTokenAsync()
+        public async Task<string> GetUserAccessTokenAsync(string userId)
         {
-
             // Initialize the cache.
+            string currentUserId = ""; 
+
+            // user Id will be passed when trying to authenticate a notification
+            if (!string.IsNullOrEmpty(userId))
+            {
+                currentUserId = userId;
+            }
+            else
+            {
+                currentUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value; 
+            }
             HttpContextBase context = HttpContext.Current.GetOwinContext().Environment["System.Web.HttpContextBase"] as HttpContextBase;
             tokenCache = new SessionTokenCache(
-                ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value,
-                context).GetMsalCacheInstance();
-            //var cachedItems = tokenCache.ReadItems(appId); // see what's in the cache
+                currentUserId).GetMsalCacheInstance();
 
             if (!redirectUri.EndsWith("/")) redirectUri = redirectUri + "/";
             string[] segments = context.Request.Path.Split(new char[] { '/' });
@@ -66,10 +74,11 @@ namespace MailboxSync.Helpers
             {
                 allScopes += " " + adminScopes;
             }
+
             string[] scopes = allScopes.Split(new char[] { ' ' });
             try
             {
-                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes,cca.Users.First());
+                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
                 return result.AccessToken;
             }
 
@@ -77,8 +86,8 @@ namespace MailboxSync.Helpers
             catch (Exception)
             {
                 HttpContext.Current.Request.GetOwinContext().Authentication.Challenge(
-                  new AuthenticationProperties() { RedirectUri = redirectUri + segments[1] },
-                  OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                    new AuthenticationProperties() { RedirectUri = redirectUri + segments[1] },
+                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
 
                 throw new ServiceException(
                     new Error
@@ -88,5 +97,7 @@ namespace MailboxSync.Helpers
                     });
             }
         }
+
+
     }
 }

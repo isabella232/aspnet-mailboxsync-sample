@@ -3,13 +3,9 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
-using MailboxSync.Models.Subscription;
 using MailBoxSync.Models.Subscription;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Graph;
 
 namespace MailboxSync.Models
 {
