@@ -10,6 +10,7 @@ using MailboxSync.Models.Subscription;
 using System.Threading.Tasks;
 using MailboxSync.Helpers;
 using MailboxSync.Services;
+using MailboxSync.SignalR;
 using MailBoxSync.Models.Subscription;
 
 namespace MailboxSync.Controllers
@@ -110,6 +111,7 @@ namespace MailboxSync.Controllers
         public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
         {
             DataService dataService = new DataService();
+            int newMessages = 0;
             foreach (var notification in notifications)
             {
                 var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
@@ -138,6 +140,8 @@ namespace MailboxSync.Controllers
                         var messageItems = new List<MessageItem>();
                         messageItems.Add(messageItem);
                         dataService.StoreMessage(messageItems, message.ParentFolderId, null);
+                        newMessages += 1;
+
                     }
                 }
                 catch (Exception e)
@@ -145,10 +149,13 @@ namespace MailboxSync.Controllers
                     Console.WriteLine(e);
                     throw;
                 }
-
-
             }
 
+            if (newMessages > 0)
+            {
+                NotificationService notificationService = new NotificationService();
+                notificationService.SendNotificationToClient(1);
+            }
         }
     }
 }

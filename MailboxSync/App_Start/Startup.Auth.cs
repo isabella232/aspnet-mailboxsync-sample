@@ -49,7 +49,7 @@ namespace MailboxSync
                     RedirectUri = redirectUri
                 }
                 );
-
+            app.MapSignalR();
             app.UseOpenIdConnectAuthentication(
                 new OpenIdConnectAuthenticationOptions
                 {

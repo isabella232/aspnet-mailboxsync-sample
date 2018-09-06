@@ -35,7 +35,6 @@ namespace MailboxSync.Services
                 {
                     foreach (var item in folders)
                     {
-                        var name = item["Name"].ToString();
                         folderItems.Add(new FolderItem
                         {
                             Name = item["Name"].ToString(),

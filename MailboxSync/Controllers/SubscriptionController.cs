@@ -28,8 +28,8 @@ namespace MailboxSync.Controllers
 
             var subscription = new Microsoft.Graph.Subscription
             {
-                Resource = "me/messages",
-                ChangeType = "created,updated",
+                Resource = "me/mailFolders('Inbox')/messages",
+                ChangeType = "created",
                 NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
                 ClientState = Guid.NewGuid().ToString(),
                 ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 15, 0) // shorter duration useful for testing

@@ -6,52 +6,52 @@
 
 
 <h2>Notifications</h2>
-
-@if(Model != null)
+@if (Model != null)
 {
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.ChangeType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClientState)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Resource)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubscriptionExpirationDateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SubscriptionId)
-        </th>        
-    </tr>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ChangeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClientState)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Resource)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubscriptionExpirationDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubscriptionId)
+            </th>
+        </tr>
 
 
-    @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ChangeType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClientState)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Resource)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubscriptionExpirationDateTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubscriptionId)
-        </td>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChangeType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClientState)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Resource)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubscriptionExpirationDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubscriptionId)
+                </td>
 
-    </tr>
-}
+            </tr>
+        }
 
-</table>
+    </table>
 
     <br />
 
