@@ -1,17 +1,31 @@
-﻿using System;
+﻿/* 
+*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. 
+*  See LICENSE in the source repository root for complete license information. 
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using MailboxSync.Models;
-using MailBoxSync.Models.Subscription;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace MailboxSync.Services
 {
+    /// <summary>
+    /// Interfaces with the data storage
+    /// Current implementation uses a json file which is not recommended for production.
+    /// You can use DocumentDb ; you can learn more about it here: https://azure.microsoft.com/en-us/resources/videos/introduction-to-azure-documentdb/
+    /// </summary>
     public class DataService
     {
+        /// <summary>
+        /// Gets the folders that are stored locally 
+        /// </summary>
+        /// <returns></returns>
         public List<FolderItem> GetFolders()
         {
             string jsonFile = HostingEnvironment.MapPath("~/mail.json");
@@ -20,15 +34,9 @@ namespace MailboxSync.Services
             {
                 return folderItems;
             }
-
-            var mailData = File.ReadAllText(jsonFile);
-            if (mailData == null)
-            {
-                return folderItems;
-            }
-
             try
             {
+                var mailData = File.ReadAllText(jsonFile);
                 var jObject = JObject.Parse(mailData);
                 JArray folders = (JArray)jObject["folders"];
                 if (folders != null)
@@ -39,8 +47,8 @@ namespace MailboxSync.Services
                         {
                             Name = item["Name"].ToString(),
                             Id = item["Id"].ToString(),
-                            Messages = GenerateMessages(item["Messages"].ToString()),
-                            SkipToken = (int?) item["SkipToken"]
+                            MessageItems = GenerateMessages(item["MessageItems"].ToString()),
+                            SkipToken = (int?)item["SkipToken"]
                         });
                     }
                     return folderItems;
@@ -53,6 +61,12 @@ namespace MailboxSync.Services
             return folderItems;
         }
 
+
+        /// <summary>
+        /// Generates a list of Message items from the string value of the messages in the json file
+        /// </summary>
+        /// <param name="messageString">the json string version of the messages in the json file</param>
+        /// <returns></returns>
         private List<MessageItem> GenerateMessages(string messageString)
         {
             var messageItem = new List<MessageItem>();
@@ -76,9 +90,15 @@ namespace MailboxSync.Services
             {
                 Console.WriteLine("Add Error : " + ex.Message);
             }
-            return messageItem.OrderByDescending(k=>k.CreatedDateTime).ToList();
+            return messageItem.OrderByDescending(k => k.CreatedDateTime).ToList();
         }
 
+
+        /// <summary>
+        /// Checks if the folder with the id exists
+        /// </summary>
+        /// <param name="folderId">The id of the folder</param>
+        /// <returns>bool</returns>
         public bool FolderExists(string folderId)
         {
             bool exists = false;
@@ -106,6 +126,11 @@ namespace MailboxSync.Services
             return exists;
         }
 
+
+        /// <summary>
+        /// stores a folder item in the json file
+        /// </summary>
+        /// <param name="folder">the folder item generated</param>
         public void StoreFolder(FolderItem folder)
         {
             string jsonFile = HostingEnvironment.MapPath("~/mail.json");
@@ -133,6 +158,13 @@ namespace MailboxSync.Services
             }
         }
 
+
+        /// <summary>
+        /// Adds a list of messages to a particular folder in the json file
+        /// </summary>
+        /// <param name="messages">the list of messages to be stored</param>
+        /// <param name="folderId">the id of the folder where the messages will be added</param>
+        /// <param name="messagesSkipToken">in case the messages are coming from a pagination request, the skip token is stored for the next request</param>
         public void StoreMessage(List<MessageItem> messages, string folderId, int? messagesSkipToken)
         {
             string jsonFile = HostingEnvironment.MapPath("~/mail.json");
@@ -151,11 +183,11 @@ namespace MailboxSync.Services
                             {
                                 Name = item["Name"].ToString(),
                                 Id = item["Id"].ToString(),
-                                Messages = GenerateMessages(item["Messages"].ToString())
+                                MessageItems = GenerateMessages(item["MessageItems"].ToString())
                             };
-                            newFolderItem.Messages.AddRange(messages);
+                            newFolderItem.MessageItems.AddRange(messages);
                             newFolderItem.SkipToken = messagesSkipToken;
-                            newFolderItem.Messages = newFolderItem.Messages.GroupBy(p => new { p.Id }).Select(g => g.First()).ToList();
+                            newFolderItem.MessageItems = newFolderItem.MessageItems.GroupBy(p => new { p.Id }).Select(g => g.First()).ToList();
                             UpdateFolder(newFolderItem);
                         }
                     }
@@ -171,6 +203,11 @@ namespace MailboxSync.Services
             }
         }
 
+
+        /// <summary>
+        /// updates the values in the folder 
+        /// </summary>
+        /// <param name="folder">the folder whose properties need to change</param>
         private void UpdateFolder(FolderItem folder)
         {
             string jsonFile = HostingEnvironment.MapPath("~/mail.json");
@@ -182,13 +219,13 @@ namespace MailboxSync.Services
                 if (folderArrary != null)
                 {
                     var mailData = JObject.Parse(json);
-                    JArray messageObject = JArray.Parse(JsonConvert.SerializeObject(folder.Messages));
+                    JArray messageObject = JArray.Parse(JsonConvert.SerializeObject(folder.MessageItems));
 
                     if (!string.IsNullOrEmpty(folder.Id))
                     {
                         foreach (var mailFolder in folderArrary.Where(obj => obj["Id"].Value<string>() == folder.Id))
                         {
-                            mailFolder["Messages"] = messageObject;
+                            mailFolder["MessageItems"] = messageObject;
                             mailFolder["SkipToken"] = folder.SkipToken;
                         }
 

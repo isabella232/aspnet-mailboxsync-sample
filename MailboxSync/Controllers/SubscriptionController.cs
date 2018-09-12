@@ -3,8 +3,9 @@ using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using MailboxSync.Models.Subscription;
 using MailboxSync.Helpers;
+using MailboxSync.Models;
+using MailboxSync.Services;
 using Microsoft.Graph;
 
 namespace MailboxSync.Controllers
@@ -15,7 +16,7 @@ namespace MailboxSync.Controllers
         private static string appKey = ConfigurationManager.AppSettings["ida:AppSecret"];
         private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
 
-        // GET: Subscription
+        // GET: SubscriptionItem
         public ActionResult Index()
         {
             return View();

@@ -35,6 +35,7 @@ namespace MailboxSync.Controllers
                 string userObjectId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
                 SessionTokenCache tokenCache = new SessionTokenCache(userObjectId);
+                tokenCache.Clear();
                 HttpContext.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
             }
 

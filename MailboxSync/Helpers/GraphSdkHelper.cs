@@ -9,10 +9,19 @@ using System;
 
 namespace MailboxSync.Helpers
 {
+    /// <summary>
+    /// Designed to help with authentication
+    /// Checks if the token exists
+    /// Fetches the token silently or forces a log in if the silent way fails
+    /// </summary>
     public class GraphSdkHelper
     {
 
-        // Get an authenticated Microsoft Graph Service client.
+        /// <summary>
+        /// Get an authenticated Microsoft Graph Service client.
+        /// </summary>
+        /// <param name="userId">optional parameter to fetch token for a user by id </param>
+        /// <returns></returns>
         public static GraphServiceClient GetAuthenticatedClient(string userId = "")
         {
             GraphServiceClient graphClient = new GraphServiceClient(

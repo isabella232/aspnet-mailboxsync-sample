@@ -6,7 +6,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace MailBoxSync.Models.Subscription
+namespace MailboxSync.Models
 {
     // An Outlook mail message (partial representation). 
     // See https://developer.microsoft.com/graph/docs/api-reference/v1.0/resources/message

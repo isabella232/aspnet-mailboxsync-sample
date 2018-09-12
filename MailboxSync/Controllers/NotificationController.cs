@@ -6,12 +6,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Security.Claims;
 using System.Web.Mvc;
-using MailboxSync.Models.Subscription;
 using System.Threading.Tasks;
 using MailboxSync.Helpers;
+using MailboxSync.Models;
 using MailboxSync.Services;
-using MailboxSync.SignalR;
-using MailBoxSync.Models.Subscription;
+using MailboxSync.Services.SignalR;
 
 namespace MailboxSync.Controllers
 {
@@ -28,10 +27,10 @@ namespace MailboxSync.Controllers
             //application would likely queue for additional processing.
             //Store the notifications in application state. A production
             //application would likely queue for additional processing.                                                                             
-            var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+            var notificationArray = (ConcurrentBag<NotificationItem>)HttpContext.Application["notifications"];
             if (notificationArray == null)
             {
-                notificationArray = new ConcurrentBag<Notification>();
+                notificationArray = new ConcurrentBag<NotificationItem>();
             }
             HttpContext.Application["notifications"] = notificationArray;
             return View(notificationArray);
@@ -58,7 +57,7 @@ namespace MailboxSync.Controllers
                     using (var inputStream = new System.IO.StreamReader(Request.InputStream))
                     {
                         JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
-                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+                        var notificationArray = (ConcurrentBag<NotificationItem>)HttpContext.Application["notifications"];
 
                         if (jsonObject != null)
                         {
@@ -68,7 +67,7 @@ namespace MailboxSync.Controllers
                             JArray value = JArray.Parse(jsonObject["value"].ToString());
                             foreach (var notification in value)
                             {
-                                Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
+                                NotificationItem current = JsonConvert.DeserializeObject<NotificationItem>(notification.ToString());
 
                                 // Check client state to verify the message is from Microsoft Graph. 
                                 SubscriptionStore subscription = SubscriptionStore.GetSubscriptionInfo(current.SubscriptionId);
@@ -82,7 +81,7 @@ namespace MailboxSync.Controllers
                                         //application would likely queue for additional processing.                                                                             
                                         if (notificationArray == null)
                                         {
-                                            notificationArray = new ConcurrentBag<Notification>();
+                                            notificationArray = new ConcurrentBag<NotificationItem>();
                                         }
                                         notificationArray.Add(current);
                                         HttpContext.Application["notifications"] = notificationArray;
@@ -108,7 +107,7 @@ namespace MailboxSync.Controllers
         }
 
 
-        public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
+        public async Task GetChangedMessagesAsync(IEnumerable<NotificationItem> notifications)
         {
             DataService dataService = new DataService();
             int newMessages = 0;

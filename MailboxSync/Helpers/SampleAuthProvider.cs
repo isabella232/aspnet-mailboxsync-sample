@@ -21,61 +21,44 @@ namespace MailboxSync.Helpers
     {
 
         // Properties used to get and manage an access token.
-        private string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
-        private string appId = ConfigurationManager.AppSettings["ida:AppId"];
-        private string appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
-        private string nonAdminScopes = ConfigurationManager.AppSettings["ida:NonAdminScopes"];
-        private string adminScopes = ConfigurationManager.AppSettings["ida:AdminScopes"];
-        private TokenCache tokenCache { get; set; }
-        private string url { get; set; }
+        private string _redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
+        private readonly string _appId = ConfigurationManager.AppSettings["ida:AppId"];
+        private readonly string _appSecret = ConfigurationManager.AppSettings["ida:AppSecret"];
+        private readonly string _nonAdminScopes = ConfigurationManager.AppSettings["ida:NonAdminScopes"];
+        private readonly string _adminScopes = ConfigurationManager.AppSettings["ida:AdminScopes"];
+        private TokenCache TokenCache { get; set; }
 
-        private static readonly SampleAuthProvider instance = new SampleAuthProvider();
         private SampleAuthProvider() { }
 
-        public static SampleAuthProvider Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
+        public static SampleAuthProvider Instance { get; } = new SampleAuthProvider();
 
-        // Gets an access token and its expiration date. First tries to get the token from the token cache.
+        /// <summary>
+        /// Gets an access token and its expiration date. First tries to get the token from the token cache.
+        /// </summary>
+        /// <param name="userId">optional parameter to get the access token using a user Id</param>
+        /// <returns></returns>
         public async Task<string> GetUserAccessTokenAsync(string userId)
         {
-            // Initialize the cache.
-            string currentUserId = ""; 
 
             // user Id will be passed when trying to authenticate a notification
-            if (!string.IsNullOrEmpty(userId))
-            {
-                currentUserId = userId;
-            }
-            else
-            {
-                currentUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value; 
-            }
+            var currentUserId = !string.IsNullOrEmpty(userId) ? userId : ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             HttpContextBase context = HttpContext.Current.GetOwinContext().Environment["System.Web.HttpContextBase"] as HttpContextBase;
-            tokenCache = new SessionTokenCache(
+            TokenCache = new SessionTokenCache(
                 currentUserId).GetMsalCacheInstance();
 
-            if (!redirectUri.EndsWith("/")) redirectUri = redirectUri + "/";
-            string[] segments = context.Request.Path.Split(new char[] { '/' });
-            ConfidentialClientApplication cca = new ConfidentialClientApplication(
-                appId,
-                redirectUri + segments[1],
-                new ClientCredential(appSecret),
-                tokenCache,
-                null);
+            if (!_redirectUri.EndsWith("/")) _redirectUri = _redirectUri + "/";
+            string[] segments = context?.Request.Path.Split('/');
+            ConfidentialClientApplication cca = new ConfidentialClientApplication(_appId, _redirectUri + segments?[1], new ClientCredential(_appSecret), TokenCache, null);
             bool? isAdmin = HttpContext.Current.Session["IsAdmin"] as bool?;
 
-            string allScopes = nonAdminScopes;
+            string allScopes = _nonAdminScopes;
             if (isAdmin.GetValueOrDefault())
             {
-                allScopes += " " + adminScopes;
+                allScopes += " " + _adminScopes;
             }
 
-            string[] scopes = allScopes.Split(new char[] { ' ' });
+            string[] scopes = allScopes.Split(' ');
             try
             {
                 AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
@@ -86,7 +69,7 @@ namespace MailboxSync.Helpers
             catch (Exception)
             {
                 HttpContext.Current.Request.GetOwinContext().Authentication.Challenge(
-                    new AuthenticationProperties() { RedirectUri = redirectUri + segments[1] },
+                    new AuthenticationProperties { RedirectUri = _redirectUri + segments?[1] },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
 
                 throw new ServiceException(

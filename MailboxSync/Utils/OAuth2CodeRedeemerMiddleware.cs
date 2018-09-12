@@ -43,14 +43,11 @@ namespace MailboxSync.Utils
             {
                 //extract state
                 string state = context.Request.Query["state"];
-                string session_state = context.Request.Query["session_state"];
-
-                string signedInUserID = context.Authentication.User.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
+                string signedInUserId = context.Authentication.User.FindFirst(System.IdentityModel.Claims.ClaimTypes.NameIdentifier).Value;
                 HttpContextBase hcb = context.Environment["System.Web.HttpContextBase"] as HttpContextBase;
-                TokenCache theCache = new SessionTokenCache(signedInUserID).GetMsalCacheInstance();
-                ConfidentialClientApplication cca = new ConfidentialClientApplication(options.ClientId, options.RedirectUri,
-   new ClientCredential(options.ClientSecret), theCache, null);
-
+                TokenCache theCache = new SessionTokenCache(signedInUserId).GetMsalCacheInstance();
+                ConfidentialClientApplication cca = new ConfidentialClientApplication(options.ClientId, options.RedirectUri, new ClientCredential(options.ClientSecret), theCache, null);
+                
                 //validate state
                 CodeRedemptionData crd = OAuth2RequestManager.ValidateState(state, hcb);
 
@@ -87,7 +84,6 @@ namespace MailboxSync.Utils
         public string ClientId { get; set; }
         public string RedirectUri { get; set; }
         public string ClientSecret { get; set; }
-        // public TokenCache TokenCache { get; set; }
     }
 
     internal static class OAuth2CodeRedeemerHandler

@@ -23,8 +23,6 @@ namespace MailboxSync.Controllers
 
         public async Task<ActionResult> AddMessages(string id, int? skip)
         {
-
-            var results = new FoldersViewModel();
             try
             {
                 GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
@@ -73,7 +71,7 @@ namespace MailboxSync.Controllers
                 {
                     if (dataService.FolderExists(folder.Id))
                     {
-                        dataService.StoreMessage(folder.Messages, folder.Id, folder.SkipToken);
+                        dataService.StoreMessage(folder.MessageItems, folder.Id, folder.SkipToken);
                     }
                     else
                     {
