@@ -18,15 +18,17 @@ namespace MailboxSync.Controllers
     {
         public static string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
 
+        /// <summary>
+        /// Store the notifications in session state. A production
+        /// application would likely queue for additional processing.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Index()
         {
             ViewBag.CurrentUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            //Store the notifications in session state. A production
-            //application would likely queue for additional processing.
-            //Store the notifications in application state. A production
-            //application would likely queue for additional processing.                                                                             
+
             var notificationArray = (ConcurrentBag<NotificationItem>)HttpContext.Application["notifications"];
             if (notificationArray == null)
             {
@@ -36,7 +38,10 @@ namespace MailboxSync.Controllers
             return View(notificationArray);
         }
 
-        // The `notificationUrl` endpoint that's registered with the webhook subscription.
+        /// <summary>
+        /// The `notificationUrl` endpoint that's registered with the webhook subscription.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Listen()
         {
@@ -96,20 +101,27 @@ namespace MailboxSync.Controllers
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
-                    // TODO: Handle the exception.
-                    // Still return a 202 so the service doesn't resend the notification.
+                    // ignored
                 }
+
                 return new HttpStatusCodeResult(202);
             }
         }
 
 
+        /// <summary>
+        /// Get the changed message details 
+        /// Update the local json file
+        /// Continue to update the UI using SignalR
+        /// </summary>
+        /// <param name="notifications"></param>
+        /// <returns></returns>
         public async Task GetChangedMessagesAsync(IEnumerable<NotificationItem> notifications)
         {
             DataService dataService = new DataService();
+            MailService mailService = new MailService();
             int newMessages = 0;
             foreach (var notification in notifications)
             {
@@ -120,10 +132,9 @@ namespace MailboxSync.Controllers
                 try
                 {
                     // Get the message
-                    var message = await graphClient.Me.Messages[notification.ResourceData.Id].Request()
-                        .Select("id,subject,bodyPreview,createdDateTime,isRead,parentFolderId,conversationId,changeKey")
-                        .GetAsync();
+                    var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
 
+                    // update the local json file
                     if (message != null)
                     {
                         var messageItem = new MessageItem
@@ -136,8 +147,7 @@ namespace MailboxSync.Controllers
                             IsRead = (bool)message.IsRead,
                             Subject = message.Subject
                         };
-                        var messageItems = new List<MessageItem>();
-                        messageItems.Add(messageItem);
+                        var messageItems = new List<MessageItem> { messageItem };
                         dataService.StoreMessage(messageItems, message.ParentFolderId, null);
                         newMessages += 1;
 
@@ -145,8 +155,7 @@ namespace MailboxSync.Controllers
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
-                    throw;
+                    // ignored
                 }
             }
 

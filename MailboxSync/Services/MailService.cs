@@ -111,9 +111,8 @@ namespace MailboxSync.Services
         /// </summary>
         /// <param name="graphClient">An instance of the authenticated graph client</param>
         /// <returns></returns>
-        public async Task<List<FolderItem>> SendMessage(GraphServiceClient graphClient)
+        public async Task SendMessage(GraphServiceClient graphClient)
         {
-            List<FolderItem> items = new List<FolderItem>();
             var me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
             string address = me.Mail ?? me.UserPrincipalName;
             string guid = Guid.NewGuid().ToString();
@@ -142,7 +141,6 @@ namespace MailboxSync.Services
 
             // Send the message.
             await graphClient.Me.SendMail(email, true).Request().PostAsync();
-            return items;
         }
 
         /// <summary>
@@ -151,20 +149,13 @@ namespace MailboxSync.Services
         /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/eventmessage_get
         /// </summary>
         /// <param name="graphClient">An instance of the authenticated graph client</param>
-        /// <param name="id">the id of the specific message</param>
+        /// <param name="messageId">the id of the specific message</param>
         /// <returns></returns>
-        public async Task<List<Message>> GetMessage(GraphServiceClient graphClient, string id)
+        public async Task<Message> GetMessage(GraphServiceClient graphClient, string messageId)
         {
-            List<Message> items = new List<Message>();
-
             // Get the message.
-            Message message = await graphClient.Me.Messages[id].Request().GetAsync();
-
-            if (message != null)
-            {
-                items.Add(message);
-            }
-            return items;
+            Message message = await graphClient.Me.Messages[messageId].Request().GetAsync();
+            return message;
         }
 
         /// <summary>

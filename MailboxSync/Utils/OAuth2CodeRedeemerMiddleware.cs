@@ -75,7 +75,7 @@ namespace MailboxSync.Utils
                 }
             }
             else
-                await this.Next.Invoke(context);
+                await Next.Invoke(context);
         }
     }
 

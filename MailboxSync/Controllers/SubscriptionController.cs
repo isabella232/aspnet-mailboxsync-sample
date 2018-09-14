@@ -12,10 +12,6 @@ namespace MailboxSync.Controllers
 {
     public class SubscriptionController : Controller
     {
-        public static string clientId = ConfigurationManager.AppSettings["ida:AppId"];
-        private static string appKey = ConfigurationManager.AppSettings["ida:AppSecret"];
-        private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
-
         // GET: SubscriptionItem
         public ActionResult Index()
         {
@@ -27,7 +23,7 @@ namespace MailboxSync.Controllers
         {
             GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
-            var subscription = new Microsoft.Graph.Subscription
+            var subscription = new Subscription
             {
                 Resource = "me/mailFolders('Inbox')/messages",
                 ChangeType = "created",

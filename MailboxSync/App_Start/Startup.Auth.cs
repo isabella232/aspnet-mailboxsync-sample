@@ -11,10 +11,10 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using System.Configuration;
 using System.Globalization;
+using System.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using MailboxSync.TokenStorage;
-using System.IdentityModel.Tokens;
-using System.IdentityModel.Claims;
 using Microsoft.Identity.Client;
 using MailboxSync.Utils;
 
@@ -32,7 +32,6 @@ namespace MailboxSync
         private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
         private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
         private static string nonAdminScopes = ConfigurationManager.AppSettings["ida:NonAdminScopes"];
-        private static string adminScopes = ConfigurationManager.AppSettings["ida:AdminScopes"];
         private static string scopes = "openid email profile offline_access " + nonAdminScopes;
 
         public void ConfigureAuth(IAppBuilder app)
@@ -79,14 +78,14 @@ namespace MailboxSync
                         AuthorizationCodeReceived = async (context) =>
                         {
                             var code = context.Code;
-                            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            string signedInUserId = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
                             string graphScopes = nonAdminScopes;
-                            string[] scopes = graphScopes.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            string[] scopes = graphScopes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                             ConfidentialClientApplication cca = new ConfidentialClientApplication(appId, redirectUri,
                                new ClientCredential(appSecret),
-                               new SessionTokenCache(signedInUserID).GetMsalCacheInstance(), null);
-                            AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
+                               new SessionTokenCache(signedInUserId).GetMsalCacheInstance(), null);
+                            await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
 
                             // Check whether the login is from the MSA tenant. 
                             // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.

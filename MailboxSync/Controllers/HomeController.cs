@@ -34,7 +34,7 @@ namespace MailboxSync.Controllers
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == "Caller needs to authenticate.")
+                if (se.Error.Code == "AuthenticationFailure")
                 {
                     return new EmptyResult();
                 }
@@ -82,7 +82,7 @@ namespace MailboxSync.Controllers
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == "Caller needs to authenticate.")
+                if (se.Error.Code == "AuthenticationFailure")
                 {
                     return new EmptyResult();
                 }
@@ -97,18 +97,17 @@ namespace MailboxSync.Controllers
         // This sends a message to the current user on behalf of the current user.
         public async Task<ActionResult> SendMessage()
         {
-            var results = new FoldersViewModel(false);
             try
             {
                 // Initialize the GraphServiceClient.
                 GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
                 // Send the message.
-                results.Items = await mailService.SendMessage(graphClient);
+                await mailService.SendMessage(graphClient);
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == "Caller needs to authenticate.")
+                if (se.Error.Code == "AuthenticationFailure")
                 {
                     return new EmptyResult();
                 }

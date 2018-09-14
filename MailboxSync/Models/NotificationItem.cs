@@ -3,7 +3,9 @@ using Newtonsoft.Json;
 
 namespace MailboxSync.Models
 {
-    // A change notification.
+    /// <summary>
+    /// A change notification.
+    /// </summary>
     public class NotificationItem
     {
         // The type of change.

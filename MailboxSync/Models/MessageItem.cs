@@ -8,8 +8,11 @@ using Newtonsoft.Json;
 
 namespace MailboxSync.Models
 {
-    // An Outlook mail message (partial representation). 
-    // See https://developer.microsoft.com/graph/docs/api-reference/v1.0/resources/message
+    /// <summary>
+    /// An Outlook mail message (partial representation). 
+    /// There are a lot of properties returned about the message from the requests. You do not need all of them. Pick only the things that you need
+    /// See https://developer.microsoft.com/graph/docs/api-reference/v1.0/resources/message
+    /// </summary>
     public class MessageItem
     {
         [JsonProperty(PropertyName = "id")]
