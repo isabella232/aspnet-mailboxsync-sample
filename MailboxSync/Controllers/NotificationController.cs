@@ -4,47 +4,44 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading;
 using System.Web.Mvc;
-using MailboxSync.Models.Subscription;
-using Microsoft.Graph;
-using MailboxSync.Helpers;
 using System.Threading.Tasks;
+using MailboxSync.Helpers;
+using MailboxSync.Models;
 using MailboxSync.Services;
-using MailBoxSync.Models.Subscription;
-using DateTimeOffset = System.DateTimeOffset;
+using MailboxSync.Services.SignalR;
 
 namespace MailboxSync.Controllers
 {
     public class NotificationController : Controller
     {
-        public static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
-        private static string appKey = ConfigurationManager.AppSettings["ida:ClientSecret"];
-        private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
+        public static string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
 
-        private static ReaderWriterLockSlim SessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-
+        /// <summary>
+        /// Store the notifications in session state. A production
+        /// application would likely queue for additional processing.
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult Index()
         {
-            ViewBag.CurrentUserId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value;
+            ViewBag.CurrentUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            //Store the notifications in session state. A production
-            //application would likely queue for additional processing.
-            //Store the notifications in application state. A production
-            //application would likely queue for additional processing.                                                                             
-            var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+
+            var notificationArray = (ConcurrentBag<NotificationItem>)HttpContext.Application["notifications"];
             if (notificationArray == null)
             {
-                notificationArray = new ConcurrentBag<Notification>();
+                notificationArray = new ConcurrentBag<NotificationItem>();
             }
             HttpContext.Application["notifications"] = notificationArray;
             return View(notificationArray);
         }
 
-        // The `notificationUrl` endpoint that's registered with the webhook subscription.
+        /// <summary>
+        /// The `notificationUrl` endpoint that's registered with the webhook subscription.
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Listen()
         {
@@ -65,7 +62,7 @@ namespace MailboxSync.Controllers
                     using (var inputStream = new System.IO.StreamReader(Request.InputStream))
                     {
                         JObject jsonObject = JObject.Parse(inputStream.ReadToEnd());
-                        var notificationArray = (ConcurrentBag<Notification>)HttpContext.Application["notifications"];
+                        var notificationArray = (ConcurrentBag<NotificationItem>)HttpContext.Application["notifications"];
 
                         if (jsonObject != null)
                         {
@@ -75,7 +72,7 @@ namespace MailboxSync.Controllers
                             JArray value = JArray.Parse(jsonObject["value"].ToString());
                             foreach (var notification in value)
                             {
-                                Notification current = JsonConvert.DeserializeObject<Notification>(notification.ToString());
+                                NotificationItem current = JsonConvert.DeserializeObject<NotificationItem>(notification.ToString());
 
                                 // Check client state to verify the message is from Microsoft Graph. 
                                 SubscriptionStore subscription = SubscriptionStore.GetSubscriptionInfo(current.SubscriptionId);
@@ -89,7 +86,7 @@ namespace MailboxSync.Controllers
                                         //application would likely queue for additional processing.                                                                             
                                         if (notificationArray == null)
                                         {
-                                            notificationArray = new ConcurrentBag<Notification>();
+                                            notificationArray = new ConcurrentBag<NotificationItem>();
                                         }
                                         notificationArray.Add(current);
                                         HttpContext.Application["notifications"] = notificationArray;
@@ -99,54 +96,73 @@ namespace MailboxSync.Controllers
 
                             if (notificationArray.Count > 0)
                             {
-                                Task.Run(() => GetChangedMessagesAsync(notificationArray)).ContinueWith((prevTask) =>
-                                {
-                                    return new HttpStatusCodeResult(202);
-                                });
-                                // Query for the changed messages.
-                                //await GetChangedMessagesAsync(notificationArray);
+                                await GetChangedMessagesAsync(notificationArray);
                             }
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
-                    // TODO: Handle the exception.
-                    // Still return a 202 so the service doesn't resend the notification.
+                    // ignored
                 }
+
                 return new HttpStatusCodeResult(202);
             }
         }
 
 
-        public async Task GetChangedMessagesAsync(IEnumerable<Notification> notifications)
+        /// <summary>
+        /// Get the changed message details 
+        /// Update the local json file
+        /// Continue to update the UI using SignalR
+        /// </summary>
+        /// <param name="notifications"></param>
+        /// <returns></returns>
+        public async Task GetChangedMessagesAsync(IEnumerable<NotificationItem> notifications)
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-            MailService mailService = new MailService();
             DataService dataService = new DataService();
-
+            MailService mailService = new MailService();
+            int newMessages = 0;
             foreach (var notification in notifications)
             {
-                var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
-                var mI = message.FirstOrDefault();
-                if (mI != null)
-                {
-                    var messageItem = new MessageItem
-                    {
-                        BodyPreview = mI.BodyPreview,
-                        ChangeKey = mI.ChangeKey,
-                        ConversationId = mI.ConversationId,
-                        CreatedDateTime = (DateTimeOffset)mI.CreatedDateTime,
-                        Id = mI.Id,
-                        IsRead = (bool)mI.IsRead,
-                        Subject = mI.Subject
-                    };
-                    var messageItems = new List<MessageItem>();
-                    messageItems.Add(messageItem);
-                    dataService.StoreMessage(messageItems, mI.ParentFolderId, null);
+                var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
 
+                var graphClient = GraphSdkHelper.GetAuthenticatedClient(subscription.UserId);
+
+                try
+                {
+                    // Get the message
+                    var message = await mailService.GetMessage(graphClient, notification.ResourceData.Id);
+
+                    // update the local json file
+                    if (message != null)
+                    {
+                        var messageItem = new MessageItem
+                        {
+                            BodyPreview = message.BodyPreview,
+                            ChangeKey = message.ChangeKey,
+                            ConversationId = message.ConversationId,
+                            CreatedDateTime = (DateTimeOffset)message.CreatedDateTime,
+                            Id = message.Id,
+                            IsRead = (bool)message.IsRead,
+                            Subject = message.Subject
+                        };
+                        var messageItems = new List<MessageItem> { messageItem };
+                        dataService.StoreMessage(messageItems, message.ParentFolderId, null);
+                        newMessages += 1;
+
+                    }
                 }
+                catch (Exception e)
+                {
+                    // ignored
+                }
+            }
+
+            if (newMessages > 0)
+            {
+                NotificationService notificationService = new NotificationService();
+                notificationService.SendNotificationToClient(1);
             }
         }
     }

@@ -1,10 +1,12 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
-namespace MailboxSync.Models.Subscription
+namespace MailboxSync.Models
 {
-    // A change notification.
-    public class Notification
+    /// <summary>
+    /// A change notification.
+    /// </summary>
+    public class NotificationItem
     {
         // The type of change.
         [JsonProperty(PropertyName = "changeType")]
@@ -14,7 +16,7 @@ namespace MailboxSync.Models.Subscription
         [JsonProperty(PropertyName = "clientState")]
         public string ClientState { get; set; }
 
-        // The endpoint of the resource that changed. For example, a message uses the format ../Users/{user-id}/Messages/{message-id}
+        // The endpoint of the resource that changed. For example, a message uses the format ../Users/{user-id}/MessageItems/{message-id}
         [JsonProperty(PropertyName = "resource")]
         public string Resource { get; set; }
 
@@ -29,5 +31,24 @@ namespace MailboxSync.Models.Subscription
         // Properties of the changed resource.
         [JsonProperty(PropertyName = "resourceData")]
         public ResourceData ResourceData { get; set; }
+    }
+    public class ResourceData
+    {
+
+        // The ID of the resource.
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        // The OData etag property.
+        [JsonProperty(PropertyName = "@odata.etag")]
+        public string ODataEtag { get; set; }
+
+        // The OData ID of the resource. This is the same value as the resource property.
+        [JsonProperty(PropertyName = "@odata.id")]
+        public string ODataId { get; set; }
+
+        // The OData type of the resource: "#Microsoft.Graph.Message", "#Microsoft.Graph.Event", or "#Microsoft.Graph.Contact".
+        [JsonProperty(PropertyName = "@odata.type")]
+        public string ODataType { get; set; }
     }
 }

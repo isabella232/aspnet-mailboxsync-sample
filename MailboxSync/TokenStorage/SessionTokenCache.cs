@@ -3,90 +3,109 @@
 *  See LICENSE in the source repository root for complete license information. 
 */
 
+using System.Runtime.Caching;
 using System.Threading;
-using System.Web;
 using Microsoft.Identity.Client;
 
 namespace MailboxSync.TokenStorage
 {
-
-    // Store the user's token information.
-    // Store the user's token information.
+    /// <summary>
+    /// The SessionTokenCache is an example demonstration for managing tokens. 
+    /// You may want to implement a token cache that conforms to the security policies of your organization.
+    /// </summary>
     public class SessionTokenCache
     {
-        private static ReaderWriterLockSlim SessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
-        string UserId = string.Empty;
-        string CacheId = string.Empty;
-        HttpContextBase httpContext = null;
+        private static ReaderWriterLockSlim sessionLock = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
+        private readonly string _cacheId;
+        private static ObjectCache cache = MemoryCache.Default;
+        private static CacheItemPolicy defaultPolicy = new CacheItemPolicy();
 
-        TokenCache cache = new TokenCache();
+        TokenCache tokenCache = new TokenCache();
 
-        public SessionTokenCache(string userId, HttpContextBase httpcontext)
+        public SessionTokenCache(string userId)
         {
-            // not object, we want the SUB
-            UserId = userId;
-            CacheId = UserId + "_TokenCache";
-            httpContext = httpcontext;
+            _cacheId = userId + "_TokenCache";
             Load();
         }
 
+        /// <summary>
+        /// Reads information from the cache
+        /// </summary>
+        /// <returns>TokenCache object</returns>
         public TokenCache GetMsalCacheInstance()
         {
-            cache.SetBeforeAccess(BeforeAccessNotification);
-            cache.SetAfterAccess(AfterAccessNotification);
+            tokenCache.SetBeforeAccess(BeforeAccessNotification);
+            tokenCache.SetAfterAccess(AfterAccessNotification);
             Load();
-            return cache;
+            return tokenCache;
         }
 
-        public void SaveUserStateValue(string state)
+        /// <summary>
+        /// check whether the cache has information
+        /// </summary>
+        /// <returns></returns>
+        public bool HasData()
         {
-            SessionLock.EnterWriteLock();
-            httpContext.Session[CacheId + "_state"] = state;
-            SessionLock.ExitWriteLock();
-        }
-        public string ReadUserStateValue()
-        {
-            string state = string.Empty;
-            SessionLock.EnterReadLock();
-            state = (string)httpContext.Session[CacheId + "_state"];
-            SessionLock.ExitReadLock();
-            return state;
-        }
-        public void Load()
-        {
-            SessionLock.EnterReadLock();
-            cache.Deserialize((byte[])httpContext.Session[CacheId]);
-            SessionLock.ExitReadLock();
+            return (cache[_cacheId] != null && ((byte[])cache[_cacheId]).Length > 0);
         }
 
-        public void Persist()
+        /// <summary>
+        /// clear the cache
+        /// </summary>
+        public void Clear()
         {
-            SessionLock.EnterWriteLock();
-
-            // Optimistically set HasStateChanged to false. We need to do it early to avoid losing changes made by a concurrent thread.
-            cache.HasStateChanged = false;
-
-            // Reflect changes in the persistent store
-            httpContext.Session[CacheId] = cache.Serialize();
-            SessionLock.ExitWriteLock();
+            cache.Remove(_cacheId);
         }
 
-        // Triggered right before MSAL needs to access the cache.
-        // Reload the cache from the persistent store in case it changed since the last access.
-        void BeforeAccessNotification(TokenCacheNotificationArgs args)
+
+        private void Load()
         {
+            sessionLock.EnterReadLock();
+            var item = cache.GetCacheItem(_cacheId);
+            if (item != null)
+            {
+                tokenCache.Deserialize((byte[])item.Value);
+            }
+            sessionLock.ExitReadLock();
+        }
+
+        /// <summary>
+        /// Saves the cache information
+        /// </summary>
+        private void Persist()
+        {
+            sessionLock.EnterWriteLock();
+
+            // Optimistically set HasStateChanged to false. 
+            // We need to do it early to avoid losing changes made by a concurrent thread.
+            tokenCache.HasStateChanged = false;
+
+            cache.Set(new CacheItem(_cacheId, tokenCache.Serialize()), defaultPolicy);
+
+            sessionLock.ExitWriteLock();
+        }
+
+        /// <summary>
+        /// Triggered right before MSAL needs to access the cache. 
+        /// </summary>
+        /// <param name="tokenCaaCacheNotificationArgs"></param>
+        private void BeforeAccessNotification(TokenCacheNotificationArgs tokenCaaCacheNotificationArgs)
+        {
+            // Reload the cache from the persistent store in case it changed since the last access. 
             Load();
         }
 
-        // Triggered right after MSAL accessed the cache.
-        void AfterAccessNotification(TokenCacheNotificationArgs args)
+        /// <summary>
+        /// Triggered right after MSAL accessed the cache.
+        /// </summary>
+        /// <param name="tokenCaaCacheNotificationArgs"></param>
+        private void AfterAccessNotification(TokenCacheNotificationArgs tokenCaaCacheNotificationArgs)
         {
             // if the access operation resulted in a cache update
-            if (cache.HasStateChanged)
+            if (tokenCache.HasStateChanged)
             {
                 Persist();
             }
         }
-
     }
 }

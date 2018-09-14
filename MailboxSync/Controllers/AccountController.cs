@@ -34,7 +34,8 @@ namespace MailboxSync.Controllers
                 // Get the user's token cache and clear it.
                 string userObjectId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                SessionTokenCache tokenCache = new SessionTokenCache(userObjectId, HttpContext);
+                SessionTokenCache tokenCache = new SessionTokenCache(userObjectId);
+                tokenCache.Clear();
                 HttpContext.GetOwinContext().Authentication.SignOut(OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
             }
 

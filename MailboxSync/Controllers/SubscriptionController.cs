@@ -3,19 +3,16 @@ using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using MailboxSync.Models.Subscription;
 using MailboxSync.Helpers;
+using MailboxSync.Models;
+using MailboxSync.Services;
 using Microsoft.Graph;
 
 namespace MailboxSync.Controllers
 {
     public class SubscriptionController : Controller
     {
-        public static string clientId = ConfigurationManager.AppSettings["ida:AppId"];
-        private static string appKey = ConfigurationManager.AppSettings["ida:AppSecret"];
-        private static string redirectUri = ConfigurationManager.AppSettings["ida:RedirectUri"];
-
-        // GET: Subscription
+        // GET: SubscriptionItem
         public ActionResult Index()
         {
             return View();
@@ -24,12 +21,12 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> CreateSubscription()
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+            GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
-            var subscription = new Microsoft.Graph.Subscription
+            var subscription = new Subscription
             {
-                Resource = "me/messages",
-                ChangeType = "created,updated",
+                Resource = "me/mailFolders('Inbox')/messages",
+                ChangeType = "created",
                 NotificationUrl = ConfigurationManager.AppSettings["ida:NotificationUrl"],
                 ClientState = Guid.NewGuid().ToString(),
                 ExpirationDateTime = DateTime.UtcNow + new TimeSpan(0, 0, 15, 0) // shorter duration useful for testing
@@ -49,7 +46,7 @@ namespace MailboxSync.Controllers
                 // Production apps typically use some method of persistent storage.
                 SubscriptionStore.SaveSubscriptionInfo(viewModel.Subscription.Id,
                     viewModel.Subscription.ClientState,
-                    ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value,
+                    ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value,
                     ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid")?.Value);
 
                 // This sample just saves the current subscription ID to the session so we can delete it later.
@@ -65,7 +62,7 @@ namespace MailboxSync.Controllers
         [Authorize]
         public async Task<ActionResult> DeleteSubscription()
         {
-            GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
+            GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
             string subscriptionId = (string)Session["SubscriptionId"];
 
