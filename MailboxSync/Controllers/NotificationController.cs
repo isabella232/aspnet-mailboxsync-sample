@@ -101,7 +101,7 @@ namespace MailboxSync.Controllers
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // ignored
                 }

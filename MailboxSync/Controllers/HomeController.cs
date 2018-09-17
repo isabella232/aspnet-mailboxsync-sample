@@ -21,29 +21,6 @@ namespace MailboxSync.Controllers
         MailService mailService = new MailService();
         DataService dataService = new DataService();
 
-        public async Task<ActionResult> AddMessages(string id, int? skip)
-        {
-            try
-            {
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
-                var messages = await mailService.GetMyFolderMessages(graphClient, id, skip);
-                if (messages.Messages.Count > 0)
-                {
-                    dataService.StoreMessage(messages.Messages, id, messages.SkipToken);
-                }
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Code == "AuthenticationFailure")
-                {
-                    return new EmptyResult();
-                }
-
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return RedirectToAction("Index");
-        }
-
         public ActionResult Index()
         {
             var results = new FoldersViewModel();
@@ -55,7 +32,9 @@ namespace MailboxSync.Controllers
         }
 
 
-        // Get folders in the current user's mail
+        /// <summary>
+        /// Get folders in the current user's mail
+        /// </summary>
         public async Task<ActionResult> GetMyMailfolders()
         {
             var results = new FoldersViewModel();
@@ -93,8 +72,10 @@ namespace MailboxSync.Controllers
             return RedirectToAction("Index");
         }
 
-        // Send an email message.
-        // This sends a message to the current user on behalf of the current user.
+        /// <summary>
+        /// Send an email message.
+        /// This sends a message to the current user on behalf of the current user.
+        /// </summary>
         public async Task<ActionResult> SendMessage()
         {
             try
@@ -116,6 +97,35 @@ namespace MailboxSync.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// Gets the paged messages belonging to a folder using a skip token
+        /// </summary>
+        /// <param name="folderId">the folder whose message is to be fetched</param>
+        /// <param name="skipToken">the skip token that indicates how many items to skip when fetching the messages</param>
+        public async Task<ActionResult> GetPagedMessages(string folderId, int? skipToken)
+        {
+            try
+            {
+                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
+                var messages = await mailService.GetMyFolderMessages(graphClient, folderId, skipToken);
+                if (messages.Messages.Count > 0)
+                {
+                    dataService.StoreMessage(messages.Messages, folderId, messages.SkipToken);
+                }
+            }
+            catch (ServiceException se)
+            {
+                if (se.Error.Code == "AuthenticationFailure")
+                {
+                    return new EmptyResult();
+                }
+
+                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+            }
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
