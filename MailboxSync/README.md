@@ -1,7 +1,12 @@
 # Mailbox Sync Sample
 
+This is an ASP.NET web application that uses Microsoft Graph to access a user’s Microsoft account resources from within. 
+This sample uses REST calls through the Graph Client to the Microsoft Graph endpoint to work with user resources--in this case, to sync emails as the user.
+The sample also uses Bootstrap for styling and formatting the user experience.
 
-## Tasks
+
+## Highlights
+
 The following are common tasks that a registered application performs:
 - Get consent to fetch users' folders and messages and then get an access token.
 - Use the access token to [list mailboxes](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_list_mailfolders), [list child folders](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_childfolders) and [list messages in the folder](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_messages).
@@ -28,23 +33,23 @@ To use the Mailbox Sync sample, you need the following:
 This app uses the Azure AD v2 endpoint, so you'll register it in the [Application Registration Portal](https://apps.dev.microsoft.com).
 
 1. Sign in to the portal with either your Microsoft account, or your work or school account.
-2. Choose **Add an app**.
-3. Enter a friendly name for the application and choose **Create application**.
-4. Locate the **Application Secrets** section and choose **Generate New Password**. Copy the password now and save it to a safe place. Once you've copied the password, click **Ok**.
-5. Locate the **Platforms** section, and choose **Add Platform**. Choose **Web**, then enter `https://localhost:44300` under **Redirect URIs**.
-6. Choose **Save** at the bottom of the page.
+1. Choose **Add an app**.
+1. Enter a friendly name for the application and choose **Create application**.
+1. Locate the **Application Secrets** section and choose **Generate New Password**. Copy the password now and save it to a safe place. Once you've copied the password, click **Ok**.
+1. Locate the **Platforms** section, and choose **Add Platform**. Choose **Web**, then enter `https://localhost:44300` under **Redirect URIs**.
+1. Choose **Save** at the bottom of the page.
 
 You'll use the application ID and secret to configure the app in Visual Studio.
  
-## Configure and run the sample
+## Configure the applicatoin
 
 1. Expose a public HTTPS notification endpoint. It can run on a service such as Microsoft Azure, or you can create a proxy web server by [using ngrok](https://github.com/microsoftgraph/aspnet-webhooks-rest-sample#ngrok) or a similar tool.
 
-2. Open **MailboxSync.sln** in the sample files.
+1. Open **MailboxSync.sln** in the sample files.
 
     > **Note:** You may be prompted to trust certificates for localhost.
 
-3. In Solution Explorer, open the **app.config** file in the root directory of the project.
+1. In Solution Explorer, open the **app.config** file in the root directory of the project.
     - For the **ida:AppId** key, replace *ENTER_YOUR_APP_ID* with the application ID of your registered application.
     - For the **ida:AppSecret** key, replace *ENTER_YOUR_SECRET* with the secret of your registered application.
     - For the **ida:NotificationUrl** key, replace *ENTER_YOUR_NOTIFICATION_URL* with the HTTPS URL. Keep the */notification/listen* portion. If you're using ngrok, use the HTTPS URL that you copied. The value will look something like this:
@@ -53,10 +58,12 @@ You'll use the application ID and secret to configure the app in Visual Studio.
     ```
     - For the **ida:PageSize** key, replace *15* with the value you want to paginate with
 
-4. Make sure that the ngrok console is still running, then press F5 to build and run the solution in debug mode.
+1. Make sure that the ngrok console is still running, then press F5 to build and run the solution in debug mode.
     > **Note:** If you get errors while installing packages, make sure the local path where you placed the solution is not too long/deep. Moving the solution closer to the root drive resolves this issue.
 
-## How to use the app
+
+## Run the app
+
 1. Sign in with your work or school account.
 
 1. Consent to the **Read your mail** and **Sign you in and read your profile** permissions.
@@ -85,6 +92,11 @@ The page will reload with a new number on the particular folder.
 1. Click the **Notification** link to view notifications and see their structure
    
 
+## Additional resources
+
+* [Microsoft Graph documentation](http://graph.microsoft.io)
+
+
 ## Copyright
 
-Copyright (c) 2017 Microsoft. All rights reserved.
+Copyright © 2018 Microsoft Corporation. All rights reserved.
