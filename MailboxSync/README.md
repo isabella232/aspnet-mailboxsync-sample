@@ -43,7 +43,7 @@ You'll use the application ID and secret to configure the app in Visual Studio.
  
 ## How to configure the app
 
-1. Expose a public HTTPS notification endpoint. It can run on a service such as Microsoft Azure, or you can create a proxy web server by [using ngrok](https://github.com/microsoftgraph/aspnet-webhooks-rest-sample#ngrok) or a similar tool.
+1. Expose a public HTTPS notification endpoint. It can run on a service such as Microsoft Azure, or you can create a proxy web server by [using ngrok](https://ngrok.com/docs) or a similar tool.
 
 1. Open **MailboxSync.sln** in the sample files.
 
