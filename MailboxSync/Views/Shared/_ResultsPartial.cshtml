@@ -51,7 +51,7 @@
                                     }
                                     <hr>
                                     <div>
-                                        @using (Html.BeginForm("AddMessages", "Home"))
+                                        @using (Html.BeginForm("GetPagedMessages", "Home"))
                                         {
                                             <button class="btn btn-link needs-id" id="get-message">Load More</button>
                                             <input class="selected-id" value=@item.Id name="id" type="hidden" />

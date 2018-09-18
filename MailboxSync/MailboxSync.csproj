@@ -255,6 +255,7 @@
     <Content Include="Views\Subscription\Index.cshtml" />
     <Content Include="Views\Subscription\Subscription.cshtml" />
     <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
