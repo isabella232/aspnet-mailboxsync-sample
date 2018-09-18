@@ -7,23 +7,23 @@ The sample also uses Bootstrap for styling and formatting the user experience.
 
 ## Highlights
 
-The following are common tasks that a registered application performs:
-- Get consent to fetch users' folders and messages and then get an access token.
-- Use the access token to [list mailboxes](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_list_mailfolders), [list child folders](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_childfolders) and [list messages in the folder](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_messages).
-- Store folders and messages in local data storage
-- Access more message pages in folders through pagination
-- Use the access token to [create a subscription](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/subscription_post_subscriptions) to a resource.
-- Send back a validation token to confirm the notification URL.
-- Send test email to activate notifications
-- Listen for notifications from Microsoft Graph and respond with a 202 status code.
-- Request more information about changed resources using data in the notification.
+The following are common tasks that the application performs:
+- Gets consent to fetch users' folders and messages and then get an access token.
+- Uses the access token to [list mailboxes](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_list_mailfolders), [list child folders](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_childfolders) and [list messages in the folder](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_messages).
+- Stores folders and messages in local data storage
+- Accesses more message pages in folders through pagination
+- Uses the access token to [create a subscription](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/subscription_post_subscriptions) to a resource.
+- Sends back a validation token to confirm the notification URL.
+- Sends test email to activate notifications
+- Listens for notifications from Microsoft Graph and respond with a 202 status code.
+- Requests more information about changed resources using data in the notification.
   
 ## Prerequisites
 
 To use the Mailbox Sync sample, you need the following:
 
 - Visual Studio 2017 installed on your development computer.
-- A [work or school account](http://dev.office.com/devprogram).
+- A work or school account.
 - The application ID and key from the application that you [register on the Application Registration Portal](#register-the-app).
 - A public HTTPS endpoint to receive and send HTTP requests. You can host this on Microsoft Azure or another service, or you can [use ngrok](#ngrok) or a similar tool while testing.
 
@@ -41,7 +41,7 @@ This app uses the Azure AD v2 endpoint, so you'll register it in the [Applicatio
 
 You'll use the application ID and secret to configure the app in Visual Studio.
  
-## Configure the applicatoin
+## How to configure the app
 
 1. Expose a public HTTPS notification endpoint. It can run on a service such as Microsoft Azure, or you can create a proxy web server by [using ngrok](https://github.com/microsoftgraph/aspnet-webhooks-rest-sample#ngrok) or a similar tool.
 
@@ -67,8 +67,6 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 1. Sign in with your work or school account.
 
 1. Consent to the **Read your mail** and **Sign you in and read your profile** permissions.
-
-    If you don't see the **Read your mail** permission, choose **Cancel** and then add the **Read user mail** permission to the app in the Azure Portal. See the [Register the app](#register-the-app) section for instructions.
 
 1. Choose the **Sync Mail From Server** button. The page reloads with the different mail folders, children folders and messages in each folder. Check the *mail.json* file in the root of the project to see the folder structure
        
