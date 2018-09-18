@@ -70,19 +70,13 @@ You'll use the application ID and secret to configure the app in Visual Studio.
 
 1. Choose the **Sync Mail From Server** button. The page reloads with the different mail folders, children folders and messages in each folder. Check the *mail.json* file in the root of the project to see the folder structure
        
-    > **Note to self:** Add app page showing properties of the mail.json file
-
 1. Choose the **Create subscription** button. The **Subscription** page loads with information about the subscription.
 
     > **Note:** This sample sets the subscription expiration to 15 minutes for testing purposes.
 
-    > **Note to self:** Add app page showing properties of the new subscription
-
 1. Click the **Home** link.
 
 1. Send an email to your work or school account using the **Send Message** button. The reloads and then after a moment the page displays an alert about a new message being received. It may take several seconds for the page to update.
-
-    > **Note to self:** Add app page showing properties of the new notification
 
 1. Choose a folder like inbox / sent and view the list of messages associated. At the end of the list, click the **Load More** button to fetch messages using pagination.
 The page will reload with a new number on the particular folder.
