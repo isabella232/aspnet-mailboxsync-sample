@@ -30,10 +30,10 @@ To use the Mailbox Sync sample, you need the following:
 # In this lab
 
 There are 3 components that make up the Mailbox Sample.
-1. [Exercise 1: Getting Started](GettingStarted)
-1. [Exercise 2: Sync folders](02_FolderSync)
-1. [Exercise 3: Sync email messages](MailSync)
-1. [Exercise 4: Create subscription and receive notifications](Subscription)
+1. [Exercise 1: Getting Started](GettingStarted.md)
+1. [Exercise 2: Sync folders](02_FolderSync.md)
+1. [Exercise 3: Sync email messages](MailSync.md)
+1. [Exercise 4: Create subscription and receive notifications](Subscription.md)
 
 ## Additional resources
 
