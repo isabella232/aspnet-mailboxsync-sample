@@ -91,16 +91,47 @@ namespace MailboxSync.Services
         /// <param name="folderId">The folder whose messages we want to get</param>
         /// <param name="skip">the skip token for when we are going through a list via pagination</param>
         /// <returns></returns>
-        public async Task<FolderMessage> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
+        public async Task<FolderMessages> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
         {
             var top = Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"]);
+            var folderMessages = new FolderMessages { SkipToken = null };
+
+            // Initialise the request
             var request = graphClient.Me.MailFolders[folderId].Messages.Request();
+
+            // if the pagination skip token has a value, add it to the request
             if (skip.HasValue)
             {
                 request = request.Skip(skip.Value);
             }
-            IMailFolderMessagesCollectionPage messages = await request.Top(top).GetAsync();
-            return GenerateFolderMessages(messages);
+            var messages = await request.Top(top).GetAsync();
+
+            // if there are  other pages in the response, store the skip token
+            if (messages.NextPageRequest != null)
+            {
+                foreach (var x in messages.NextPageRequest.QueryOptions)
+                {
+                    if (x.Name == "$skip")
+                        folderMessages.SkipToken = Convert.ToInt32(x.Value);
+                }
+            }
+
+            if (messages.Count > 0)
+            {
+                foreach (Message message in messages)
+                {
+                    folderMessages.Messages.Add(new MessageItem
+                    {
+                        ConversationId = message.ConversationId,
+                        Id = message.Id,
+                        Subject = message.Subject,
+                        BodyPreview = message.BodyPreview,
+                        IsRead = (bool)message.IsRead,
+                        CreatedDateTime = (DateTimeOffset)message.CreatedDateTime
+                    });
+                }
+            }
+            return folderMessages;
         }
 
 
@@ -158,40 +189,6 @@ namespace MailboxSync.Services
             return message;
         }
 
-        /// <summary>
-        /// Generates a list of MessageItems to be saved in the data store
-        /// </summary>
-        /// <param name="messages">list of mail folder messages</param>
-        /// <returns></returns>
-        private FolderMessage GenerateFolderMessages(IMailFolderMessagesCollectionPage messages)
-        {
-            var holder = new FolderMessage { SkipToken = null };
-            if (messages.NextPageRequest != null)
-            {
-                foreach (var x in messages.NextPageRequest.QueryOptions)
-                {
-                    if (x.Name == "$skip")
-                        holder.SkipToken = Convert.ToInt32(x.Value);
-                }
-            }
-
-            if (messages.Count > 0)
-            {
-                foreach (Message message in messages)
-                {
-                    holder.Messages.Add(new MessageItem
-                    {
-                        ConversationId = message.ConversationId,
-                        Id = message.Id,
-                        Subject = message.Subject,
-                        BodyPreview = message.BodyPreview,
-                        IsRead = (bool)message.IsRead,
-                        CreatedDateTime = (DateTimeOffset)message.CreatedDateTime
-                    });
-                }
-            }
-            return holder;
-        }
 
     }
 }

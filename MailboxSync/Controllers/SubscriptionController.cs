@@ -12,11 +12,13 @@ namespace MailboxSync.Controllers
 {
     public class SubscriptionController : Controller
     {
-        // GET: SubscriptionItem
+        GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
+
         public ActionResult Index()
         {
             return View();
         }
+
         /// <summary>
         /// Create a subscription to the 'notificationUrl'
         /// </summary>
@@ -25,7 +27,6 @@ namespace MailboxSync.Controllers
         {
             try
             {
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
                 var subscription = new Subscription
                 {
@@ -45,9 +46,14 @@ namespace MailboxSync.Controllers
                         Subscription = response
                     };
 
-                    // This sample temporarily stores the current subscription ID, client state, user object ID, and tenant ID. 
-                    // This info is required so the NotificationController, which is not authenticated, can retrieve an access token from the cache and validate the subscription.
-                    // Production apps typically use some method of persistent storage.
+                    // This sample temporarily stores :
+                    // - the current subscription ID, 
+                    // - client state, 
+                    // - user object ID, and 
+                    // - tenant ID. 
+                    // This info is required so the NotificationController, which is not authenticated,
+                    // can retrieve an access token from the cache and validate the subscription.
+                    // Production apps typically use some method of persistent storage
                     SubscriptionStore.SaveSubscriptionInfo(viewModel.Subscription.Id,
                         viewModel.Subscription.ClientState,
                         ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value,
@@ -64,8 +70,10 @@ namespace MailboxSync.Controllers
                 {
                     return new EmptyResult();
                 }
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
                 });
 
             }
@@ -95,13 +103,13 @@ namespace MailboxSync.Controllers
                 {
                     return new EmptyResult();
                 }
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+
+                return RedirectToAction("Index", "Error", new
+                {
+                    message = $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
                 });
 
             }
-
-            return View("Subscription", null);
         }
 
 

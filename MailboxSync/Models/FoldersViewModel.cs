@@ -9,19 +9,9 @@ using System.Linq;
 namespace MailboxSync.Models
 {
 
-    public class FolderItem
+    public class FolderMessages
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public string ParentId { get; set; }
-        public List<MessageItem> MessageItems { get; set; }
-        public int? SkipToken { get; set; }
-
-    }
-
-    public class FolderMessage
-    {
-        public FolderMessage()
+        public FolderMessages()
         {
             Messages = new List<MessageItem>();
         }

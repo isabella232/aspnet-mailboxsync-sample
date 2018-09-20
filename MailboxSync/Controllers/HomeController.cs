@@ -20,6 +20,7 @@ namespace MailboxSync.Controllers
     {
         MailService mailService = new MailService();
         DataService dataService = new DataService();
+        GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
 
         public ActionResult Index()
         {
@@ -37,16 +38,12 @@ namespace MailboxSync.Controllers
         /// </summary>
         public async Task<ActionResult> GetMyMailfolders()
         {
-            var results = new FoldersViewModel();
             try
             {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
-
                 // Get the folders.
-                results.Items = await mailService.GetMyMailFolders(graphClient);
+                var folders = await mailService.GetMyMailFolders(graphClient);
 
-                foreach (var folder in results.Items)
+                foreach (var folder in folders)
                 {
                     if (dataService.FolderExists(folder.Id))
                     {
@@ -66,8 +63,11 @@ namespace MailboxSync.Controllers
                     return new EmptyResult();
                 }
 
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
             }
             return RedirectToAction("Index");
         }
@@ -80,9 +80,6 @@ namespace MailboxSync.Controllers
         {
             try
             {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
-
                 // Send the message.
                 await mailService.SendMessage(graphClient);
             }
@@ -93,7 +90,11 @@ namespace MailboxSync.Controllers
                     return new EmptyResult();
                 }
 
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
             }
             return RedirectToAction("Index");
         }
@@ -102,12 +103,11 @@ namespace MailboxSync.Controllers
         /// Gets the paged messages belonging to a folder using a skip token
         /// </summary>
         /// <param name="folderId">the folder whose message is to be fetched</param>
-        /// <param name="skipToken">the skip token that indicates how many items to skip when fetching the messages</param>
+        /// <param name="skipToken">the skip token that indicates how many items to skip </param>
         public async Task<ActionResult> GetPagedMessages(string folderId, int? skipToken)
         {
             try
             {
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
                 var messages = await mailService.GetMyFolderMessages(graphClient, folderId, skipToken);
                 if (messages.Messages.Count > 0)
                 {
@@ -121,7 +121,11 @@ namespace MailboxSync.Controllers
                     return new EmptyResult();
                 }
 
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
             }
             return RedirectToAction("Index");
         }

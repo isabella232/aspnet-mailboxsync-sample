@@ -1,7 +1,7 @@
 ﻿/* 
-*  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. 
-*  See LICENSE in the source repository root for complete license information. 
-*/
+ *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. 
+ *  See LICENSE in the source repository root for complete license information. 
+ */
 
 using System;
 using System.Web;
@@ -41,70 +41,66 @@ namespace MailboxSync
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
 
             app.UseOAuth2CodeRedeemer(
-                new OAuth2CodeRedeemerOptions
-                {
-                    ClientId = appId,
-                    ClientSecret = appSecret,
-                    RedirectUri = redirectUri
-                }
-                );
+             new OAuth2CodeRedeemerOptions
+             {
+                 ClientId = appId,
+                 ClientSecret = appSecret,
+                 RedirectUri = redirectUri
+             }
+            );
             app.MapSignalR();
             app.UseOpenIdConnectAuthentication(
-                new OpenIdConnectAuthenticationOptions
-                {
+             new OpenIdConnectAuthenticationOptions
+             {
 
-                    // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
-                    // The `Scope` describes the permissions that your app will need. See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/                    
-                    ClientId = appId,
-                    Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
-                    RedirectUri = redirectUri,
-                    Scope = scopes,
-                    PostLogoutRedirectUri = redirectUri,
-                    TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        // In a real application you would use IssuerValidator for additional checks, 
-                        // like making sure the user's organization has signed up for your app.
-                        //     IssuerValidator = (issuer, token, tvp) =>
-                        //     {
-                        //         if (MyCustomTenantValidation(issuer)) 
-                        //             return issuer;
-                        //         else
-                        //             throw new SecurityTokenInvalidIssuerException("Invalid issuer");
-                        //     },
-                    },
-                    Notifications = new OpenIdConnectAuthenticationNotifications
-                    {
-                        AuthorizationCodeReceived = async (context) =>
-                        {
-                            var code = context.Code;
-                            string signedInUserId = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                            string graphScopes = nonAdminScopes;
-                            string[] scopes = graphScopes.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                 // The `Authority` represents the v2.0 endpoint - https://login.microsoftonline.com/common/v2.0
+                 // The `Scope` describes the permissions that your app will need. 
+                 // See https://azure.microsoft.com/documentation/articles/active-directory-v2-scopes/                    
+                 ClientId = appId,
+                 Authority = String.Format(CultureInfo.InvariantCulture, aadInstance, "common", "/v2.0"),
+                 RedirectUri = redirectUri,
+                 Scope = scopes,
+                 PostLogoutRedirectUri = redirectUri,
+                 TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = false,
+                 },
+                 Notifications = new OpenIdConnectAuthenticationNotifications
+                 {
+                     AuthorizationCodeReceived = async (context) =>
+                     {
+                         var code = context.Code;
+                         string signedInUserId = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                         string graphScopes = nonAdminScopes;
+                         string[] scopes = graphScopes.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
-                            ConfidentialClientApplication cca = new ConfidentialClientApplication(appId, redirectUri,
-                               new ClientCredential(appSecret),
-                               new SessionTokenCache(signedInUserId).GetMsalCacheInstance(), null);
-                            await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
+                         ConfidentialClientApplication cca = new ConfidentialClientApplication(
+                             appId,
+                             redirectUri,
+                             new ClientCredential(appSecret),
+                             new SessionTokenCache(signedInUserId).GetMsalCacheInstance(),
+                             null
+                         );
+                         await cca.AcquireTokenByAuthorizationCodeAsync(code, scopes);
 
-                            // Check whether the login is from the MSA tenant. 
-                            // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.
-                            var currentTenantId = context.AuthenticationTicket.Identity.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
-                            if (currentTenantId == "9188040d-6c67-4c5b-b112-36a304b66dad")
-                            {
-                                HttpContext.Current.Session.Add("AccountType", "msa");
-                            }
-                            // Set IsAdmin session variable to false, since the user hasn't consented to admin scopes yet.
-                            HttpContext.Current.Session.Add("IsAdmin", false);
-                        },
-                        AuthenticationFailed = (context) =>
-                        {
-                            context.HandleResponse();
-                            context.Response.Redirect("/Error?message=" + context.Exception.Message);
-                            return Task.FromResult(0);
-                        }
-                    }
-                });
+                         // Check whether the login is from the MSA tenant. 
+                         // The sample uses this attribute to disable UI buttons for unsupported operations when the user is logged in with an MSA account.
+                         var currentTenantId = context.AuthenticationTicket.Identity.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+                         if (currentTenantId == "9188040d-6c67-4c5b-b112-36a304b66dad")
+                         {
+                             HttpContext.Current.Session.Add("AccountType", "msa");
+                         }
+                         // Set IsAdmin session variable to false, since the user hasn't consented to admin scopes yet.
+                         HttpContext.Current.Session.Add("IsAdmin", false);
+                     },
+                     AuthenticationFailed = (context) =>
+                     {
+                         context.HandleResponse();
+                         context.Response.Redirect("/Error?message=" + context.Exception.Message);
+                         return Task.FromResult(0);
+                     }
+                 }
+             });
         }
     }
 }
