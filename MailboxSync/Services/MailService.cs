@@ -163,10 +163,10 @@ namespace MailboxSync.Services
             {
                 Body = new ItemBody
                 {
-                    Content = "Body Lorem Ipsum dolor " + guid,
+                    Content = "Contents of the test message created by Microsoft Graph. Lorem " + guid,
                     ContentType = BodyType.Text,
                 },
-                Subject = guid.Substring(0, 8).ToUpper() + " Lorem Ipsum",
+                Subject = "Test message created by Microsoft Graph" + guid.Substring(0, 8).ToUpper(),
                 ToRecipients = recipients
             };
 

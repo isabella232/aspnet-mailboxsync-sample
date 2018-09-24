@@ -12,7 +12,7 @@ namespace MailboxSync.Controllers
 {
     public class SubscriptionController : Controller
     {
-        GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
+        GraphServiceClient graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
 
         public ActionResult Index()
         {
@@ -93,7 +93,7 @@ namespace MailboxSync.Controllers
             try
             {
                 SubscriptionStore.DeleteSubscriptionInfo();
-                GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
+                GraphServiceClient graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
                 await graphClient.Subscriptions[subscriptionId].Request().DeleteAsync();
                 return RedirectToAction("SignOut", "Account");
             }

@@ -14,7 +14,7 @@ namespace MailboxSync.Helpers
     /// Checks if the token exists
     /// Fetches the token silently or forces a log in if the silent way fails
     /// </summary>
-    public class GraphSdkHelper
+    public class GraphServiceClientProvider
     {
 
         /// <summary>

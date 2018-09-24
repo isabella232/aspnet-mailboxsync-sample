@@ -127,7 +127,7 @@ namespace MailboxSync.Controllers
             {
                 var subscription = SubscriptionStore.GetSubscriptionInfo(notification.SubscriptionId);
 
-                var graphClient = GraphSdkHelper.GetAuthenticatedClient(subscription.UserId);
+                var graphClient = GraphServiceClientProvider.GetAuthenticatedClient(subscription.UserId);
 
                 try
                 {
@@ -162,7 +162,7 @@ namespace MailboxSync.Controllers
             if (newMessages > 0)
             {
                 NotificationService notificationService = new NotificationService();
-                notificationService.SendNotificationToClient(1);
+                notificationService.SendNotificationToClient();
             }
         }
     }

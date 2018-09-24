@@ -20,16 +20,16 @@ namespace MailboxSync.Controllers
     {
         MailService mailService = new MailService();
         DataService dataService = new DataService();
-        GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
+        GraphServiceClient graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
 
         public ActionResult Index()
         {
-            var results = new FoldersViewModel();
+            var folderResults = new FoldersViewModel();
             var folders = dataService.GetFolders();
             var resultItems = new List<FolderItem>();
             resultItems.AddRange(folders);
-            results.Items = resultItems;
-            return View("Index", results);
+            folderResults.Items = resultItems;
+            return View("Index", folderResults);
         }
 
 
