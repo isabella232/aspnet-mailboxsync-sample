@@ -53,5 +53,5 @@ request and response bodies - that is, snapshots of the data at a point in time,
 and not to be used as client-side models.
 
 Examples include:
-- `FolderItem.cs`
-- `MessageItem.cs`
+- [`FolderItem.cs`](MailboxSync/Models/FolderItem.cs)
+- [`MessageItem.cs`](MailboxSync/Models/MessageItem.cs)

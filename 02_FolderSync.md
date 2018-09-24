@@ -1,6 +1,6 @@
 # Folder Sync
 Folder sync gets your folders from the graph api. Sometimes folders have child folders within them and it is important to fetch them too.
-For this example, we are going to go down to one level.
+For this example, we are going to go down to one level deep and save the results in a json file for easy investigation of the data received.
 
 ## Definitions
 
@@ -22,13 +22,6 @@ See the actual folder object here: https://developer.microsoft.com/en-us/graph/d
 | SkipToken        | Optional nullable property that is updated during pagination to store the skip token                       | 
 
 
-### 2. MailService
-A class that abstracts all the requests to the graph explorer so that the requests can be reusable everywhere in the solution.
-
-### 3. DataService
-A class that abstracts all the storage functions. The current implementation is to a json file which is not recommended for production.
-You can use DocumentDb [DocumentDb](https://azure.microsoft.com/en-us/resources/videos/introduction-to-azure-documentdb) 
-
 ## Get Mail Folders
 This results in a call to get the signed in user's mailfolder. 
 
@@ -38,7 +31,7 @@ This results in a call to get the signed in user's mailfolder.
 
 You would need to pass an instance of the authenticated graph client
 
-```
+```csharp 
 var folders = await graphClient.Me.MailFolders.Request().GetAsync();
 ```
 
@@ -48,7 +41,7 @@ After receiving the list of folders, you should loop through them to get the lis
 
 The graph request looks like this
 
-```
+```csharp 
 var childFolders = await graphClient.Me.MailFolders[folder.Id].ChildFolders.Request().GetAsync();
 ``` 
 
@@ -56,7 +49,7 @@ Here is an example of how to fetch the folders and the child folders.
 Add these to your `MailService.cs` class.
 
 #### Getting the mail folders
-```
+```csharp 
 public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
 {
     List<FolderItem> items = new List<FolderItem>();
@@ -80,7 +73,7 @@ public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphCli
 }
 ```
 #### Getting the child folders
-```
+```csharp 
 private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
 {
     List<FolderItem> children = new List<FolderItem>();
@@ -110,7 +103,7 @@ and [List child folders](https://developer.microsoft.com/en-us/graph/docs/api-re
 ## Bringing it together
 Create an action in `HomeController.cs` called GetMyMailfolders. 
 This should pass the results of fetching the folders from the graph API to the data service for storage of the details.
-```
+```csharp 
 public async Task<ActionResult> GetMyMailfolders()
 {
     var results = new FoldersViewModel();
@@ -148,14 +141,14 @@ The index action fetches the stored folders from the storage using the DataServi
 The action goes through the items stored in the json file, creates a list of folder items
 and passes it to the UI. 
 
-```
+```csharp 
 public ActionResult Index()
 {
-    var results = new FoldersViewModel();
+    var folderResults = new FoldersViewModel();
     var folders = dataService.GetFolders();
     var resultItems = new List<FolderItem>();
-    results.Items.ToList().AddRange(folders);
-    results.Items = resultItems;
-    return View("Index", results);
+    folderResults.Items.ToList().AddRange(folders);
+    folderResults.Items = resultItems;
+    return View("Index", folderResults);
 }
 ```

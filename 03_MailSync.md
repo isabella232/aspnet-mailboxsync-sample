@@ -40,24 +40,15 @@ This results in a call to get the signed in user's messages based on the folder 
 You would need to pass an instance of the authenticated graph client. 
 Thus a graph request looks like this
 
-```
+```csharp 
 var request = graphClient.Me.MailFolders[folderId].Messages.GetAsync();
 ```
-
-
-> **Request:** GET graph.microsoft.com/v1.0/me/mailmessages/{id}/childMessages
-
-
-
-```
-var childMessages = await graphClient.Me.MailMessages[message.Id].ChildMessages.Request().GetAsync();
-``` 
 
 Here is an example of how to fetch the messages . 
 Add these to your `MailService.cs` class.
 
 #### Getting the mail messages for a folder
-```
+```csharp 
 public async Task<FolderMessage> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
 {
     var top = Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"]);
@@ -108,7 +99,7 @@ You can learn more about these requests on [List mail Messages](https://develope
 ## Bringing it together
 Go back to the **GetMyMailFolders** method in  `MailService.cs`. Update it so that as it is fetching the folders, it can go ahead and take the messages in the folder.
 The new updated file should look like this: 
-```
+```csharp 
 public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
 {
     List<FolderItem> items = new List<FolderItem>();
@@ -135,7 +126,7 @@ public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphCli
 ```
 
 The **GetChildFolders** method in `MailService.cs` would also need an update to:
-```
+```csharp 
 private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
     {
         List<FolderItem> children = new List<FolderItem>();
@@ -166,8 +157,8 @@ private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphCli
 Also head back to the `HomeController.cs` file and update loop in the **GetMyMailfolders()** method to allow it to store the messages received into the json file.
 Like so: 
 
-```
- public async Task<ActionResult> GetMyMailfolders()
+```csharp 
+public async Task<ActionResult> GetMyMailfolders()
 {
     try
     {
@@ -194,5 +185,7 @@ Like so:
 
 After its successful completion, it will redirect you to the `Index` action. 
 The index action fetches the stored messages from the storage using the DataService's GetMessages method.
+
+Go to [HomeController.cs](MailboxSync/Controllers/HomeController.cs) to see the entire code flow
 
 
