@@ -99,6 +99,7 @@ You can learn more about these requests on [List mail Messages](https://develope
 ## Bringing it together
 Go back to the **GetMyMailFolders** method in  `MailService.cs`. Update it so that as it is fetching the folders, it can go ahead and take the messages in the folder.
 The new updated file should look like this: 
+
 ```csharp 
 public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
 {
@@ -109,25 +110,56 @@ public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphCli
         foreach (var folder in folders)
         {
             var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
+            // checks if it is the mailbox folder so that when displayed,
+            // it can show up first in the list
+            var isStartUpFolder = (folder.DisplayName == "Inbox");
             items.Add(new FolderItem
             {
                 Name = folder.DisplayName,
                 Id = folder.Id,
                 MessageItems = folderMessages.Messages,
                 ParentId = null,
-                SkipToken = folderMessages.SkipToken
+                SkipToken = folderMessages.SkipToken,
+                StartupFolder = isStartUpFolder
             });
-            var clientFolders = await GetChildFolders(graphClient, folder.Id);
+            var clientFolders = await GetChildFolders(graphClient, folder.Id, isStartUpFolder);
             items.AddRange(clientFolders);
         }
     }
+
+    // order folder results, showing the startup folders first
+    items = OrderFolderResults(items);
     return items;
+}
+```
+The **OrderFolderResults** method helps rearrange the folders so that they can show the startup folders first. 
+```csharp
+private List<FolderItem> OrderFolderResults(List<FolderItem> folderResults)
+{
+    var startupFolderFolderItems = new List<FolderItem>();
+    var nonStartupFolderFolderItems = new List<FolderItem>();
+    var listOfFolders = new List<FolderItem>();
+    foreach (var item in folderResults)
+    {
+        if (item.StartupFolder)
+        {
+            startupFolderFolderItems.Add(item);
+        }
+        else
+        {
+            nonStartupFolderFolderItems.Add(item);
+        }
+    }
+    listOfFolders.AddRange(startupFolderFolderItems);
+    listOfFolders.AddRange(nonStartupFolderFolderItems);
+    return listOfFolders;
 }
 ```
 
 The **GetChildFolders** method in `MailService.cs` would also need an update to:
+
 ```csharp 
-private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
+private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id, bool isStartUpFolder)
     {
         List<FolderItem> children = new List<FolderItem>();
 
@@ -144,7 +176,8 @@ private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphCli
                     Id = child.Id,
                     MessageItems = folderMessages.Messages,
                     ParentId = child.ParentFolderId,
-                    SkipToken = folderMessages.SkipToken
+                    SkipToken = folderMessages.SkipToken,
+                    StartupFolder = isStartUpFolder
                 });
             }
         }
@@ -183,9 +216,11 @@ public async Task<ActionResult> GetMyMailfolders()
 }
 ```
 
+
+
 After its successful completion, it will redirect you to the `Index` action. 
 The index action fetches the stored messages from the storage using the DataService's GetMessages method.
 
-Go to [HomeController.cs](MailboxSync/Controllers/HomeController.cs) to see the entire code flow
+Go to [HomeController.cs](MailboxSync/Controllers/HomeController.cs) and [`MailService.cs`](MailboxSync/Services/MailService.cs) to see the entire code flow
 
 

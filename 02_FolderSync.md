@@ -20,6 +20,7 @@ See the actual folder object here: https://developer.microsoft.com/en-us/graph/d
 | ParentId        | Id of the folder parent folder if it is a child folder                  | 
 | MessageItems        | list of messages in the folder                        | 
 | SkipToken        | Optional nullable property that is updated during pagination to store the skip token                       | 
+| StartupFolder        | boolean property that makes the inbox folder and its child folders visible first                       | 
 
 
 ## Get Mail Folders
@@ -58,14 +59,18 @@ public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphCli
     {
         foreach (var folder in folders)
         {
+            // checks if it is the mailbox folder so that when displayed,
+            // it can show up first in the list
+            var isStartUpFolder = (folder.DisplayName == "Inbox");
             var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
             items.Add(new FolderItem
             {
                 Name = folder.DisplayName,
                 Id = folder.Id,
                 ParentId = null,
+                StartupFolder = isStartUpFolder
             });
-            var clientFolders = await GetChildFolders(graphClient, folder.Id);
+            var clientFolders = await GetChildFolders(graphClient, folder.Id, isStartUpFolder);
             items.AddRange(clientFolders);
         }
     }
@@ -74,7 +79,7 @@ public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphCli
 ```
 #### Getting the child folders
 ```csharp 
-private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
+private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id, bool isStartUpFolder)
 {
     List<FolderItem> children = new List<FolderItem>();
 
@@ -90,6 +95,7 @@ private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphCli
                 Name = "-- " + child.DisplayName,
                 Id = child.Id,
                 ParentId = child.ParentFolderId,
+                StartupFolder = isStartUpFolder
             });
         }
     }
@@ -109,13 +115,10 @@ public async Task<ActionResult> GetMyMailfolders()
     var results = new FoldersViewModel();
     try
     {
-        // Initialize the GraphServiceClient.
-        GraphServiceClient graphClient = GraphSdkHelper.GetAuthenticatedClient();
-
         // Get the folders.
-        results.Items = await mailService.GetMyMailFolders(graphClient);
+        var folderResults = await mailService.GetMyMailFolders(graphClient);
 
-        foreach (var folder in results.Items)
+        foreach (var folder in folderResults)
         {
             dataService.StoreFolder(folder);
         }
@@ -133,7 +136,6 @@ public async Task<ActionResult> GetMyMailfolders()
     return RedirectToAction("Index");
 }
 ```
-
 
 After its successful completion, it will redirect you to the `Index` action. 
 The index action fetches the stored folders from the storage using the DataService's GetFolders method.

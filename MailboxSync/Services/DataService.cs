@@ -49,7 +49,8 @@ namespace MailboxSync.Services
                             Name = item["Name"].ToString(),
                             Id = item["Id"].ToString(),
                             MessageItems = GenerateMessages(item["MessageItems"].ToString()),
-                            SkipToken = (int?)item["SkipToken"]
+                            SkipToken = (int?)item["SkipToken"],
+                            StartupFolder = (bool)item["StartupFolder"],
                         });
                     }
                     return folderItems;

@@ -2,7 +2,7 @@
 *  Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
 *  See LICENSE in the source repository root for complete license information.
 */
- 
+
 using System.Collections.Generic;
 
 namespace MailboxSync.Models
@@ -19,6 +19,9 @@ namespace MailboxSync.Models
         public string ParentId { get; set; }
         public List<MessageItem> MessageItems { get; set; }
         public int? SkipToken { get; set; }
+
+        // used to flag a folder so that it can be displayed first in the list
+        public bool StartupFolder { get; set; }
 
     }
 }

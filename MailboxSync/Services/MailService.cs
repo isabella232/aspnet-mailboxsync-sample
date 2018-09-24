@@ -33,18 +33,25 @@ namespace MailboxSync.Services
                 foreach (var folder in folders)
                 {
                     var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
+                    // checks if it is the mailbox folder so that when displayed,
+                    // it can show up first in the list
+                    var isStartUpFolder = (folder.DisplayName == "Inbox");
                     items.Add(new FolderItem
                     {
                         Name = folder.DisplayName,
                         Id = folder.Id,
                         MessageItems = folderMessages.Messages,
                         ParentId = null,
-                        SkipToken = folderMessages.SkipToken
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
-                    var clientFolders = await GetChildFolders(graphClient, folder.Id);
+                    var clientFolders = await GetChildFolders(graphClient, folder.Id, isStartUpFolder);
                     items.AddRange(clientFolders);
                 }
             }
+
+            // order folder results, showing the startup folders first
+            items = OrderFolderResults(items);
             return items;
         }
 
@@ -57,7 +64,7 @@ namespace MailboxSync.Services
         /// <param name="graphClient">An instance of the authenticated graph client</param>
         /// <param name="id">Id of the parent folder </param>
         /// <returns></returns>
-        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
+        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id, bool isStartUpFolder)
         {
             List<FolderItem> children = new List<FolderItem>();
 
@@ -74,7 +81,8 @@ namespace MailboxSync.Services
                         Id = child.Id,
                         MessageItems = folderMessages.Messages,
                         ParentId = child.ParentFolderId,
-                        SkipToken = folderMessages.SkipToken
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
                 }
             }
@@ -187,6 +195,32 @@ namespace MailboxSync.Services
             // Get the message.
             Message message = await graphClient.Me.Messages[messageId].Request().GetAsync();
             return message;
+        }
+
+        /// <summary>
+        /// Reorders the folders so that those with the startupfolder flag are displayed first
+        /// </summary>
+        /// <param name="folderResults">folders resulting from the fetch folders query</param>
+        /// <returns></returns>
+        private List<FolderItem> OrderFolderResults(List<FolderItem> folderResults)
+        {
+            var startupFolderFolderItems = new List<FolderItem>();
+            var nonStartupFolderFolderItems = new List<FolderItem>();
+            var listOfFolders = new List<FolderItem>();
+            foreach (var item in folderResults)
+            {
+                if (item.StartupFolder)
+                {
+                    startupFolderFolderItems.Add(item);
+                }
+                else
+                {
+                    nonStartupFolderFolderItems.Add(item);
+                }
+            }
+            listOfFolders.AddRange(startupFolderFolderItems);
+            listOfFolders.AddRange(nonStartupFolderFolderItems);
+            return listOfFolders;
         }
 
 
