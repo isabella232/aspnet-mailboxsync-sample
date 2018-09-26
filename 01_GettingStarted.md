@@ -1,7 +1,5 @@
 ### Registering the app
 
-This app uses the Azure AD v2 endpoint, so you'll register it in the [Application Registration Portal](https://apps.dev.microsoft.com).
-
 1. Sign in to the portal with either your Microsoft account, or your work or school account.
 1. Choose **Add an app**.
 1. Enter a friendly name for the application and choose **Create application**.
