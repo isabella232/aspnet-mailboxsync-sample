@@ -8,67 +8,85 @@
     <h3>Mailbox:</h3>
     <div class="col-md-12">
         <div class="container">
-            
-                @if (Model != null)
+
+            @if (Model != null)
+            {
+                if (Model.Items.Any())
                 {
-                    if (Model.Items.Any())
-                    {
-                        int count = 0;
-                        
-                        <ul class="nav nav-pills nav-stacked col-md-3">
-                            @foreach (var item in Model.Items)
+                    int count = 0;
+
+                    <ul class="nav nav-pills nav-stacked col-md-3">
+                        @foreach (var item in Model.Items)
+                        {
+                            <li class="@(count==0 ? "active":"")">
+                                <a href="#@count" data-toggle="pill">
+                                    &nbsp;@item.Name
+                                    <span class="pull-right badge"> @(item.MessageItems == null ? 0 : item.MessageItems.Count) </span>
+                                </a>
+                            </li>
+                            count++;
+                        }
+                    </ul>
+                    <div class="tab-content col-md-9">
+                        @{
+                            int messageCount = 0;
+                            foreach (var item in Model.Items)
                             {
-                                <li class="@(count==0 ? "active":"")">
-                                    <a href="#@count" data-toggle="pill">&nbsp;@item.Name
-                                        <span class="pull-right badge"> @(item.Messages == null ? 0 : item.Messages.Count) </span>
-                                    </a>
-                                </li>
-                                count++;
-                            }
-                        </ul>
-                        <div class="tab-content col-md-9">
-                            @{
-                                int messageCount = 0;
-                                foreach (var item in Model.Items)
-                                {
-                                    <div class="@(messageCount==0 ? "tab-pane active":"tab-pane")" id="@messageCount">
-                                        <h4>&nbsp;@item.Name</h4>
-                                        <hr>
-                                        @if (item.Messages != null && item.Messages.Count > 0)
-                                        {
-                                            <div class="row" id="table-@item.Id">
-                                                @foreach (var message in item.Messages)
-                                                {
-                                                    <div class="col-md-12">
-                                                        <div class="col-md-6">@message.Subject</div>
-                                                        <div class="col-md-3">@message.CreatedDateTime</div>
-                                                        <div class="col-md-3">@message.IsRead</div>
-                                                    </div>
-                                                }
+                                <div class="@(messageCount==0 ? "tab-pane active":"tab-pane")" id="@messageCount">
+                                    <h4>&nbsp;@item.Name</h4>
+                                    <hr>
+                                    @if (item.MessageItems != null && item.MessageItems.Count > 0)
+                                    {
+                                        <div class="row" id="table-@item.Id">
+                                            <div class="col-md-12" style="font-weight:800;text-decoration:underline;">
+                                                <div class="col-md-6">Subject</div>
+                                                <div class="col-md-4">Created</div>
+                                                <div class="col-md-2">Opened</div>
                                             </div>
-                                            <br />
-                                        }
-                                        <hr>
-                                            @using (Html.BeginForm("AddMessages", "Home"))
+                                            <hr />
+                                            @foreach (var message in item.MessageItems)
                                             {
-                                                <button class="btn btn-link needs-id" id="get-message" >Get Messages</button>
-                                                <input class="selected-id" value=@item.Id name="id" type="hidden" />
+                                                var messageStyle = "border-bottom:solid #ddd 1px;padding:10px;";
+                                                if (!@message.IsRead)
+                                                {
+                                                    messageStyle = messageStyle + "font-weight:bold";
+                                                }
+                                                <div class="col-md-12" title="@message.BodyPreview" style="@messageStyle">
+                                                    <div class="col-md-6">@message.Subject</div>
+                                                    <div class="col-md-4">@message.CreatedDateTime</div>
+                                                    <div class="col-md-2">@message.IsRead</div>
+
+                                                </div>
                                             }
+                                        </div>
+                                        <br />
+                                    }
+                                    <hr>
+                                    <div>
+                                        @using (Html.BeginForm("GetPagedMessages", "Home"))
+                                        {
+                                            <button class="btn btn-link needs-id" id="get-message">Load More</button>
+                                            <input class="selected-id" value=@item.Id name="folderId" type="hidden" />
+                                            <input class="selected-id" value=@item.SkipToken name="skipToken" type="hidden" />
+
+                                        }
                                     </div>
-                                    messageCount++;
-                                }
+
+                                </div>
+                                messageCount++;
                             }
-                        </div>
+                        }
+                    </div>
 
-                        
-                    }
-                    else
-                    {
-                        <p>Operation completed, but no results were returned.</p>
-                    }
+
                 }
+                else
+                {
+                    <p>Operation completed, but no results were returned.</p>
+                }
+            }
 
-            </div>
         </div>
-        <br />
     </div>
+    <br />
+</div>

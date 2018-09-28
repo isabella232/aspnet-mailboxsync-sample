@@ -5,73 +5,130 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Threading.Tasks;
 using MailboxSync.Models;
-using MailBoxSync.Models.Subscription;
 using Microsoft.Graph;
 
 namespace MailboxSync.Services
 {
+    /// <summary>
+    /// Interfaces with the graph client to make requests
+    /// </summary>
     public class MailService
     {
-        // Get folders in the current mail.
+        /// <summary>
+        /// This results in a call to get the signed in user's mailfolders
+        /// Request: GET graph.microsoft.com/v1.0/me/mailfolders
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_list_mailfolders
+        /// </summary>
+        /// <param name="graphClient">An instance of the authenticated graph client</param>
+        /// <returns></returns>
         public async Task<List<FolderItem>> GetMyMailFolders(GraphServiceClient graphClient)
         {
             List<FolderItem> items = new List<FolderItem>();
-
-            // Get messages in the Inbox folder.
             var folders = await graphClient.Me.MailFolders.Request().GetAsync();
-
             if (folders?.Count > 0)
             {
                 foreach (var folder in folders)
                 {
+                    var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
+                    // checks if it is the mailbox folder so that when displayed,
+                    // it can show up first in the list
+                    var isStartUpFolder = (folder.DisplayName == "Inbox");
                     items.Add(new FolderItem
                     {
                         Name = folder.DisplayName,
                         Id = folder.Id,
-                        Messages = await GetMyFolderMessages(graphClient, folder.Id),
-                        ParentId = null
+                        MessageItems = folderMessages.Messages,
+                        ParentId = null,
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
-                    var clientFolders = await GetChildFolders(graphClient, folder.Id);
+                    var clientFolders = await GetChildFolders(graphClient, folder.Id, isStartUpFolder);
                     items.AddRange(clientFolders);
                 }
             }
+
+            // order folder results, showing the startup folders first
+            items = OrderFolderResults(items);
             return items;
         }
 
-        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
+
+        /// <summary>
+        /// Makes a call to the graph to receive the list of child folders for a particular folder
+        /// Request: GET GET graph.microsoft.com/v1.0/me/mailfolders/{id}/childFolders
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_childfolders
+        /// </summary>
+        /// <param name="graphClient">An instance of the authenticated graph client</param>
+        /// <param name="id">Id of the parent folder </param>
+        /// <returns></returns>
+        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id, bool isStartUpFolder)
         {
             List<FolderItem> children = new List<FolderItem>();
 
-            // Get messages in the Child folder.
             var childFolders = await graphClient.Me.MailFolders[id].ChildFolders.Request().GetAsync();
 
             if (childFolders?.Count > 0)
             {
                 foreach (var child in childFolders)
                 {
-
+                    var folderMessages = await GetMyFolderMessages(graphClient, child.Id, null);
                     children.Add(new FolderItem
                     {
                         Name = "-- " + child.DisplayName,
                         Id = child.Id,
-                        Messages = await GetMyFolderMessages(graphClient, child.Id),
-                        ParentId = child.ParentFolderId
+                        MessageItems = folderMessages.Messages,
+                        ParentId = child.ParentFolderId,
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
                 }
             }
             return children;
         }
 
-        private List<MessageItem> CreateMessages(IMailFolderMessagesCollectionPage messages)
+
+        /// <summary>
+        /// Makes a call to the graph to receive the list of messages in a particular folder
+        /// Request: GET GET graph.microsoft.com/v1.0/me/mailfolders/{id}/messages
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/mailfolder_list_messages
+        /// </summary>
+        /// <param name="graphClient">An instance of the authenticated graph client</param>
+        /// <param name="folderId">The folder whose messages we want to get</param>
+        /// <param name="skip">the skip token for when we are going through a list via pagination</param>
+        /// <returns></returns>
+        public async Task<FolderMessages> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
         {
-            var items = new List<MessageItem>();
-            if (messages?.Count > 0)
+            var top = Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"]);
+            var folderMessages = new FolderMessages { SkipToken = null };
+
+            // Initialise the request
+            var request = graphClient.Me.MailFolders[folderId].Messages.Request();
+
+            // if the pagination skip token has a value, add it to the request
+            if (skip.HasValue)
+            {
+                request = request.Skip(skip.Value);
+            }
+            var messages = await request.Top(top).GetAsync();
+
+            // if there are  other pages in the response, store the skip token
+            if (messages.NextPageRequest != null)
+            {
+                foreach (var x in messages.NextPageRequest.QueryOptions)
+                {
+                    if (x.Name == "$skip")
+                        folderMessages.SkipToken = Convert.ToInt32(x.Value);
+                }
+            }
+
+            if (messages.Count > 0)
             {
                 foreach (Message message in messages)
                 {
-                    items.Add(new MessageItem
+                    folderMessages.Messages.Add(new MessageItem
                     {
                         ConversationId = message.ConversationId,
                         Id = message.Id,
@@ -82,28 +139,24 @@ namespace MailboxSync.Services
                     });
                 }
             }
-            return items;
+            return folderMessages;
         }
 
-        public async Task<List<MessageItem>> GetMyFolderMessages(GraphServiceClient graphClient, string folderId)
-        {
-            var items = new List<MessageItem>();
-            IMailFolderMessagesCollectionPage messages = await graphClient.Me.MailFolders[folderId].Messages.Request().GetAsync();
-            items = CreateMessages(messages);
-            return items;
-        }
 
-        // Send an email message.
-        // This snippet sends a message to the current user on behalf of the current user.
-        public async Task<List<FolderItem>> SendMessage(GraphServiceClient graphClient)
+        /// <summary>
+        /// Sends an email message to the current user on behalf of the current user.
+        /// Request: POST graph.microsoft.com/v1.0/me/messages/{id}/send
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/message_send
+        /// </summary>
+        /// <param name="graphClient">An instance of the authenticated graph client</param>
+        /// <returns></returns>
+        public async Task SendMessage(GraphServiceClient graphClient)
         {
-            List<FolderItem> items = new List<FolderItem>();
-
-            // Create the recipient list. This snippet uses the current user as the recipient.
-            User me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
+            var me = await graphClient.Me.Request().Select("Mail, UserPrincipalName").GetAsync();
             string address = me.Mail ?? me.UserPrincipalName;
             string guid = Guid.NewGuid().ToString();
 
+            // Create the recipient list and uses the current user as the recipient.
             List<Recipient> recipients = new List<Recipient>();
             recipients.Add(new Recipient
             {
@@ -118,73 +171,58 @@ namespace MailboxSync.Services
             {
                 Body = new ItemBody
                 {
-                    Content = "Body" + guid,
+                    Content = "Contents of the test message created by Microsoft Graph. Lorem " + guid,
                     ContentType = BodyType.Text,
                 },
-                Subject = "Subject" + guid.Substring(0, 8),
+                Subject = "Test message created by Microsoft Graph" + guid.Substring(0, 8).ToUpper(),
                 ToRecipients = recipients
             };
 
             // Send the message.
             await graphClient.Me.SendMail(email, true).Request().PostAsync();
-
-            return items;
         }
 
-        // Get a specified message.
-        public async Task<List<Message>> GetMessage(GraphServiceClient graphClient, string id)
+        /// <summary>
+        /// Get a specified message using its Id
+        /// Request: GET graph.microsoft.com/v1.0/me/messages/{id}
+        /// https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/eventmessage_get
+        /// </summary>
+        /// <param name="graphClient">An instance of the authenticated graph client</param>
+        /// <param name="messageId">the id of the specific message</param>
+        /// <returns></returns>
+        public async Task<Message> GetMessage(GraphServiceClient graphClient, string messageId)
         {
-            List<Message> items = new List<Message>();
-            
             // Get the message.
-            Message message = await graphClient.Me.Messages[id].Request().GetAsync();
+            Message message = await graphClient.Me.Messages[messageId].Request().GetAsync();
+            return message;
+        }
 
-            if (message != null)
+        /// <summary>
+        /// Reorders the folders so that those with the startupfolder flag are displayed first
+        /// </summary>
+        /// <param name="folderResults">folders resulting from the fetch folders query</param>
+        /// <returns></returns>
+        private List<FolderItem> OrderFolderResults(List<FolderItem> folderResults)
+        {
+            var startupFolderFolderItems = new List<FolderItem>();
+            var nonStartupFolderFolderItems = new List<FolderItem>();
+            var listOfFolders = new List<FolderItem>();
+            foreach (var item in folderResults)
             {
-                items.Add(message);
+                if (item.StartupFolder)
+                {
+                    startupFolderFolderItems.Add(item);
+                }
+                else
+                {
+                    nonStartupFolderFolderItems.Add(item);
+                }
             }
-            return items;
-        }
-
-        // Reply to a specified message.
-        public async Task<List<ResultItem>> ReplyToMessage(GraphServiceClient graphClient, string id)
-        {
-            var items = new List<ResultItem>();
-
-            // Reply to the message.
-            await graphClient.Me.Messages[id].Reply("Some text content.").Request().PostAsync();
-
-            items.Add(new ResultItem
-            {
-
-                // This operation doesn't return anything.
-                Properties = new Dictionary<string, object>
-                {
-                    { "Operation completed. This call doesn't return anything.", "" }
-                }
-            });
-            return items;
+            listOfFolders.AddRange(startupFolderFolderItems);
+            listOfFolders.AddRange(nonStartupFolderFolderItems);
+            return listOfFolders;
         }
 
 
-        // Delete a specified message.
-        public async Task<List<ResultItem>> DeleteMessage(GraphServiceClient graphClient, string id)
-        {
-            var items = new List<ResultItem>();
-
-            // Delete the message.
-            await graphClient.Me.Messages[id].Request().DeleteAsync();
-
-            items.Add(new ResultItem
-            {
-
-                // This operation doesn't return anything.
-                Properties = new Dictionary<string, object>
-                {
-                    { "Operation completed. This call doesn't return anything.", "" }
-                }
-            });
-            return items;
-        }
     }
 }

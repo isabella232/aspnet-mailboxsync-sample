@@ -19,63 +19,35 @@ namespace MailboxSync.Controllers
     public class HomeController : Controller
     {
         MailService mailService = new MailService();
-
-        public async Task<ActionResult> AddMessages(string id)
-        {
-            var results = new FoldersViewModel();
-            var dataService = new DataService();
-            try
-            {
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-                var messages = await mailService.GetMyFolderMessages(graphClient, id);
-                if (messages.Count > 0)
-                {
-                    dataService.StoreMessage(messages, id);
-                }
-            }
-            catch (ServiceException se)
-            {
-                if (se.Error.Message == "Caller needs to authenticate.")
-                {
-                    return new EmptyResult();
-                }
-
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
-            }
-            return View("Index", results);
-
-        }
+        DataService dataService = new DataService();
+        GraphServiceClient graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
 
         public ActionResult Index()
         {
-            var results = new FoldersViewModel();
-            var dataService = new DataService();
+            var folderResults = new FoldersViewModel();
             var folders = dataService.GetFolders();
             var resultItems = new List<FolderItem>();
             resultItems.AddRange(folders);
-            results.Items = resultItems;
-            return View("Index", results);
+            folderResults.Items = resultItems;
+            return View("Index", folderResults);
         }
 
 
-        // Get folders in the current user's mail
+        /// <summary>
+        /// Get folders in the current user's mail
+        /// </summary>
         public async Task<ActionResult> GetMyMailfolders()
         {
-            var results = new FoldersViewModel();
-            var dataService = new DataService();
             try
             {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
                 // Get the folders.
-                results.Items = await mailService.GetMyMailFolders(graphClient);
+                var folders = await mailService.GetMyMailFolders(graphClient);
 
-                foreach (var folder in results.Items)
+                foreach (var folder in folders)
                 {
                     if (dataService.FolderExists(folder.Id))
                     {
-                        dataService.StoreMessage(folder.Messages, folder.Id);
+                        dataService.StoreMessage(folder.MessageItems, folder.Id, folder.SkipToken);
                     }
                     else
                     {
@@ -86,41 +58,78 @@ namespace MailboxSync.Controllers
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == "Caller needs to authenticate.")
+                if (se.Error.Code == "AuthenticationFailure")
                 {
                     return new EmptyResult();
                 }
 
-                // Personal accounts that aren't enabled for the Outlook REST API get a "MailboxNotEnabledForRESTAPI" or "MailboxNotSupportedForRESTAPI" error.
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
             }
             return RedirectToAction("Index");
         }
 
-        // Send an email message.
-        // This sends a message to the current user on behalf of the current user.
+        /// <summary>
+        /// Send an email message.
+        /// This sends a message to the current user on behalf of the current user.
+        /// </summary>
         public async Task<ActionResult> SendMessage()
         {
-            var results = new FoldersViewModel(false);
             try
             {
-                // Initialize the GraphServiceClient.
-                GraphServiceClient graphClient = SDKHelper.GetAuthenticatedClient();
-
                 // Send the message.
-                results.Items = await mailService.SendMessage(graphClient);
+                await mailService.SendMessage(graphClient);
             }
             catch (ServiceException se)
             {
-                if (se.Error.Message == "Caller needs to authenticate.")
+                if (se.Error.Code == "AuthenticationFailure")
                 {
                     return new EmptyResult();
                 }
 
-                return RedirectToAction("Index", "Error", new { message = string.Format("Error in {0}: {1} {2}", Request.RawUrl, se.Error.Code, se.Error.Message) });
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
             }
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// Gets the paged messages belonging to a folder using a skip token
+        /// </summary>
+        /// <param name="folderId">the folder whose message is to be fetched</param>
+        /// <param name="skipToken">the skip token that indicates how many items to skip </param>
+        public async Task<ActionResult> GetPagedMessages(string folderId, int? skipToken)
+        {
+            try
+            {
+                var messages = await mailService.GetMyFolderMessages(graphClient, folderId, skipToken);
+                if (messages.Messages.Count > 0)
+                {
+                    dataService.StoreMessage(messages.Messages, folderId, messages.SkipToken);
+                }
+            }
+            catch (ServiceException se)
+            {
+                if (se.Error.Code == "AuthenticationFailure")
+                {
+                    return new EmptyResult();
+                }
+
+                return RedirectToAction("Index", "Error", new
+                {
+                    message =
+                    $"Error in {Request.RawUrl}: {se.Error.Code} {se.Error.Message}"
+                });
+            }
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
