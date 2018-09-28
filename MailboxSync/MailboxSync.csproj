@@ -184,7 +184,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
-    <Compile Include="Helpers\GraphSdkHelper.cs" />
+    <Compile Include="Helpers\GraphServiceClientProvider.cs" />
     <Compile Include="Helpers\IAuthProvider.cs" />
     <Compile Include="Helpers\SampleAuthProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -193,6 +193,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\FolderItem.cs" />
     <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\MailService.cs" />
     <Compile Include="Models\FoldersViewModel.cs" />

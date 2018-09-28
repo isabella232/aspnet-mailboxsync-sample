@@ -38,12 +38,24 @@
                                     @if (item.MessageItems != null && item.MessageItems.Count > 0)
                                     {
                                         <div class="row" id="table-@item.Id">
+                                            <div class="col-md-12" style="font-weight:800;text-decoration:underline;">
+                                                <div class="col-md-6">Subject</div>
+                                                <div class="col-md-4">Created</div>
+                                                <div class="col-md-2">Opened</div>
+                                            </div>
+                                            <hr />
                                             @foreach (var message in item.MessageItems)
                                             {
-                                                <div class="col-md-12">
+                                                var messageStyle = "border-bottom:solid #ddd 1px;padding:10px;";
+                                                if (!@message.IsRead)
+                                                {
+                                                    messageStyle = messageStyle + "font-weight:bold";
+                                                }
+                                                <div class="col-md-12" title="@message.BodyPreview" style="@messageStyle">
                                                     <div class="col-md-6">@message.Subject</div>
-                                                    <div class="col-md-3">@message.CreatedDateTime</div>
-                                                    <div class="col-md-3">@message.IsRead</div>
+                                                    <div class="col-md-4">@message.CreatedDateTime</div>
+                                                    <div class="col-md-2">@message.IsRead</div>
+
                                                 </div>
                                             }
                                         </div>
@@ -51,11 +63,11 @@
                                     }
                                     <hr>
                                     <div>
-                                        @using (Html.BeginForm("AddMessages", "Home"))
+                                        @using (Html.BeginForm("GetPagedMessages", "Home"))
                                         {
                                             <button class="btn btn-link needs-id" id="get-message">Load More</button>
-                                            <input class="selected-id" value=@item.Id name="id" type="hidden" />
-                                            <input class="selected-id" value=@item.SkipToken name="skip" type="hidden" />
+                                            <input class="selected-id" value=@item.Id name="folderId" type="hidden" />
+                                            <input class="selected-id" value=@item.SkipToken name="skipToken" type="hidden" />
 
                                         }
                                     </div>

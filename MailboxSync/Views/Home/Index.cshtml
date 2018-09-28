@@ -34,7 +34,7 @@
     <script>
         var connection = $.hubConnection();
         var hub = connection.createHubProxy("NotificationHub");
-        hub.on("showNotification", function (message) {
+        hub.on("showNotification", function () {
             var card = $("<div class=\"card\"></div>");
             var cardBody = $("<div class=\"card-body\"></div>").appendTo(card);
             $("<h5 class=\"\"><b><b></h5>").text("New Message(s) received, refresh page to view messages").appendTo(cardBody);

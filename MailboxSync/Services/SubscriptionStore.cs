@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Web;
 
 namespace MailboxSync.Services
@@ -49,5 +51,22 @@ namespace MailboxSync.Services
             Tuple<string, string, string> subscriptionParams = HttpRuntime.Cache.Get("subscriptionId_" + subscriptionId) as Tuple<string, string, string>;
             return new SubscriptionStore(subscriptionId, subscriptionParams);
         }
+
+        /// <summary>
+        /// Delete all subscriptions
+        /// </summary>
+        public static void DeleteSubscriptionInfo()
+        {
+            List<string> keys = new List<string>();
+            IDictionaryEnumerator enumerator = HttpRuntime.Cache.GetEnumerator();
+
+            while (enumerator.MoveNext())
+                if (enumerator.Key != null)
+                    keys.Add(enumerator.Key.ToString());
+
+            foreach (var item in keys)
+                HttpRuntime.Cache.Remove(item);
+        }
+
     }
 }

@@ -10,13 +10,12 @@ namespace MailboxSync.Services.SignalR
         /// <summary>
         /// Fires the notification to the client
         /// </summary>
-        /// <param name="notificationsCount">Number of notifications</param>
-        public void SendNotificationToClient(int notificationsCount)
+        public void SendNotificationToClient()
         {
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<NotificationHub>();
             if (hubContext != null)
             {
-                hubContext.Clients.All.showNotification(notificationsCount);
+                hubContext.Clients.All.showNotification();
             }
         }
     }

@@ -18,7 +18,7 @@ namespace MailboxSync.Services
     /// <summary>
     /// Interfaces with the data storage
     /// Current implementation uses a json file which is not recommended for production.
-    /// You can use DocumentDb ; you can learn more about it here: https://azure.microsoft.com/en-us/resources/videos/introduction-to-azure-documentdb/
+    /// You can use DocumentDb ; learn more about it here: https://azure.microsoft.com/en-us/resources/videos/introduction-to-azure-documentdb/
     /// </summary>
     public class DataService
     {
@@ -49,7 +49,8 @@ namespace MailboxSync.Services
                             Name = item["Name"].ToString(),
                             Id = item["Id"].ToString(),
                             MessageItems = GenerateMessages(item["MessageItems"].ToString()),
-                            SkipToken = (int?)item["SkipToken"]
+                            SkipToken = (int?)item["SkipToken"],
+                            StartupFolder = (bool)item["StartupFolder"],
                         });
                     }
                     return folderItems;
@@ -161,7 +162,9 @@ namespace MailboxSync.Services
 
 
         /// <summary>
-        /// Adds a list of messages to a particular folder in the json file
+        /// Adds a list of messages to a particular folder in the json file.
+        /// Can be used to save one or more messages.
+        /// To save one message, add it to a list and pass the list through to the methid
         /// </summary>
         /// <param name="messages">the list of messages to be stored</param>
         /// <param name="folderId">the id of the folder where the messages will be added</param>

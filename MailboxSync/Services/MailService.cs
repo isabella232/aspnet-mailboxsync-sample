@@ -33,18 +33,25 @@ namespace MailboxSync.Services
                 foreach (var folder in folders)
                 {
                     var folderMessages = await GetMyFolderMessages(graphClient, folder.Id, null);
+                    // checks if it is the mailbox folder so that when displayed,
+                    // it can show up first in the list
+                    var isStartUpFolder = (folder.DisplayName == "Inbox");
                     items.Add(new FolderItem
                     {
                         Name = folder.DisplayName,
                         Id = folder.Id,
                         MessageItems = folderMessages.Messages,
                         ParentId = null,
-                        SkipToken = folderMessages.SkipToken
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
-                    var clientFolders = await GetChildFolders(graphClient, folder.Id);
+                    var clientFolders = await GetChildFolders(graphClient, folder.Id, isStartUpFolder);
                     items.AddRange(clientFolders);
                 }
             }
+
+            // order folder results, showing the startup folders first
+            items = OrderFolderResults(items);
             return items;
         }
 
@@ -57,7 +64,7 @@ namespace MailboxSync.Services
         /// <param name="graphClient">An instance of the authenticated graph client</param>
         /// <param name="id">Id of the parent folder </param>
         /// <returns></returns>
-        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id)
+        private async Task<List<FolderItem>> GetChildFolders(GraphServiceClient graphClient, string id, bool isStartUpFolder)
         {
             List<FolderItem> children = new List<FolderItem>();
 
@@ -74,7 +81,8 @@ namespace MailboxSync.Services
                         Id = child.Id,
                         MessageItems = folderMessages.Messages,
                         ParentId = child.ParentFolderId,
-                        SkipToken = folderMessages.SkipToken
+                        SkipToken = folderMessages.SkipToken,
+                        StartupFolder = isStartUpFolder
                     });
                 }
             }
@@ -91,16 +99,47 @@ namespace MailboxSync.Services
         /// <param name="folderId">The folder whose messages we want to get</param>
         /// <param name="skip">the skip token for when we are going through a list via pagination</param>
         /// <returns></returns>
-        public async Task<FolderMessage> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
+        public async Task<FolderMessages> GetMyFolderMessages(GraphServiceClient graphClient, string folderId, int? skip)
         {
             var top = Convert.ToInt32(ConfigurationManager.AppSettings["ida:PageSize"]);
+            var folderMessages = new FolderMessages { SkipToken = null };
+
+            // Initialise the request
             var request = graphClient.Me.MailFolders[folderId].Messages.Request();
+
+            // if the pagination skip token has a value, add it to the request
             if (skip.HasValue)
             {
                 request = request.Skip(skip.Value);
             }
-            IMailFolderMessagesCollectionPage messages = await request.Top(top).GetAsync();
-            return GenerateFolderMessages(messages);
+            var messages = await request.Top(top).GetAsync();
+
+            // if there are  other pages in the response, store the skip token
+            if (messages.NextPageRequest != null)
+            {
+                foreach (var x in messages.NextPageRequest.QueryOptions)
+                {
+                    if (x.Name == "$skip")
+                        folderMessages.SkipToken = Convert.ToInt32(x.Value);
+                }
+            }
+
+            if (messages.Count > 0)
+            {
+                foreach (Message message in messages)
+                {
+                    folderMessages.Messages.Add(new MessageItem
+                    {
+                        ConversationId = message.ConversationId,
+                        Id = message.Id,
+                        Subject = message.Subject,
+                        BodyPreview = message.BodyPreview,
+                        IsRead = (bool)message.IsRead,
+                        CreatedDateTime = (DateTimeOffset)message.CreatedDateTime
+                    });
+                }
+            }
+            return folderMessages;
         }
 
 
@@ -132,10 +171,10 @@ namespace MailboxSync.Services
             {
                 Body = new ItemBody
                 {
-                    Content = "Body Lorem Ipsum dolor " + guid,
+                    Content = "Contents of the test message created by Microsoft Graph. Lorem " + guid,
                     ContentType = BodyType.Text,
                 },
-                Subject = guid.Substring(0, 8).ToUpper() + " Lorem Ipsum",
+                Subject = "Test message created by Microsoft Graph" + guid.Substring(0, 8).ToUpper(),
                 ToRecipients = recipients
             };
 
@@ -159,39 +198,31 @@ namespace MailboxSync.Services
         }
 
         /// <summary>
-        /// Generates a list of MessageItems to be saved in the data store
+        /// Reorders the folders so that those with the startupfolder flag are displayed first
         /// </summary>
-        /// <param name="messages">list of mail folder messages</param>
+        /// <param name="folderResults">folders resulting from the fetch folders query</param>
         /// <returns></returns>
-        private FolderMessage GenerateFolderMessages(IMailFolderMessagesCollectionPage messages)
+        private List<FolderItem> OrderFolderResults(List<FolderItem> folderResults)
         {
-            var holder = new FolderMessage { SkipToken = null };
-            if (messages.NextPageRequest != null)
+            var startupFolderFolderItems = new List<FolderItem>();
+            var nonStartupFolderFolderItems = new List<FolderItem>();
+            var listOfFolders = new List<FolderItem>();
+            foreach (var item in folderResults)
             {
-                foreach (var x in messages.NextPageRequest.QueryOptions)
+                if (item.StartupFolder)
                 {
-                    if (x.Name == "$skip")
-                        holder.SkipToken = Convert.ToInt32(x.Value);
+                    startupFolderFolderItems.Add(item);
+                }
+                else
+                {
+                    nonStartupFolderFolderItems.Add(item);
                 }
             }
-
-            if (messages.Count > 0)
-            {
-                foreach (Message message in messages)
-                {
-                    holder.Messages.Add(new MessageItem
-                    {
-                        ConversationId = message.ConversationId,
-                        Id = message.Id,
-                        Subject = message.Subject,
-                        BodyPreview = message.BodyPreview,
-                        IsRead = (bool)message.IsRead,
-                        CreatedDateTime = (DateTimeOffset)message.CreatedDateTime
-                    });
-                }
-            }
-            return holder;
+            listOfFolders.AddRange(startupFolderFolderItems);
+            listOfFolders.AddRange(nonStartupFolderFolderItems);
+            return listOfFolders;
         }
+
 
     }
 }
