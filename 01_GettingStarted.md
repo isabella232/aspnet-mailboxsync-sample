@@ -37,8 +37,6 @@
 
     ![A screenshot of the newly added client secret](./images/aad-copy-client-secret.PNG)
 
-1. From the **Manage** page, select **API permissions** > **Add a permission**.
-
 You'll use the application ID and secret to configure the app in Visual Studio.
  
 ## Configure the app
