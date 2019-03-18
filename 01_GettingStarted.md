@@ -16,11 +16,11 @@
     - Set **Supported account types** to **Accounts in any organizational directory**.
     - Under **Redirect URI**, set the first drop-down to `Web` and set the value to the ASP.NET app SSL URL you copied in step 1.
 
-    ![A screenshot of the Register an application page](./images/aad-register-an-app.png)
+    ![A screenshot of the Register an application page](./images/aad-register-an-app.PNG)
 
 1. Choose **Register**. On the **MailBox Sync Sample** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.
 
-    ![A screenshot of the application ID of the new app registration](./images/aad-application-id.png)
+    ![A screenshot of the application ID of the new app registration](./images/aad-application-id.PNG)
 
 1. Select **Authentication** under **Manage**. Locate the **Implicit grant** section and enable **ID tokens**. Choose **Save**.
 
@@ -35,7 +35,7 @@
     > [!IMPORTANT]
     > This client secret is never shown again, so make sure you copy it now.
 
-    ![A screenshot of the newly added client secret](./images/aad-copy-client-secret.png)
+    ![A screenshot of the newly added client secret](./images/aad-copy-client-secret.PNG)
 
 1. From the **Manage** page, select **API permissions** > **Add a permission**.
 
@@ -82,7 +82,7 @@ You can use the ngrok web interface ([http://127.0.0.1:4040](http://127.0.0.1:40
     ngrok http {port-number} -host-header=localhost:{port-number}
     ```
 
-    ![Example command to run in the ngrok console](./images/ngrok1.png)
+    ![Example command to run in the ngrok console](./images/ngrok1.PNG)
 
 1. Copy the HTTPS URL that's shown in the console. You'll use this to configure your notification URL in the sample.
 
