@@ -61,7 +61,8 @@ namespace MailboxSync.Helpers
             string[] scopes = allScopes.Split(' ');
             try
             {
-                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.First());
+                var accounts = await cca.GetAccountsAsync();                
+                AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, accounts.First());
                 return result.AccessToken;
             }
 
